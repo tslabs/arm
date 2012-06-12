@@ -1,5 +1,5 @@
-
-// Types re-assigning
+﻿
+// Common types
 //
 // (c) 2012, TS-Labs inc.
 // All rights fucked out
@@ -15,14 +15,17 @@
 #endif /* __cplusplus */
 
 
-typedef sint8_t S8;
-typedef uint8_t U8;
+    /* exact-width signed integer types */
+typedef   signed          char S8;
+typedef   signed short     int S16;
+typedef   signed           int S32;
+typedef   signed       __int64 S64;
 
-typedef sint16_t S16;
-typedef uint16_t U16;
-
-typedef sint32_t S32;
-typedef uint32_t U32;
+    /* exact-width unsigned integer types */
+typedef unsigned          char U8;
+typedef unsigned short     int U16;
+typedef unsigned           int U32;
+typedef unsigned       __int64 U64;
 
 
 #ifdef __cplusplus

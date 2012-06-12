@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<link rel="stylesheet" type="text/css" href="/css/screen.css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" type="text/javascript" ></script>
+<script src="/js/share.js" type="text/javascript" ></script>
+<script src="http://s7.addthis.com/js/250/addthis_widget.js#async=1" type="text/javascript"></script>
+
+<title>The XM File Format</title>
+</head>
+<body>
+<table class="header" width="100%">
+	<tr>
+		<td class="logo"><a href="/index.htm" target="_top"><img src="/images/header/logo_wide.png" border="0" alt="FileFormatInfo Logo" width="260" height="33" /></a></td>
+		<td class="menu">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="search"><div id="header-search"><form method="get" action="/search/search.htm"><input type="text" name="q" size="15" alt="site search query" /><input type="submit" value="Search" /></form></div></td>
+		<td class="crumbtrail">You&#xa0;are&#xa0;in&#xa0;<a href="/index.dir"><img height="16" width="16" style="vertical-align:middle" border="0" src="/images/16x16/t-folder.png" alt="Browse directories" title="Browse directories" /></a> <a href="/index.htm">FileFormat.Info</a>&nbsp;&raquo;&nbsp;<a href="/format/index.dir"><img height="16" width="16" style="vertical-align:middle" border="0" src="/images/16x16/t-folder.png" alt="Browse directories" title="Browse directories" /></a> <a href="/format/index.htm">Specific&#xa0;Formats</a>&nbsp;&raquo;&nbsp;<a href="/format/xm/index.dir"><img height="16" width="16" style="vertical-align:middle" border="0" src="/images/16x16/t-folder.png" alt="Browse directories" title="Browse directories" /></a> <a href="/format/xm/index.htm">xm</a></td>
+	</tr>
+</table>
+<div id="content">
+
+<table class="plain" width="100%">
+<tr>
+<td align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-6975096118196151";
+google_ad_width = 728;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_channel ="8765314785";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "6F6F6F";
+//--></script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</td>
+</tr>
+</table>
+
+<h1>The XM File Format</h1>
+<hr />
+<h2>Original Documentation</h2>
+<pre>
+The .XM files (Extended Module) are multichannel MOD files created by Triton's
+FastTracker ][. They feature up to 32 channels and different effects. FT 2 is
+a shareware program. After the initial .XM header follows the pattern data,
+after the patterns follow the instruments.
+
+OFFSET              Count TYPE   Description
+0000h                  17 char   ID=&quot;Extended module: &quot;
+0011h                  20 char   Module name, padded with zeroes
+0025h                   1 char   ID=01Ah
+0026h                  20 char   Tracker name
+003Ah                   1 word   Tracker revision number, hi-byte is major version
+003Ch                   1 dword  Header size
+0040h                   1 word   Song length in patterns
+0042h                   1 word   Restart position
+0044h                   1 word   Number of channels
+0046h                   1 word   Number of patterns (&lt; 256)
+								 =&quot;PAT&quot;
+0048h                   1 word   Number of instruments (&lt;128)
+004Ah                   1 word   Flags :
+								 0 - Linear frequency table / Amiga freq. table
+004Ch                   1 word   Default tempo
+004Eh                   1 word   Default BPM
+0050h                 256 byte   Pattern order table
+
+--- Pattern header
+The patterns are stored as ordinary MOD patterns, except that each note is
+stored as 5 bytes:
+
+	  ?      1   (byte) Note (0-71, 0 = C-0)
+	 +1      1   (byte) Instrument (0-128)
+	 +2      1   (byte) Volume column byte (see below)
+	 +3      1   (byte) Effect type
+	 +4      1   (byte) Effect parameter
+
+A simle packing scheme is also adopted, so that the patterns do not become TOO
+large: Since the MSB in the note value is never used, it is used for the
+compression.If the bit is set, then the other bits are interpreted as follows:
+
+	  bit 0 set: Note byte ollows
+		  1 set: Instrument byte follows
+		  2 set: Volume column byte follows
+		  3 set: Effect byte follows
+		  4 set: Effect data byte follows
+
+OFFSET              Count TYPE   Description
+0000h                   1 dword  Length of pattern block/header ??
+0004h                   1 byte   Pattern pack type
+0005h                   1 word   Number of rows in pattern (1..256)
+0007h                   1 word   Size of pattern data
+								 =&quot;PSZ&quot;
+					&quot;PSZ&quot; byte   Pattern data
+
+--- Instrument header
+Each instrument has one or more sample headers following it.
+OFFSET              Count TYPE   Description
+0000h                   1 dword  Instrument block/header size
+0004h                  22 char   ASCII Instrument name, 0 padded ?
+001Ah                   1 byte   Instrument type (always 0)
+001Bh                   1 word   Number of samples in instrument
+001Dh                   1 dword  Sample header size
+0021h                  96 byte   Sample numbers for all notes
+0081h                  48 byte   Points of volume envelope
+00C1h                  48 byte   Points of panning envelope
+0101h                   1 byte   Number of volume points
+0102h                   1 byte   Number of panning points
+0103h                   1 byte   Volume sustain point
+0104h                   1 byte   Volume loop start point
+0105h                   1 byte   Volume loop end point
+0106h                   1 byte   Panning sustain point
+0107h                   1 byte   Panning loop start point
+0108h                   1 byte   Panning loop end point
+0109h                   1 byte   Volume type, bitmapped
+								 0 - Volume on
+								 1 - Sustain on
+								 2 - Loop on
+010Ah                   1 byte   Panning type, bitmapped
+								 0 - Panning on
+								 1 - Sustain on
+								 2 - Loop on
+010Bh                   1 byte   Vibrato type
+010Ch                   1 byte   Vibrato sweep
+010Dh                   1 byte   Vibrato depth
+010Eh                   1 byte   Vibrato rate
+010Fh                   1 word   Volume fadeout
+0111h                   1 word   Reserved
+
+--- Sample headers
+OFFSET              Count TYPE   Description
+0000h                   1 dword  Sample length
+								 =&quot;LEN&quot;
+0004h                   1 dword  Sample loop start
+0008h                   1 dword  Sample loop length
+000Ch                   1 byte   Volume
+000Dh                   1 byte   Finetune for sample (-128..+127)
+								 +-127 is one half tone
+000Eh                   1 byte   Sample type, bitmapped
+								 0,1 : Loop type :
+										0 - no loop
+										1 - forward loop
+										2 - ping-pong loop
+										3 - reserved
+								   4?: sample is 16-bit
+000Fh                   1 byte   Sample pan
+0010h                   1 byte   Relative note number (signed byte)
+								 (-96..+95), 0 -&gt; C-4 sounds as C-4
+0011h                   1 byte   Reserved
+0012h                  22 char   ASCII name of sample, 0 padded
+0013h               &quot;LEN&quot; byte   Sample data. The sample data is stored
+								 as delta compressed data like the ProTracker.
+
+EXTENSION:XM,MOD
+OCCURENCES:
+PROGRAMS:
+REFERENCE:
+SEE ALSO:MOD,S3M
+VALIDATION:
+</pre>
+<hr />
+<p>This information is from <a href="/mirror/corion/index.htm">Corion.net</a> and is used with <a href="/mirror/corion/permission.htm">permission</a>.</p>
+
+<p><a href="internal.htm">More Resources</a></p>
+<table class="plain" width="100%">
+<tr>
+<td align="center">
+<script type="text/javascript"><!--
+google_ad_client = "pub-6975096118196151";
+google_ad_width = 728;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_channel ="8765314785";
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "0000FF";
+google_color_url = "008000";
+google_color_text = "6F6F6F";
+//--></script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</td>
+</tr>
+</table>
+
+<hr />
+<table class="footer">
+	<tr>
+		<td align="center" width="50%"><a href="/about/feedback.htm?subject=%2Fformat%2Fxm%2Fcorion.htm&amp;next=%2Fformat%2Fxm%2Fcorion.htm"><img height="20" width="20" style="vertical-align:middle;" border="0" src="/images/20x20/envelopeopen.png" alt="Let us know what you think about this page" title="Let us know what you think about this page" /></a>&nbsp;<a href="/about/feedback.htm?subject=%2Fformat%2Fxm%2Fcorion.htm&amp;next=%2Fformat%2Fxm%2Fcorion.htm">Feedback</a></td>
+		<td align="center" width="50%"><a href="/format/xm/corion.htm?mode=print" rel="nofollow"><img height="20" width="20" style="vertical-align:middle;" border="0" src="/images/20x20/print.png" alt="Printer friendly version" title="Printer friendly version" /></a>&nbsp;<a href="/format/xm/corion.htm?mode=print" rel="nofollow">Printer&#xa0;friendly</a></td>
+	</tr>
+</table>
+<hr/>
+<p align="center"><a href="/about/tos.htm">Terms of Service</a> | <a href="/about/privacy.htm">Privacy Policy</a> | <a href="/about/contact.htm">Contact Info</a></p>
+</div><script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-328425-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+ })();
+</script>
+
+</body>
+</html>

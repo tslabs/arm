@@ -1,0 +1,122 @@
+
+Ä Area: DEMO.DESIGN ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+  Msg#: 210                                          Date: 29 Dec 95  03:00:50
+  From: Lenik Terenin                                Read: Yes    Replied: No 
+    To: All                                          Mark:                     
+  Subj: !UPDATE : Xm File Format
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+ From : charles.baker@powerlink.iconz.co.nz (Tue Dec 26 1995 21:40)
+ Subj : Xm File Format
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+X-RealName: CHARLES BAKER
+
+I know I posted this b4 but I received mail to the wrong address (from where
+I can't read it..)
+please mail me at charles.baker@synet.net.nz
+
+XM module format $0104
+by Rage
+
+This is an update (unofficial) to the XM module format description
+version $0104.  It is based on what I have sussed out while coding
+some replay routines and hopefully will help any dudes out there
+doing the same.
+
+Envelopes.
+
+The envelopes are stored as a series of points (0-11) with 2 words
+for each point (48/12=4).  The first word is the frame offset and the
+second is the value at that offset.
+
+ eg for a 4 point volume envelope you could have
+    offset | volume
+      $0010 $0040
+      $0020 $0030
+      $0028 $0020
+      $0040 $0010
+
+Values between the given offsets are interpolated.
+
+The maximum frame offset is 324 so a totally full envelope playing at
+125bpm lasts for 6.48 seconds (324 / 50(frames per second @125bpm)).
+
+Heres some code. It scans thru the point values until it finds which
+two points our FrameOffset lies between and then interpolates to find
+out final value.
+
+GetEnvelopeValue  proc     ; DS:SI= start of envelope data
+                           ; AX= offset (0..DX), DX= largest offset (in
+                           ;  Frames)
+
+   push bx cx dx di
+
+   xor bx,bx
+
+   EnvSearch:                          ; This loop searches thru to find
+   cmp [si.FrameOffset+bx],ax          ; which points the given offset lies.
+   ja foundOffset                      ;
+   cmp [si.FrameOffset+bx],dx
+   je foundOffset
+   add bx,4                            ;
+   jmp short EnvSearch                 ;
+
+   foundOffset:                        ; This part interpolates between them
+   movzx edi,ax                        ;
+   sub di,[si.FrameOffset+bx-4]        ; How far we are from the lower point
+   mov ax,[si.Value+bx]                ;
+   sub ax,[si.Value+bx-4]              ;
+   shl eax,16                          ; EAX = delta Y * 65536 (Value)
+   movzx ecx,[si.FrameOffset+bx]       ;
+   sub cx,[si.FrameOffset+bx-4]        ; CX = delta X (FrameOffset)
+
+   cdq
+   idiv ecx                               ; AX = dY/dX * 65536
+   imul edi                               ; * Envelope offset
+   sar eax,16                             ; /65536
+   add ax,[si.Value+bx-4]                 ; + previous envelope value
+                                          ; = interpolated value
+   pop di dx cx bx
+   ret
+
+   flat:
+   mov ax,dx
+   pop di dx cx bx
+   ret
+
+GetEnvelopeValue  endp
+
+
+Patterns.
+
+When decompressing the patterns if the MSB of the note value is not present
+then all five bytes follow.
+
+ eg for a blank channel you get one byte
+    .. $80 ..
+
+    for a channel with a Note and Instrument you get three bytes
+    .. $83 .. $30 .. $01 ..
+
+    for a channel with all five bytes you just get no MSB for the Note
+    .. $30 .. $01 .. $40 .. $F .. $03 ..
+
+As you can see the MSB values all have bit 7 set so you can always tell
+whether you have an MSB or a Note by ANDing with $80.
+
+
+JESUS BUILT MY CAR... ITS A LOVE AFFAIR... MAINLY JESUS AND MY HOTROD...
+Please send replies to charles.baker@synet.net.nz
+
+
+... All Please send reply mail to charles.baker@synet.net.nz
+___ Blue Wave/QWK v2.12
+
+
+-+-
+ + Origin: PowerLink BBS, Auckland, New Zealand
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+-!- GoldED/2 2.50.A0307 UNREG
+ ! Origin: ÄÍÍ SkyWalker/2 ÍÍÄ (2:5061/1)
+

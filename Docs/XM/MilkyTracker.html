@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>
-		<title>MilkyTracker Manual v0.90.85</title>
+		<title>MilkyTracker Manual v0.90.85.1</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<style type="text/css">
 			html, body
@@ -173,6 +173,12 @@
 				margin-top: 0 !important;
 			}
 
+			.tooltip
+			{
+				border-bottom: 1px dotted;
+				cursor: help;
+			}
+
 			.email
 			{
 				direction: rtl;
@@ -181,9 +187,9 @@
 		</style>
 	</head>
 	<body>
-		<h1>MilkyTracker Manual <span id="version" style="font-size: 10pt; font-weight: normal;">v0.90.85</span></h1>
+		<h1>MilkyTracker Manual <span id="version" style="font-size: 10pt; font-weight: normal;">v0.90.85.1</span></h1>
 		<p>
-			Hello and welcome to MilkyTracker, an open source multi-platform Fasttracker II compatible music tracker program. This document holds a lot of valuable information about the tracker but it's not a tracking manual. If you want to learn more about tracking and how it's done, the Internet is your friend. We host some resources on <a href="http://www.milkytracker.net/">MilkyTracker.net</a> as well.
+			Hello and welcome to MilkyTracker, an open source multi-platform Fasttracker II compatible music tracker program. This document holds a lot of valuable information about the tracker but it's not a tracking manual. If you want to learn more about tracking and how it's done, the Internet is your friend. We host some resources on <a href="http://www.milkytracker.org/">MilkyTracker.net</a> as well.
 		</p>
 		<h4>Disclaimer:</h4>
 		<p>	
@@ -420,7 +426,7 @@
 			</tr>
 		</table>
 		<p>
-			MilkyTracker's song export options are the same as Fasttracker II's but it is notable that, unlike FT2, <em>Milky saves Amiga compatible 4-channel .MODs</em>. MilkyTracker also features ProTracker 2.x and 3.x playback modes for .MODs.
+			MilkyTracker's song export options are the same as Fasttracker II's<!-- but it is notable that, unlike FT2, <em>Milky saves Amiga compatible 4-channel .MODs</em>-->. MilkyTracker also features ProTracker 2.x and 3.x playback modes for .MODs.
 		</p>
 		<h4>Export:</h4>
 		<table>
@@ -506,18 +512,18 @@
 				<td><em>Ctrl-Shift-M</em></td><td>Invert muting</td>
 			</tr>
 			<tr class="even">
-				<td><em>Ctrl-Shift-T</em></td><td>Open a new tab</td>
-			</tr>
-			<tr class="odd">
 				<td><em>Shift-U</em></td><td>Un-mute all</td>
 			</tr>
 			<tr class="odd">
-				<td><em>Ctrl-Shift-W</em></td><td>Close current tab</td>
+				<td><em>Ctrl-Shift-T</em></td><td>Open a new tab</td>
 			</tr>
 			<tr class="even">
-				<td><em>Ctrl-Shift-Left</em></td><td>Select previous tab</td>
+				<td><em>Ctrl-Shift-W</em></td><td>Close current tab</td>
 			</tr>
 			<tr class="odd">
+				<td><em>Ctrl-Shift-Left</em></td><td>Select previous tab</td>
+			</tr>
+			<tr class="even">
 				<td><em>Ctrl-Shift-Right</em></td><td>Select next tab</td>
 			</tr>
 		</table>
@@ -1003,13 +1009,19 @@
 				<td><em>Alt-F5</em></td><td>Paste block</td>
 			</tr>
 			<tr class="odd">
-				<td><em>Shift-F3</em></td><td>Cut track</td>
+				<td><em>Alt-F6</em></td><td>Porous paste block</td>
 			</tr>
 			<tr class="even">
-				<td><em>Shift-F4</em></td><td>Copy track</td>
+				<td><em>Shift-F3</em></td><td>Cut track</td>
 			</tr>
 			<tr class="odd">
+				<td><em>Shift-F4</em></td><td>Copy track</td>
+			</tr>
+			<tr class="even">
 				<td><em>Shift-F5</em></td><td>Paste track</td>
+			</tr>
+			<tr class="odd">
+				<td><em>Shift-F6</em></td><td>Porous paste track</td>
 			</tr>
 			<tr class="even">
 				<td><em>Ctrl-F3</em></td><td>Cut pattern</td>
@@ -1019,6 +1031,9 @@
 			</tr>
 			<tr class="even">
 				<td><em>Ctrl-F5</em></td><td>Paste pattern</td>
+			</tr>
+			<tr class="odd">
+				<td><em>Ctrl-F6</em></td><td>Porous paste pattern</td>
 			</tr>
 		</table>
 		<h4>Additional shortcuts (not found in FT2):</h4>
@@ -1298,10 +1313,9 @@
 			<tr class="odd">
 				<td><em>Notes:</em></td>
 				<td>
-					<ul>
-						<li>Doesn't have effect memory and cannot be used without parameters.</li>
-						<li>In Fasttracker II, arpeggio logic fails when song speed is 16 (0x10) or higher. Using arpeggio at such speeds may cause unpredictable results across different players.</li>
-					</ul>
+						<p>In MilkyTracker <span class="tooltip" title="The pattern dots ARE zeroes. Bricks shat, I know right.">you don't have to</span> and indeed you CAN'T enter the effect digit 0. Just start with the parameter digits and the effect digit will be filled in.</p>
+						<p>Doesn't have effect memory and cannot be used without parameters.</p>
+						<p>In Fasttracker II, arpeggio logic fails when song speed is 16 (0x10) or higher. Using arpeggio at such speeds may cause unpredictable results across different players.</p>
 				</td>
 			</tr>
 			<tr>
@@ -1795,7 +1809,7 @@
 				<td><em>Notes:</em></td>
 				<td>
 					<p>
-						Unlike with the majority of effect parameters, here <em><code>xx</code></em> is a decimal value rather than hexadecimal. Hexadecimal values are converted to decimal (<em><code>D0F</code></em> jumps to row 15).
+						Unlike with the majority of effect parameters, here <em><code>xx</code></em> is a decimal value rather than hexadecimal. Hexadecimal values are accepted but the first digit is still interpreted as decimal so it's best to avoid hex this time.
 					</p>
 					<p>
 						The highest row number you can jump to is 63.
@@ -1974,7 +1988,7 @@
 							<td><em><code>x</code></em></td><td>ProTracker 2/3</td><td>Fasttracker II</td>
 						</tr>
 						<tr>
-							<td><em><code>0</code></em></td><td class="center">0</td><td class="center">-8</td>
+							<td><em><code>0</code></em></td><td class="center">0</td><td class="center">-128</td>
 						</tr>
 						<tr>
 							<td><em><code>1</code></em></td><td class="center">+16</td><td class="center">-112</td>
@@ -1989,37 +2003,37 @@
 							<td><em><code>4</code></em></td><td class="center">+64</td><td class="center">-64</td>
 						</tr>
 						<tr>
-							<td><em><code>5</code></em></td><td class="center">+80</td><td class="center">-32</td>
+							<td><em><code>5</code></em></td><td class="center">+80</td><td class="center">-48</td>
 						</tr>
 						<tr>
-							<td><em><code>6</code></em></td><td class="center">+96</td><td class="center">-16</td>
+							<td><em><code>6</code></em></td><td class="center">+96</td><td class="center">-32</td>
 						</tr>
 						<tr>
-							<td><em><code>7</code></em></td><td class="center">+112</td><td class="center">0</td>
+							<td><em><code>7</code></em></td><td class="center">+112</td><td class="center">-16</td>
 						</tr>
 						<tr>
-							<td><em><code>8</code></em></td><td class="center">-128</td><td class="center">+16</td>
+							<td><em><code>8</code></em></td><td class="center">-128</td><td class="center">0</td>
 						</tr>
 						<tr>
-							<td><em><code>9</code></em></td><td class="center">-112</td><td class="center">+32</td>
+							<td><em><code>9</code></em></td><td class="center">-112</td><td class="center">+16</td>
 						</tr>
 						<tr>
-							<td><em><code>A</code></em></td><td class="center">-96</td><td class="center">+48</td>
+							<td><em><code>A</code></em></td><td class="center">-96</td><td class="center">+32</td>
 						</tr>
 						<tr>
-							<td><em><code>B</code></em></td><td class="center">-80</td><td class="center">+64</td>
+							<td><em><code>B</code></em></td><td class="center">-80</td><td class="center">+48</td>
 						</tr>
 						<tr>
-							<td><em><code>C</code></em></td><td class="center">-64</td><td class="center">+80</td>
+							<td><em><code>C</code></em></td><td class="center">-64</td><td class="center">+64</td>
 						</tr>
 						<tr>
-							<td><em><code>D</code></em></td><td class="center">-48</td><td class="center">+96</td>
+							<td><em><code>D</code></em></td><td class="center">-48</td><td class="center">+80</td>
 						</tr>
 						<tr>
-							<td><em><code>E</code></em></td><td class="center">-32</td><td class="center">+112</td>
+							<td><em><code>E</code></em></td><td class="center">-32</td><td class="center">+96</td>
 						</tr>
 						<tr>
-							<td><em><code>F</code></em></td><td class="center">-16</td><td class="center">+128</td>
+							<td><em><code>F</code></em></td><td class="center">-16</td><td class="center">+112</td>
 						</tr>
 					</table>
 				</td>
@@ -2585,10 +2599,10 @@
 				<td rowspan="3"><em>Syntax:</em></td><td><em><code>T</code></em></td>
 			</tr>
 			<tr>
-				<td><em><code>x</code></em> = ticks on</td>
+				<td><em><code>x</code></em> + 1 = ticks on</td>
 			</tr>
 			<tr>
-				<td><em><code>y</code></em> = ticks off</td>
+				<td><em><code>y</code></em> + 1 = ticks off</td>
 			</tr>
 			<tr class="odd">
 				<td><em>Example:</em></td>
@@ -2605,7 +2619,7 @@
 				<td><em>Explanation:</em></td>
 				<td>
 					<p>
-						Rapidly alters note volume from full to zero, <em><code>x</code></em> and <em><code>y</code></em> setting the duration of the states in ticks.
+						Rapidly alters note volume from full to zero, <em><code>x</code></em> + 1 and <em><code>y</code></em> + 1 setting the duration of the states in ticks.
 					</p>
 				</td>
 			</tr>
@@ -3106,17 +3120,18 @@
 			jix,
 			Evil-Ville,
 			Spot,
+			sverx,
 
 			the entire Titan crew for support
 			and everybody who donated or dropped a letter.
 		</p>
 		<p>
-			Special greetings to everyone at <a href="http://www.milkytracker.net/?community">#MilkyTracker</a> for making it a daily active channel.
+			Special greetings to everyone at <a href="http://www.milkytracker.org/?community">#MilkyTracker</a> for making it a daily active channel.
 		</p>
 
 		<h2><a id="contact">10. Contact</a></h2>
 		<p>
-			You can contact the MilkyTracker team by email (<span class="email">ten.rekcartyklim@troppus</span>), through the forum at <a href="http://www.milkytracker.net/?community">http://www.milkytracker.net/?community</a> or in IRC. To chat with the community live, you can connect to #MilkyTracker on <a href="http://www.esper.net/">EsperNet</a> with your IRC client or use the java client on our website.
+			You can contact the MilkyTracker team by email (<span class="email">ten.rekcartyklim@troppus</span>), through the forum at <a href="http://www.milkytracker.org/?community">http://www.milkytracker.org/?community</a> or in IRC. To chat with the community live, you can connect to #MilkyTracker on <a href="http://www.esper.net/">EsperNet</a> with your IRC client or use the java client on our website.
 		</p>
 
 

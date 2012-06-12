@@ -137,7 +137,7 @@
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
           </Target>
-          <RunDebugAfterBuild>0</RunDebugAfterBuild>
+          <RunDebugAfterBuild>1</RunDebugAfterBuild>
           <TargetSelection>-1</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
@@ -333,8 +333,8 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
-            <oTime>0</oTime>
+            <Optim>4</Optim>
+            <oTime>1</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
             <Strict>0</Strict>
@@ -409,6 +409,11 @@
               <FilePath>..\Source\zx.c</FilePath>
             </File>
             <File>
+              <FileName>audio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Source\audio.c</FilePath>
+            </File>
+            <File>
               <FileName>ay.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Source\ay.c</FilePath>
@@ -462,6 +467,21 @@
               <FileName>xm.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Source\xm.h</FilePath>
+            </File>
+            <File>
+              <FileName>audio.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\audio.h</FilePath>
+            </File>
+            <File>
+              <FileName>ay.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\ay.h</FilePath>
+            </File>
+            <File>
+              <FileName>main.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\main.h</FilePath>
             </File>
           </Files>
         </Group>

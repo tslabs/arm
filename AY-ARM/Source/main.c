@@ -26,5 +26,7 @@ int main (void) {
 
 	AY_Init();
 
-
+	while(1)	{
+		AY_tick();
+	}
 }

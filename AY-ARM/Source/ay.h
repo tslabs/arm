@@ -7,29 +7,41 @@
 // A lány még mindig nagyon szép, de hol van már a vágy?
 
 
-#include "types.h"
-
-#ifndef __REGS_H
-#define __REGS_H
+#ifndef __AY_H
+#define __AY_H
 
 
-//--- AY Registers -----
+// --- Structures definition -----
+typedef struct
+{
+	U16		TF0;	// #00 - Tone frequency for CH0
+	U16		TF1;	// #02 - Tone frequency for CH1
+	U16		TF2;	// #04 - Tone frequency for CH2
+	U8		NF;		// #06 - Noise frequency
+	U8		MX;		// #07 - Channels mux, I/O mode
+	U8		V0;		// #08 - Volume for CH0
+	U8		V1;		// #09 - Volume for CH1
+	U8		V2;		// #0A - Volume for CH2
+	U16		EF;		// #0B - Envelope period
+	U8		EC;		// #0D - Envelope control
+	U8		IOA;	// #0E - I/O port A
+	U8		IOB;	// #0F - I/O port B
+} AY_Regs;		//--- AY Registers -----
 
 typedef struct
 {
-	U16		TF0;	// #00
-	U16		TF1;	// #02
-	U16		TF2;	// #04
-	U8		NF;		// #06
-	U8		MX;		// #07
-	U8		V0;		// #08
-	U8		V1;		// #09
-	U8		V2;		// #0A
-	U16		EF;		// #0B
-	U8		EC;		// #0D
-	U8		IOA;	// #0E
-	U8		IOB;	// #0F
-} AY_Regs;
+	U16		ctr0;
+	U16		ctr1;
+	U16		ctr2;
+	U8		ctr_ns;
+	U16		ctr_ev;
+	U8		ph_ev;
+	U8		vol_ev;
+} AY_Vars;		//--- AY Variables -----
 
 
-#endif /* __REGS_H */
+// --- Function declaration -----
+void AY_Init(void);
+
+
+#endif /* __AY_H */

@@ -1,10 +1,10 @@
 ﻿
-// Common types
+// Common types definition
 //
 // (c) 2012, TS-Labs inc.
 // All rights fucked out
 //
-// O tempores, o mores
+// Ποιος είπε πως οι άγγελοι στη γη δεν κατεβαίνουν
 
 
 #ifndef __TYPES_H

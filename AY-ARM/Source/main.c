@@ -14,21 +14,17 @@
 //#include <string.h>
 #include "stm32f4xx.h"
 #include "types.h"
+#include "ay-arm.h"
 #include "ay.h"
+#include "main.h"
 
 
 //--- Main function -----
-
-	U8 i, j;
-	AY_Regs ay[16];
+// Executed after reset
 
 int main (void) {
 
-	while(1)	{
-		i = i+1;
-		if ((i&255)==0)
-			j += 1;
-		ay[i&15].TF0 = i;
-	};
+	AY_Init();
+
 
 }

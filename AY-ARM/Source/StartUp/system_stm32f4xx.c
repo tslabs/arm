@@ -41,6 +41,7 @@
   *
   * 5. This file configures the system clock as follows:
   *=============================================================================
+	
   *=============================================================================
   *        Supported STM32F4xx device revision    | Rev A
   *-----------------------------------------------------------------------------
@@ -102,6 +103,30 @@
   ******************************************************************************
   */
 
+// <<< Use Configuration Wizard in Context Menu >>> 
+
+/************************* PLL Parameters *************************************/
+
+/* PLL_VCO = (HSE_VALUE or HSI_VALUE / PLL_M) * PLL_N */
+//		<o> PLL_M <2-63>
+#define PLL_M      8
+
+//		<o> PLL_N <63-432>
+#define PLL_N      336
+
+/* SYSCLK = PLL_VCO / PLL_P */
+//		<o> PLL_P	<2=> 2 <4=> 4 <6=> 6 <8=> 8
+#define PLL_P      2
+
+/* USB OTG FS, SDIO and RNG Clock =  PLL_VCO / PLLQ */
+#define PLL_Q      7
+ 
+//		<o> HSE_VALUE <4000000-26000000>
+#define HSE_VALUE 8000000
+ 
+
+/******************************************************************************/
+
 /** @addtogroup CMSIS
   * @{
   */
@@ -140,21 +165,8 @@
 /*!< Uncomment the following line if you need to relocate your vector Table in
      Internal SRAM. */
 /* #define VECT_TAB_SRAM */
-#define VECT_TAB_OFFSET  0x00 /*!< Vector Table base offset field. 
+#define VECT_TAB_OFFSET  0x0000 /*!< Vector Table base offset field. 
                                    This value must be a multiple of 0x200. */
-/******************************************************************************/
-
-/************************* PLL Parameters *************************************/
-/* PLL_VCO = (HSE_VALUE or HSI_VALUE / PLL_M) * PLL_N */
-#define PLL_M      8
-#define PLL_N      336
-
-/* SYSCLK = PLL_VCO / PLL_P */
-#define PLL_P      2
-
-/* USB OTG FS, SDIO and RNG Clock =  PLL_VCO / PLLQ */
-#define PLL_Q      7
-
 /******************************************************************************/
 
 /**

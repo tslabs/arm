@@ -52,21 +52,21 @@ void AY_tick()	{
 
 // Iterate next tick of AY Tone Generators
 void AY_tick_tone(int n)	{
-	if (ayvars[n].ctr_tn0 < ayregs[n].TF0)
+	if (ayvars[n].ctr_tn0 < ayregs[n].TF0.w)
 		ayvars[n].ctr_tn0++;
 	else	{
 		ayvars[n].ph_tn0 ^= 1;
 		ayvars[n].ctr_tn0 = 1;
 	}
 	
-	if (ayvars[n].ctr_tn1 < ayregs[n].TF1)
+	if (ayvars[n].ctr_tn1 < ayregs[n].TF1.w)
 		ayvars[n].ctr_tn1++;
 	else	{
 		ayvars[n].ph_tn1 ^= 1;
 		ayvars[n].ctr_tn1 = 1;
 	}
 
-	if (ayvars[n].ctr_tn2 < ayregs[n].TF2)
+	if (ayvars[n].ctr_tn2 < ayregs[n].TF2.w)
 		ayvars[n].ctr_tn2++;
 	else	{
 		ayvars[n].ph_tn2 ^= 1;
@@ -88,7 +88,7 @@ void AY_tick_noise(int n)	{
 
 // Iterate next tick of AY Volume Envelope Generator
 void AY_tick_env(int n)	{
-	if (ayvars[n].ctr_ev < ayregs[n].EP)
+	if (ayvars[n].ctr_ev < ayregs[n].EP.w)
 		ayvars[n].ctr_ev++;
 	else	{
 		ayvars[n].ctr_ev = 1;

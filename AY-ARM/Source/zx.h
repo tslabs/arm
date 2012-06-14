@@ -15,7 +15,8 @@
 
 // --- Functions prototypes -----
 void	WReg(U8);
-U8		RReg(U8);
+U8		RReg(void);
+void	WAddr(U8);
 
 
 #endif /* __ZX_H */

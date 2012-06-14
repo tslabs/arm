@@ -15,17 +15,31 @@
 #endif /* __cplusplus */
 
 
-    /* exact-width signed integer types */
-typedef   signed          char S8;
-typedef   signed short     int S16;
-typedef   signed           int S32;
-typedef   signed       __int64 S64;
+// integer types
+typedef unsigned char   	U8;
+typedef unsigned short  	U16;
+typedef unsigned int    	U32;
+typedef unsigned long long	U64;
 
-    /* exact-width unsigned integer types */
-typedef unsigned          char U8;
-typedef unsigned short     int U16;
-typedef unsigned           int U32;
-typedef unsigned       __int64 U64;
+typedef signed char     	S8;
+typedef short           	S16;
+typedef int             	S32;
+typedef long long       	S64;
+
+typedef unsigned char   	BIT;
+typedef unsigned int    	BOOL;
+
+
+// combined types
+typedef	struct {
+	U8	l:8;
+	U8	h:8;
+} W16b;
+
+typedef union {
+    W16b b;
+    U16 w;
+} W16;
 
 
 #ifdef __cplusplus

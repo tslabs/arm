@@ -29,8 +29,6 @@ int main (void) {
 
 	while(1)	{
 		AY_tick();
-		WReg(0);
-		WReg(1);
-		RReg(1);
+		WAddr(254);
 	}
 }

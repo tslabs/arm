@@ -13,17 +13,12 @@
 
 // --- Structures definition -----
 
-typedef struct {
-	U8		l;
-	U8		h;
-} U16b;
-
 
 typedef struct {	//registers re-ordered to match memory alignment
-	U16		TF0;	// #00 - Tone frequency for CH0
-	U16		TF1;	// #02 - Tone frequency for CH1
-	U16		TF2;	// #04 - Tone frequency for CH2
-	U16		EP;		// #0B - Envelope period
+	W16		TF0;	// #00, #01 - Tone frequency for CH0
+	W16		TF1;	// #02, #03 - Tone frequency for CH1
+	W16		TF2;	// #04, #05 - Tone frequency for CH2
+	W16		EP;		// #0B, #0C - Envelope period
 	U8		NF;		// #06 - Noise frequency
 	U8		MX;		// #07 - Channels mux, I/O mode
 	U8		V0;		// #08 - Volume for CH0
@@ -33,22 +28,6 @@ typedef struct {	//registers re-ordered to match memory alignment
 	U8		IOA;	// #0E - I/O port A
 	U8		IOB;	// #0F - I/O port B
 } AY_Regs;		//--- AY Registers -----
-
-
-typedef struct {	//registers re-ordered to match memory alignment
-	U16b	TF0;	// #00 - Tone frequency for CH0
-	U16b	TF1;	// #02 - Tone frequency for CH1
-	U16b	TF2;	// #04 - Tone frequency for CH2
-	U16b	EP;		// #0B - Envelope period
-	U8		NF;		// #06 - Noise frequency
-	U8		MX;		// #07 - Channels mux, I/O mode
-	U8		V0;		// #08 - Volume for CH0
-	U8		V1;		// #09 - Volume for CH1
-	U8		V2;		// #0A - Volume for CH2
-	U8		EC;		// #0D - Envelope control
-	U8		IOA;	// #0E - I/O port A
-	U8		IOB;	// #0F - I/O port B
-} AY_Regs_b;		//--- AY Registers splitted on bytes -----
 
 
 typedef struct {

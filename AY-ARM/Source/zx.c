@@ -17,7 +17,7 @@
 		U8			wr_val;
 		U8			rd_val;
 extern	U8			ay_chip;
-extern	AY_Regs_b	ayregs[NUM_AY_CHIPS];	// Registers for virtual AY chips
+extern	AY_Regs		ayregs[NUM_AY_CHIPS];	// Registers for virtual AY chips
 
 
 //------------------------------------------------------------------------------------------
@@ -26,60 +26,95 @@ extern	AY_Regs_b	ayregs[NUM_AY_CHIPS];	// Registers for virtual AY chips
 
 // - Write Registers Functions -
 
-void WDummy(void)	{
+void WDummy(U8 wr_val) {
 	return;
 }
 
-void W00(void)	{
-	ayregs[ay_chip].TF0.l = wr_val;
+void W00(U8 wr_val) {
+	ayregs[ay_chip].TF0.b.l = wr_val;
 	return;
 }
 
-void W01(void)	{
-	ayregs[ay_chip].TF0.h = wr_val;
+void W01(U8 wr_val) {
+	ayregs[ay_chip].TF0.b.h = wr_val;
 	return;
 }
 
-void W02(void)	{
-	ayregs[ay_chip].TF1.l = wr_val;
+void W02(U8 wr_val) {
+	ayregs[ay_chip].TF1.b.l = wr_val;
 	return;
 }
 
-void W03(void)	{
-	ayregs[ay_chip].TF1.h = wr_val;
+void W03(U8 wr_val) {
+	ayregs[ay_chip].TF1.b.h = wr_val;
 	return;
 }
 
-void W04(void)	{
-	ayregs[ay_chip].TF2.l = wr_val;
+void W04(U8 wr_val) {
+	ayregs[ay_chip].TF2.b.l = wr_val;
 	return;
 }
 
-void W05(void)	{
-	ayregs[ay_chip].TF2.h = wr_val;
+void W05(U8 wr_val) {
+	ayregs[ay_chip].TF2.b.h = wr_val;
 	return;
 }
 
-void W10(void)	{
+void W06(U8 wr_val) {
+	ayregs[ay_chip].NF = wr_val;
+	return;
+}
+
+void W07(U8 wr_val) {
+	ayregs[ay_chip].MX = wr_val;
+	return;
+}
+
+void W08(U8 wr_val) {
+	ayregs[ay_chip].V0 = wr_val;
+	return;
+}
+
+void W09(U8 wr_val) {
+	ayregs[ay_chip].V1 = wr_val;
+	return;
+}
+
+void W0A(U8 wr_val) {
+	ayregs[ay_chip].V2 = wr_val;
+	return;
+}
+
+void W0B(U8 wr_val) {
+	ayregs[ay_chip].EP.b.l = wr_val;
+	return;
+}
+
+void W0C(U8 wr_val) {
+	ayregs[ay_chip].EP.b.h = wr_val;
+	return;
+}
+
+void W10(U8 wr_val) {
 	ay_chip = wr_val & MASK_AY_CHIPS;
 	return;
 }
 
 // Write Registers Functions Vectors
-void (*WRegVec[0x100])() = {
+void (*WRegVec[0x100])(U8) = {
 		W00,			// 0x00
 		W01,			// 0x01
 		W02,			// 0x02
 		W03,			// 0x03
 		W04,			// 0x04
 		W05,			// 0x05
-		WDummy,			// 0x06
-		WDummy,			// 0x07
-		WDummy,			// 0x08
-		WDummy,			// 0x09
-		WDummy,			// 0x0A
-		WDummy,			// 0x0B
-		WDummy,			// 0x0C
+		W06,			// 0x06
+		W07,			// 0x07
+		W08,			// 0x08
+		W09,			// 0x09
+		W0A,			// 0x0A
+		W0B,			// 0x0B
+		W0C,			// 0x0C
 		WDummy,			// 0x0D
 		WDummy,			// 0x0E
 		WDummy,			// 0x0F
@@ -341,45 +376,89 @@ void (*WRegVec[0x100])() = {
 };
 
 // Write Registers Functions Caller
-void WReg(U8 vec)	{
-	WRegVec[vec]();
+void WReg(U8 wr_val) {
+	WRegVec[reg_num](wr_val);
 }
 
 //------------------------------------------------------------------------------------------
 
 // - Read Registers Functions -
 
-int RDummy(void)	{
+U8 RDummy(void) {
 	return 0xFF;
 }
 
-int R00(void)	{
-	return ayregs[ay_chip].TF1.l;
+U8 R00(void) {
+	return ayregs[ay_chip].TF0.b.l;
 }
 
-int R01(void)	{
-	return ayregs[ay_chip].TF1.h;
+U8 R01(void) {
+	return ayregs[ay_chip].TF0.b.h;
 }
 
-int R10(void)	{
+U8 R02(void) {
+	return ayregs[ay_chip].TF1.b.l;
+}
+
+U8 R03(void) {
+	return ayregs[ay_chip].TF1.b.h;
+}
+
+U8 R04(void) {
+	return ayregs[ay_chip].TF2.b.l;
+}
+
+U8 R05(void) {
+	return ayregs[ay_chip].TF2.b.h;
+}
+
+U8 R06(void) {
+	return ayregs[ay_chip].NF;
+}
+
+U8 R07(void) {
+	return ayregs[ay_chip].MX;
+}
+
+U8 R08(void) {
+	return ayregs[ay_chip].V0;
+}
+
+U8 R09(void) {
+	return ayregs[ay_chip].V1;
+}
+
+U8 R0A(void) {
+	return ayregs[ay_chip].V2;
+}
+
+U8 R0B(void) {
+	return ayregs[ay_chip].EP.b.l;
+}
+
+U8 R0C(void) {
+	return ayregs[ay_chip].EP.b.h;
+}
+
+U8 R10(void) {
 	return ay_chip;
 }
 
 // Read Registers Functions Vectors
-int (*RRegVec[0x100])() = {
+U8 (*RRegVec[0x100])() = {
 		R00,			// 0x00
 		R01,			// 0x01
-		RDummy,			// 0x02
-		RDummy,			// 0x03
-		RDummy,			// 0x04
-		RDummy,			// 0x05
-		RDummy,			// 0x06
-		RDummy,			// 0x07
-		RDummy,			// 0x08
-		RDummy,			// 0x09
-		RDummy,			// 0x0A
-		RDummy,			// 0x0B
-		RDummy,			// 0x0C
+		R02,			// 0x02
+		R03,			// 0x03
+		R04,			// 0x04
+		R05,			// 0x05
+		R06,			// 0x06
+		R07,			// 0x07
+		R08,			// 0x08
+		R09,			// 0x09
+		R0A,			// 0x0A
+		R0B,			// 0x0B
+		R0C,			// 0x0C
 		RDummy,			// 0x0D
 		RDummy,			// 0x0E
 		RDummy,			// 0x0F
@@ -641,6 +720,16 @@ int (*RRegVec[0x100])() = {
 };
 
 // Read Registers Functions Caller
-U8 RReg(U8 vec)	{
-	return RRegVec[vec]();
+U8 RReg(void) {
+	return RRegVec[reg_num]();
 }
+
+//------------------------------------------------------------------------------------------
+
+// - Write Address Functions -
+void WAddr(U8 addr) {
+	reg_num = addr;		// Write AY Register Address
+	if (!(~addr & MASK_TURBO_AY))	// If Address if from Turbo-AY decoding span,
+		ay_chip = ~addr & 1;		// select AY chip using bit0 (0 - chip1, 1 - chip0) - NedoPC scheme
+}
+

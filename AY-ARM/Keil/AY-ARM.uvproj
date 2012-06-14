@@ -47,7 +47,7 @@
           <OutputName>AY_ARM</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>1</CreateHexFile>
+          <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath>..\Output\</ListingPath>
@@ -437,6 +437,11 @@
               <FileName>xm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Source\xm.c</FilePath>
+            </File>
+            <File>
+              <FileName>ay-arm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Source\ay-arm.c</FilePath>
             </File>
           </Files>
         </Group>

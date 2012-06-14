@@ -6,3 +6,10 @@
 //
 // Nav tumša upe lāpas staros
 
+
+#include "types.h"
+#include "ay-arm.h"
+
+
+// --- Vars declaration -----
+

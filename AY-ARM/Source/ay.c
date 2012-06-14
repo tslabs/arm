@@ -7,7 +7,6 @@
 // Sajnálom, de kizökkentetted a felséges urat
 
 
-// --- Includes -----
 #include <stdio.h>
 #include <string.h>
 #include "types.h"
@@ -15,10 +14,10 @@
 #include "ay.h"
 
 
-// --- Vars declaration -----
-AY_Regs ayregs[NUM_AY_CHIPS];	// Registers for virtual AY chips
-AY_Vars ayvars[NUM_AY_CHIPS];	// Variables for virtual AY chips processing
-int			env_div;
+// --- Variables declaration -----
+		AY_Regs ayregs[NUM_AY_CHIPS];	// Registers for virtual AY chips
+		AY_Vars ayvars[NUM_AY_CHIPS];	// Variables for virtual AY chips processing
+		int		env_div;
 
 
 // Initialize AY Chips
@@ -60,14 +59,14 @@ void AY_tick_tone(int n)	{
 		ayvars[n].ctr_tn0 = 1;
 	}
 	
-		if (ayvars[n].ctr_tn1 < ayregs[n].TF1)
+	if (ayvars[n].ctr_tn1 < ayregs[n].TF1)
 		ayvars[n].ctr_tn1++;
 	else	{
 		ayvars[n].ph_tn1 ^= 1;
 		ayvars[n].ctr_tn1 = 1;
 	}
 
-		if (ayvars[n].ctr_tn2 < ayregs[n].TF2)
+	if (ayvars[n].ctr_tn2 < ayregs[n].TF2)
 		ayvars[n].ctr_tn2++;
 	else	{
 		ayvars[n].ph_tn2 ^= 1;

@@ -16,6 +16,7 @@
 #include "types.h"
 #include "ay-arm.h"
 #include "ay.h"
+#include "zx.h"
 #include "main.h"
 
 
@@ -28,5 +29,8 @@ int main (void) {
 
 	while(1)	{
 		AY_tick();
+		WReg(0);
+		WReg(1);
+		RReg(1);
 	}
 }

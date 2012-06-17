@@ -12,5 +12,4 @@
 
 
 // --- Variables declaration -----
-		U8		ay_chip;		// currently selected AY chip
 

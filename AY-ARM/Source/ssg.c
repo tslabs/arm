@@ -1,4 +1,4 @@
-﻿
+
 // Audio output functions
 //
 // (c) 2012, TS-Labs inc.
@@ -28,9 +28,8 @@
 		SSG_Regs	SSG[SSG_CH_MAX];
 		U16			SSGFreq = SSG_FREQ;
 		U8			SSGChNum = SSG_CH_DEF;
-		S32			SLeft;
-		S32			SRight;
 		DAC_LR		DACOut;
+		U16			TickCtr;		// Ticks counter
 
 
 // --- Functions -----
@@ -46,30 +45,104 @@ void SSG_Init(void) {
 
 // SSG tick
 void SSG_Tick(void) {
-	U8 i;
-	SLeft = 0;
-	SRight = 0;
-	
-	for (i=0; i<SSGChNum; i++) {
-		SSG_Chan_Tick(i);
+	U8 chan;
+	U32 tmp32;
+	S8 s1, s2;			// 8 bit signed read DAC samples
+	S16 sl, sr;			// 16 bit signed interpolated DAC samples
+	S32	SLeft = 0;
+	S32	SRight = 0;
+
+	// Iterate all SSG Channels tick
+	for (chan=0; chan<SSGChNum; chan++) {
+
+		// Check if channel active and its state is not 'stall'
+		if (SSG[chan].Control.i.act && SSG[chan].State.play) {
+
+			s1 = *SSG[chan].Addr;			// read next DAC sample (left)
+			if (SSG[chan].Control.i.sgn)
+				s1 = s1 ^ 0x80;				// convert to signed if need
+
+			if (SSG[chan].Control.i.chn) {		// if sample is stereo
+				s2 = *(SSG[chan].Addr + (SSG[chan].Control.i.bw ? 2 : 1));	// read next DAC sample (right)
+				if (SSG[chan].Control.i.sgn)
+					s2 = s2 ^ 0x80;			// convert to signed if need
+			}
+			else
+				s2 = s1;	// if mono - just use left for right
+				
+			// Calculate linear interpolation
+			sl = SSG[chan].IntL * (0x100 - SSG[chan].SubAddr.b.b1) + s1 * SSG[chan].SubAddr.b.b1;
+			sr = SSG[chan].IntR * (0x100 - SSG[chan].SubAddr.b.b1) + s2 * SSG[chan].SubAddr.b.b1;
+
+			// Multiply DSC samples by volume values and add them to DAC summators
+			SLeft += sl * SSG[chan].VolL;
+			SRight += sr * SSG[chan].VolR;
+
+			// Process Address
+			tmp32 = (SSG[chan].SubAddr.h + SSG[chan].SubStep);
+			SSG[chan].SubAddr.h = (U16)tmp32;
+			
+			if (tmp32 > 0xFFFF) {		// If actual address changed
+				
+				// Store new DAC samples as interpolation values
+				SSG[chan].IntL = s1;
+				SSG[chan].IntR = s2;
+			
+				// Move forward
+				if (!SSG[chan].State.dir) {
+					SSG[chan].Addr += SSG[chan].StepA;
+					
+					// Check if moved out from the sample end point
+					if (SSG[chan].Addr > SSG[chan].EndAddr) {
+					
+						// Loop of a 'forward' type
+						if (SSG[chan].Control.i.loop == CH_LP_FWD) {
+							SSG[chan].Addr = SSG[chan].LoopAddr;		// set addr to loop start
+						}
+						
+						// Loop of a 'bidi' type
+						else if (SSG[chan].Control.i.loop == CH_LP_BIDI) {
+							SSG[chan].Addr = SSG[chan].EndAddr;			// set addr to sample end
+							SSG[chan].State.dir = 1;					// change direction to backwards
+						}
+						
+						// No loop
+						else {
+							SSG[chan].State.play = 0;					// turn off the light
+						}
+					}
+				}
+			
+				// Move backward
+				else {
+					SSG[chan].Addr -= SSG[chan].StepA;
+					
+					// Check if moved out from the loop point
+					// (the only way to get here is to have a 'bidi' loop, so no check of loop type needed)
+					if (SSG[chan].Addr < SSG[chan].LoopAddr) {
+						SSG[chan].Addr = SSG[chan].LoopAddr;		// set addr to loop start
+						SSG[chan].State.dir = 0;					// change direction to forwards
+					}
+				}
+			}
+		}
 	}
-	
+
+	// Normalizing to 16 bits as it was multiplied by 6 bits of volume
+	SLeft >>= 6;
+	SRight >>= 6;
+
+	// Cutting upper and lower dynamic limits
 	if (SLeft < -32768)
 		SLeft = -32768;
 	else if (SLeft > 32767)
 		SLeft = 32767;
-	DACOut.left =  SLeft + 32768;
-	
+	DACOut.left =  SLeft ^ 0x8000;		// convert to unsigned
+
 	if (SRight < -32768)
 		SRight = -32768;
 	else if (SRight > 32767)
 		SRight = 32767;
-	DACOut.right =  SRight + 32768;
-}
-
-
-// SSG Channel Tick
-void SSG_Chan_Tick(U8 chan) {
-	return;
+	DACOut.right =  SRight ^ 0x8000;	// convert to unsigned
 }
 

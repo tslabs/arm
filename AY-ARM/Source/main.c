@@ -24,21 +24,52 @@
 //--- Main function -----
 // Executed after reset
 
-int i;
-extern U8 AYChipNum;
+extern	U8 AYChipNum;
+extern	SSG_Regs	SSG[SSG_CH_MAX];
 
 int main (void) {
-
-	i = AYChipNum;
-	
 	AY_Init();
 	SSG_Init();
 	//CmdF(0xF1);
 	//WAddr(0xE2);
 
+	SSG[0].Addr = (U8*)0x08000000;
+	SSG[0].EndAddr = (U8*)0x08000010;
+	SSG[0].LoopAddr = (U8*)0x08000005;
+	SSG[0].SubAddr.h = 0x9000;
+	SSG[0].Control.i.act = 1;
+	SSG[0].Control.i.chn = 1;
+	SSG[0].Control.i.sgn = 1;
+	SSG[0].Control.i.bw = 1;
+	SSG[0].Control.i.loop = 1;
+	SSG[0].State.play = 1;
+	SSG[0].State.dir = 0;
+	SSG[0].SubStep = 0x8000;
+	SSG[0].Step = 1;
+	SSG[0].StepA = 4;
+	SSG[0].VolL = 64;
+	SSG[0].VolR = 64;
+
 	while(1)	{
+		// U32 t = a + b;
+
+
 		// AY_Tick();
 		SSG_Tick();
 		//i = RReg();
 	}
 }
+
+
+
+
+// ---------- Scratchpad -----------
+
+			// Calc addr increment from step
+			// = SSG[chan].Control.i.chn ? (SSG[chan].Control.i.bw ? (SSG[chan].Step << 2) : (SSG[chan].Step << 1)) : (SSG[chan].Control.i.bw ? (SSG[chan].Step << 1) : SSG[chan].Step);
+
+
+
+
+
+

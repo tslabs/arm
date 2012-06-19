@@ -20,17 +20,17 @@
 		U8			dummy = 0;
 	
 	// locals
-		U8			RegNum = 0;
-		U8			RegVal = 0;
-		U8			AYChip = 0;
-		U8			SSGChan = 0;
-		U8			*DataAddr = &dummy;	// pointer to next data to be read
-		int			DataCtr = 0;
-		U8			Cmd = 0;
-		Stat		Status = {0};
-		U8			Error = 0;
-		W64			CmdPar = {0};
-		W64			CmdResp = {0};
+		U8			RegNum = 0;			// Currently selected Chip register
+		U8			RegVal = 0;			// Value to be written into the register (should be replaced by read Z80 Bus value)
+		U8			AYChip = 0;			// Selected AY Chip
+		U8			SSGChan = 0;		// Selected SSG Channel
+		U8			*DataAddr = &dummy;	// Pointer to next data to be read
+		int			DataCtr = 0;		// Counter for data to be transferred, bytes
+		U8			Cmd = 0;			// Command
+		Stat		Status = {0};		// Status byte
+		U8			Error = 0;			// Error code
+		W64			CmdPar = {0};		// Command parameter
+		W64			CmdResp = {0};		// Command Acknowledge/Response
 
 	// external
 extern	AY_Regs		AY[AY_CHIPS_MAX];	// Registers for virtual AY chips
@@ -304,22 +304,22 @@ U8 R_35(void) {
 }
 
 // Output Audio Sample Rate, Lower Byte
-U8 R_D0(void) {
+U8 R_36(void) {
 	return SSGFreq.b.b0;
 }
 
 // Output Audio Sample Rate, Higher Byte
-U8 R_D1(void) {
+U8 R_37(void) {
 	return SSGFreq.b.b1;
 }
 
 // Max supported number of AY chips
-U8 R_D2(void) {
+U8 R_DA(void) {
 	return AY_CHIPS_MAX;
 }
 
 // Max supported number of SSG channels
-U8 R_D3(void) {
+U8 R_DB(void) {
 	return SSG_CH_MAX;
 }
 

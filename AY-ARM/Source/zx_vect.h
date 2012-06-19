@@ -343,8 +343,8 @@ U8 (*RRegVec[0x100])() = {
 		R__,			// 0x33
 		R_34,			// 0x34 - Current number of SSG channels
 		R_35,			// 0x35 - Current SSG channel
-		R__,			// 0x36
-		R__,			// 0x37
+		R_36,			// 0x36 - Output Samplerate
+		R_37,			// 0x37 ^
 		R__,			// 0x38
 		R__,			// 0x39
 		R__,			// 0x3A
@@ -507,20 +507,20 @@ U8 (*RRegVec[0x100])() = {
 		R__,			// 0xCE
 		R__,			// 0xCF
 
-		R_D0,			// 0xD0 - Output Samplerate
-		R_D1,			// 0xD1 ^
-		R_D2,			// 0xD2 - Max number of AY chips
-		R_D3,			// 0xD3 - Max number of SSG channels
+		R__,			// 0xD0
+		R__,			// 0xD1
+		R__,			// 0xD2
+		R__,			// 0xD3
 		R__,			// 0xD4
 		R__,			// 0xD5
 		R__,			// 0xD6
 		R__,			// 0xD7
 		R__,			// 0xD8
 		R__,			// 0xD9
-		R__,			// 0xDA
-		R__,			// 0xDB
-		R_DC,			// 0xDC
-		R_DD,			// 0xDD
+		R_DA,			// 0xDA - Max number of AY chips
+		R_DB,			// 0xDB - Max number of SSG channels
+		R_DC,			// 0xDC - Device Byte0, #55
+		R_DD,			// 0xDD - Device Byte0, #AA
 		R_DE,			// 0xDE - Chip Version
 		R_DF,			// 0xDF - Chip Sub-Version
 

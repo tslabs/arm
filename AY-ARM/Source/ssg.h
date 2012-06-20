@@ -50,6 +50,7 @@ typedef struct {
 	U8		SampType;			// Sample Type: bit0 - mono/stereo, bit1 - 8bit/16bit, bit2 - unsigned/signed
 	U8		Step;				// Increment for Address
 	U8		StepA;				// Increment for Address coerced to Sample parameters
+	U8		StepC;				// Next DAC Sample Address coerced to Sample parameters
 	U8		NewStep;			// New Increment for Address
 	ChCtrl	Control;			// Sample Control: Activeness, Type of Sample Loop, Sample Mode
 	ChCtrl	NewControl;			// New Sample Control (taken from Sample Descriptor)
@@ -60,7 +61,7 @@ typedef struct {
 	U8		NewVolR;			// New Sample Volume in Right Audio Channel
 	U8		isUserFreq;			// Indicates that Steps should be updated from User Frequency
 	U8		isUserSamp;			// Indicates that Sample should be updated from User Sample
-	U8		padding[8];			// ! Always calculate padding value to align this structure by the power of 2 size
+	U8		padding[7];			// ! Always calculate padding value to align this structure by the power of 2 size
 } SSG_Regs;		//--- SSG Registers and Variables -----
 
 #define		SAMPLE_MONO_STEREO	0x01

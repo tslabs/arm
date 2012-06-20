@@ -63,7 +63,7 @@ void SSG_Tick(void) {
 				s1 = s1 ^ 0x80;				// convert to signed if need
 
 			if (SSG[chan].Control.i.chn) {		// if sample is stereo
-				s2 = *(SSG[chan].Addr + (SSG[chan].Control.i.bw ? 2 : 1));	// read next DAC sample (right)
+				s2 = *(SSG[chan].Addr + SSG[chan].StepC);	// read next DAC sample (right)
 				if (SSG[chan].Control.i.sgn)
 					s2 = s2 ^ 0x80;			// convert to signed if need
 			}

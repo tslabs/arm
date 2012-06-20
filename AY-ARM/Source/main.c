@@ -47,6 +47,7 @@ int main (void) {
 	SSG[0].SubStep = 0x8000;
 	SSG[0].Step = 1;
 	SSG[0].StepA = 4;
+	SSG[0].StepC = 2;
 	SSG[0].VolL = 64;
 	SSG[0].VolR = 64;
 

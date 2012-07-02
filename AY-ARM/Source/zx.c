@@ -47,77 +47,83 @@ extern	W16			SSGFreq;
 void W__(U8 RegVal) {
 }
 
-// AY R00
+// AY Reg 00
 void W_00(U8 RegVal) {
 	AY[AYChip].TF0.b.b0 = RegVal;
 }
 
-// AY R01
+// AY Reg 01
 void W_01(U8 RegVal) {
-	AY[AYChip].TF0.b.b1 = RegVal;
+	AY[AYChip].TF0.b.b1 = RegVal & 0x0F;
 }
 
-// AY R02
+// AY Reg 02
 void W_02(U8 RegVal) {
 	AY[AYChip].TF1.b.b0 = RegVal;
 }
 
-// AY R03
+// AY Reg 03
 void W_03(U8 RegVal) {
-	AY[AYChip].TF1.b.b1 = RegVal;
+	AY[AYChip].TF1.b.b1 = RegVal & 0x0F;
 }
 
-// AY R04
+// AY Reg 04
 void W_04(U8 RegVal) {
 	AY[AYChip].TF2.b.b0 = RegVal;
 }
 
-// AY R05
+// AY Reg 05
 void W_05(U8 RegVal) {
-	AY[AYChip].TF2.b.b1 = RegVal;
+	AY[AYChip].TF2.b.b1 = RegVal & 0x0F;
 }
 
-// AY R06
+// AY Reg 06
 void W_06(U8 RegVal) {
-	AY[AYChip].NF = RegVal;
+	AY[AYChip].NF = RegVal & 0x1F;
 }
 
-// AY R07
+// AY Reg 07
 void W_07(U8 RegVal) {
-	AY[AYChip].MX = RegVal;
+	AY[AYChip].MX.b = ~RegVal;	// kept inverted
 }
 
-// AY R08
+// AY Reg 08
 void W_08(U8 RegVal) {
-	AY[AYChip].V0 = RegVal;
+	AY[AYChip].V0 = RegVal & 0x1F;
 }
 
-// AY R09
+// AY Reg 09
 void W_09(U8 RegVal) {
-	AY[AYChip].V1 = RegVal;
+	AY[AYChip].V1 = RegVal & 0x1F;
 }
 
-// AY R0A
+// AY Reg 0A
 void W_0A(U8 RegVal) {
-	AY[AYChip].V2 = RegVal;
+	AY[AYChip].V2 = RegVal & 0x1F;
 }
 
-// AY R0B
+// AY Reg 0B
 void W_0B(U8 RegVal) {
 	AY[AYChip].EP.b.b0 = RegVal;
 }
 
-// AY R0C
+// AY Reg 0C
 void W_0C(U8 RegVal) {
 	AY[AYChip].EP.b.b1 = RegVal;
 }
 
-// AY R0E
+// AY Reg 0D
+void W_0D(U8 RegVal) {
+	AY[AYChip].EC = RegVal & 0x0F;
+	AY[AYChip].env_rld = 1;
+}
+
+// AY Reg 0E
 void W_0E(U8 RegVal) {
 	AY[AYChip].IOA = RegVal;
 }
 
-// AY R0F
+// AY Reg 0F
 void W_0F(U8 RegVal) {
 	AY[AYChip].IOB = RegVal;
 }
@@ -203,82 +209,82 @@ U8 R__(void) {
 	return 0xFF;
 }
 
-// AY R00
+// AY Reg 00
 U8 R_00(void) {
 	return AY[AYChip].TF0.b.b0;
 }
 
-// AY R01
+// AY Reg 01
 U8 R_01(void) {
 	return AY[AYChip].TF0.b.b1;
 }
 
-// AY R02
+// AY Reg 02
 U8 R_02(void) {
 	return AY[AYChip].TF1.b.b0;
 }
 
-// AY R03
+// AY Reg 03
 U8 R_03(void) {
 	return AY[AYChip].TF1.b.b1;
 }
 
-// AY R04
+// AY Reg 04
 U8 R_04(void) {
 	return AY[AYChip].TF2.b.b0;
 }
 
-// AY R05
+// AY Reg 05
 U8 R_05(void) {
 	return AY[AYChip].TF2.b.b1;
 }
 
-// AY R06
+// AY Reg 06
 U8 R_06(void) {
 	return AY[AYChip].NF;
 }
 
-// AY R07
+// AY Reg 07
 U8 R_07(void) {
-	return AY[AYChip].MX;
+	return ~AY[AYChip].MX.b;	// kept inverted
 }
 
-// AY R08
+// AY Reg 08
 U8 R_08(void) {
 	return AY[AYChip].V0;
 }
 
-// AY R09
+// AY Reg 09
 U8 R_09(void) {
 	return AY[AYChip].V1;
 }
 
-// AY R0A
+// AY Reg 0A
 U8 R_0A(void) {
 	return AY[AYChip].V2;
 }
 
-// AY R0B
+// AY Reg 0B
 U8 R_0B(void) {
 	return AY[AYChip].EP.b.b0;
 }
 
-// AY R0C
+// AY Reg 0C
 U8 R_0C(void) {
 	return AY[AYChip].EP.b.b1;
 }
 
-// AY R0D
+// AY Reg 0D
 U8 R_0D(void) {
 	return AY[AYChip].EC;
 }
 
-// AY R0E
+// AY Reg 0E
 U8 R_0E(void) {
 	return AY[AYChip].IOA;
 }
 
-// AY R0F
+// AY Reg 0F
 U8 R_0F(void) {
 	return AY[AYChip].IOB;
 }

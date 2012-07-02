@@ -23,7 +23,7 @@ void (*WRegVec[0x100])(U8) = {
 		W_0A,			// 0x0A - AY R0A
 		W_0B,			// 0x0B - AY R0B
 		W_0C,			// 0x0C - AY R0C
-		W__,			// 0x0D - AY R0D
+		W_0D,			// 0x0D - AY R0D
 		W_0E,			// 0x0E - AY R0E
 		W_0F,			// 0x0F - AY R0F
 

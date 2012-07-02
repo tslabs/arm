@@ -91,6 +91,18 @@ typedef union {
 } W64;
 
 
+// Special Types Definiton
+typedef struct {
+	S32	l;
+	S32	r;
+} DAC_Sum;
+
+typedef struct {
+	U16	l;
+	U16	r;
+} DAC_t;
+
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

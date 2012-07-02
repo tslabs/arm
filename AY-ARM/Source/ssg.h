@@ -21,7 +21,6 @@ typedef union {
 		U8	chn:1;		// 0 - mono, 1 - stereo
 		U8	sgn:1;		// 0 - signed, 1 - unsigned
 		U8	bw:1;		// 0 - 8 bit, 1 - 16 bit
-		U8	padding:2;	// just padding to maintain 8 bit width
 		U8	loop:2;		// 0 - off, 1 - forward, 2 - bidi, 3 - reserved
 	} i;
 	U8 b;
@@ -73,16 +72,10 @@ typedef struct {
 #define		CH_LP_BIDI			0x02
 
 
-typedef struct {
-	U16	left;
-	U16	right;
-} DAC_LR;
-
-
 // --- Functions prototypes -----
-void SSG_Init(void);
-void SSG_Tick(void);
-void SSG_Chan_Tick(U8);
+void 	SSG_Init(void);
+void 	SSG_Tick(void);
+DAC_Sum	SSG_Chan_Tick(int);
 
 
 #endif /* __AUDIO_H */

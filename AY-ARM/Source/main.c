@@ -30,8 +30,8 @@ extern	SSG_Regs	SSG[SSG_CH_MAX];
 int main (void) {
 	AY_Init();
 	SSG_Init();
-	//CmdF(0xF1);
-	//WAddr(0xE2);
+	CmdF(0xF1);
+	WAddr(0xE2);
 
 	SSG[0].Addr = (U8*)0x08000000;
 	SSG[0].EndAddr = (U8*)0x08000010;
@@ -50,13 +50,16 @@ int main (void) {
 	SSG[0].StepC = 2;
 	SSG[0].VolL = 64;
 	SSG[0].VolR = 64;
+	
+	WAddr(0x0D);
+	WReg(0x0E);
 
 	while(1)	{
 		// U32 t = a + b;
 
 
-		// AY_Tick();
-		SSG_Tick();
+		AY_Tick();
+		//SSG_Tick();
 		//i = RReg();
 	}
 }

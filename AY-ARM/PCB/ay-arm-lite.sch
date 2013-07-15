@@ -2,7 +2,7 @@ ACCEL_ASCII "d:\svn\ARM\TSL\AY-ARM\PCB\ay-arm-lite.sch"
 
 (asciiHeader 
   (asciiVersion 3 0)
-  (timeStamp 2013 7 11 1 55 50)
+  (timeStamp 2013 7 14 22 33 39)
   (program "P-CAD 2006 Schematic" "19.02.9589")
   (copyright "Copyright © 1992-2006 Altium Limited")
   (fileAuthor "")
@@ -346,8 +346,8 @@ ACCEL_ASCII "d:\svn\ARM\TSL\AY-ARM\PCB\ay-arm-lite.sch"
     (line (pt 100.0 -500.0) (pt 100.0 -350.0) )
     (line (pt 200.0 -400.0) (pt -200.0 -400.0) (style DashedLine) )
     (line (pt -200.0 -100.0) (pt 200.0 -100.0) (style DashedLine) )
-    (attr "Type" "" (pt -200.0 -100.0) (isVisible True) (justify UpperLeft) (textStyleRef "Default2") )
-    (attr "RefDes" "" (pt 0.0 -100.0) (isVisible True) (justify UpperLeft) (textStyleRef "Default2") )
+    (attr "Type" "" (pt 215.0 -325.0) (rotation 90.0) (isVisible True) (justify UpperLeft) (textStyleRef "Default2") )
+    (attr "RefDes" "" (pt -260.0 -300.0) (rotation 90.0) (isVisible True) (justify UpperLeft) (textStyleRef "Default2") )
   )
   (symbolDef "STM32F405R_1"
     (originalName "STM32F405R")
@@ -2174,13 +2174,13 @@ ACCEL_ASCII "d:\svn\ARM\TSL\AY-ARM\PCB\ay-arm-lite.sch"
     (node "ARM" "43")
   )
   (net "AY_VDD5"
-    (node "PSG_CONN" "40")
     (node "VD1" "1")
+    (node "PSG_CONN" "40")
   )
   (net "VDD5"
+    (node "VD1" "3")
     (node "C19" "2")
     (node "REG" "3")
-    (node "VD1" "3")
   )
 )
 

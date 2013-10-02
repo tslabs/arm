@@ -1,4 +1,4 @@
-﻿
+
 // Audio output functions definitions
 //
 // (c) 2012, TS-Labs inc.
@@ -6,29 +6,33 @@
 //
 // I wtedy wrescie sam tez wlacze sie do akcji
 
-
 #pragma once
+#pragma anon_unions
+
 #include "types.h"
 
-
 // --- Structures definition -----
-typedef union {
-	struct {
+typedef union
+{
+	struct
+	{
 		U8	act:1;		// channel is active
 		U8	chn:1;		// 0 - mono, 1 - stereo
 		U8	sgn:1;		// 0 - signed, 1 - unsigned
 		U8	bw:1;		// 0 - 8 bit, 1 - 16 bit
 		U8	loop:2;		// 0 - off, 1 - forward, 2 - bidi, 3 - reserved
-	} i;
+	};
 	U8 b;
 } ChCtrl;
 
-typedef struct {
+typedef struct
+{
 		U8	play:1;		// 0 - stall, 1 - play
 		U8	dir:1;		// 0 - forward, 1 - backward
 } SStat;
 
-typedef struct {
+typedef struct
+{
 	U8		*Addr;              // Address of next DAC sample to read
 	U8		*EndAddr;           // End Address of Sample
 	U8		*LoopAddr;          // Loop Address of Sample

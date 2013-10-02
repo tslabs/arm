@@ -9,7 +9,8 @@
 
 //------------------------------------------------------------------------------------------
 // Write Registers Functions Vectors
-void (*WRegVec[0x100])(U8) = {
+const FUNC_W WRegVec[0x100] =
+{
 		W_00,			// 0x00 - AY R00
 		W_01,			// 0x01 - AY R01
 		W_02,			// 0x02 - AY R02
@@ -285,7 +286,8 @@ void (*WRegVec[0x100])(U8) = {
 
 //------------------------------------------------------------------------------------------
 // Read Registers Functions Vectors
-U8 (*RRegVec[0x100])() = {
+const FUNC_R RRegVec[0x100] =
+{
 		R_00,			// 0x00 - AY R00
 		R_01,			// 0x01 - AY R01
 		R_02,			// 0x02 - AY R02
@@ -561,7 +563,8 @@ U8 (*RRegVec[0x100])() = {
 
 //------------------------------------------------------------------------------------------
 // - Command Functions Vectors -
-void (*CmdFVec[0x100])() = {
+const FUNC CmdFVec[0x100] =
+{
 		C_00,			// 0x00 - Break
 		C__,			// 0x01
 		C__,			// 0x02

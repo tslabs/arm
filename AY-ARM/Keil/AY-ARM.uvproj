@@ -351,7 +351,7 @@
               <MiscControls></MiscControls>
               <Define>VECT_TAB_SRAM STM32F40XX</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Source\inc</IncludePath>
+              <IncludePath>..\Source\inc;C:\Tools\PROG\STM32StdPeriph\STM32F4xx\Libraries\STM32F4xx_StdPeriph_Driver\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -449,6 +449,61 @@
             </File>
           </Files>
         </Group>
+        <Group>
+          <GroupName>Headers</GroupName>
+          <Files>
+            <File>
+              <FileName>zx_vect.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\zx_vect.h</FilePath>
+            </File>
+            <File>
+              <FileName>ay.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\ay.h</FilePath>
+            </File>
+            <File>
+              <FileName>ay-arm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\ay-arm.h</FilePath>
+            </File>
+            <File>
+              <FileName>hw.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\hw.h</FilePath>
+            </File>
+            <File>
+              <FileName>main.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\main.h</FilePath>
+            </File>
+            <File>
+              <FileName>regs.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\regs.h</FilePath>
+            </File>
+            <File>
+              <FileName>ssg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\ssg.h</FilePath>
+            </File>
+            <File>
+              <FileName>types.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\types.h</FilePath>
+            </File>
+            <File>
+              <FileName>xm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\xm.h</FilePath>
+            </File>
+            <File>
+              <FileName>zx.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\zx.h</FilePath>
+            </File>
+          </Files>
+        </Group>
       </Groups>
     </Target>
     <Target>
@@ -488,14 +543,14 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>..\Output\</OutputDirectory>
+          <OutputDirectory>.\obj\</OutputDirectory>
           <OutputName>AY_ARM</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath>..\Output\</ListingPath>
+          <ListingPath>.\lst\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -796,7 +851,7 @@
               <MiscControls></MiscControls>
               <Define>VECT_TAB_SRAM STM32F40XX</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Source\inc</IncludePath>
+              <IncludePath>..\Source\inc;C:\Tools\PROG\STM32StdPeriph\STM32F4xx\Libraries\STM32F4xx_StdPeriph_Driver\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -891,6 +946,61 @@
               <FileName>hw.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Source\hw.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Headers</GroupName>
+          <Files>
+            <File>
+              <FileName>zx_vect.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\zx_vect.h</FilePath>
+            </File>
+            <File>
+              <FileName>ay.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\ay.h</FilePath>
+            </File>
+            <File>
+              <FileName>ay-arm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\ay-arm.h</FilePath>
+            </File>
+            <File>
+              <FileName>hw.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\hw.h</FilePath>
+            </File>
+            <File>
+              <FileName>main.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\main.h</FilePath>
+            </File>
+            <File>
+              <FileName>regs.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\regs.h</FilePath>
+            </File>
+            <File>
+              <FileName>ssg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\ssg.h</FilePath>
+            </File>
+            <File>
+              <FileName>types.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\types.h</FilePath>
+            </File>
+            <File>
+              <FileName>xm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\xm.h</FilePath>
+            </File>
+            <File>
+              <FileName>zx.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\zx.h</FilePath>
             </File>
           </Files>
         </Group>

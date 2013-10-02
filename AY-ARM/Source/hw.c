@@ -6,12 +6,12 @@
 //
 
 #include "stm32f4xx.h"
-#include "stm32f4xx_gpio.h"
-#include "stm32f4xx_tim.h"
+#include <stm32f4xx_gpio.h>
+#include <stm32f4xx_tim.h>
 #include "types.h"
 #include "hw.h"
 
-void GPIO_Init()
+void GPIO_Init_My()
 {
 	IO_Bit_Set(RCC, AHB1ENR, GPIOAEN, ON);		// Enable GPIOA clock
 	IO_Bit_Set(RCC, AHB1ENR, GPIOBEN, ON);		// Enable GPIOB clock
@@ -70,7 +70,7 @@ void GPIO_Init()
 	// IO_Fld_Set(TIM, 9, CR1, CEN, TIM_CR1_CEN);
 }
 
-void INT_Init()
+void INT_Init_My()
 {
 	// IO_Fld_Set(SYSCFG,, EXTICR[1], EXTI1, 0);		// Connect EXTI Line1 to PA1 pin
 	SYSCFG->EXTICR[0] = SYSCFG->EXTICR[0] & ~(0xF0);	// Connect EXTI Line1 to PA1 pin

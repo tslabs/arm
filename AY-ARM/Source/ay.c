@@ -55,7 +55,7 @@ void AY_Tick() {
 	// here write data to DACs
 	
 	// YM chip (called at Fosc/8)
-	if (AYControl.i.type) {
+	if (AYControl.type) {
 		// In this tick only call envelope
 		if (div) {
 			for (i=0; i<AYChipNum; i++) {
@@ -203,9 +203,9 @@ __inline DAC_Sum AY_DAC_Sum(int n) {
 	env_vol = env_tab[AY[n].env_ctr];
 	
 	// outputs per each PSG channel, unsigned, 5 bit
-	out0 = ((AY[n].ph_tn0 & AY[n].MX.i.t0) ^ (ns & AY[n].MX.i.n0)) ? 0 : ((AY[n].V0.i.mode) ? env_vol : (AY[n].V0.i.vol));
-	out1 = ((AY[n].ph_tn1 & AY[n].MX.i.t1) ^ (ns & AY[n].MX.i.n1)) ? 0 : ((AY[n].V1.i.mode) ? env_vol : (AY[n].V1.i.vol));
-	out2 = ((AY[n].ph_tn2 & AY[n].MX.i.t2) ^ (ns & AY[n].MX.i.n2)) ? 0 : ((AY[n].V2.i.mode) ? env_vol : (AY[n].V2.i.vol));
+	out0 = ((AY[n].ph_tn0 & AY[n].MX.t0) ^ (ns & AY[n].MX.n0)) ? 0 : ((AY[n].V0.mode) ? env_vol : (AY[n].V0.vol));
+	out1 = ((AY[n].ph_tn1 & AY[n].MX.t1) ^ (ns & AY[n].MX.n1)) ? 0 : ((AY[n].V1.mode) ? env_vol : (AY[n].V1.vol));
+	out2 = ((AY[n].ph_tn2 & AY[n].MX.t2) ^ (ns & AY[n].MX.n2)) ? 0 : ((AY[n].V2.mode) ? env_vol : (AY[n].V2.vol));
 	
 	// outputs per each audio channel, unsigned, sum of 3 values, each 11 bits (5 value + 6 volume)
 	Out.l = out0 * AY[n].vol_0l + out1 * AY[n].vol_1l + out2 * AY[n].vol_2l;

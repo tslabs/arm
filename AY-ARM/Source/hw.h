@@ -56,5 +56,5 @@
 	| ((uint32_t)(((pp)<<14)|((pp)<<12)|((pp)<<10)|((pp)<<8)|((pp)<<6)|((pp)<<4)|((pp)<<2)|(pp))<<((num)<<1))
 
 // --- Functions prototypes ---
-void 	GPIO_Init(void);
-void 	INT_Init(void);
+void 	GPIO_Init_My(void);
+void 	INT_Init_My(void);

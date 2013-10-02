@@ -6,14 +6,13 @@
 //
 // `Twas brillig and the slithy toves
 
-
 #pragma once
-#include "types.h"
+#pragma anon_unions
 
+#include "types.h"
 
 // --- Commands -----
 #define	CMD_BRK			(U8) 0x00
-
 
 // --- Error codes -----
 #define	CMD_ERR_OK		(U8) 0x00
@@ -22,10 +21,11 @@
 #define	CMD_ERR_MOD		(U8) 0x03
 #define	CMD_ERR_PAR		(U8) 0x04
 
-
 // --- Structures definition -----
-typedef union {
-	struct {
+typedef union
+{
+	struct
+	{
 		U8	busy:1;		// Command in progress
 		U8	drq:1;		// Data Request. Byte should be sent to chip
 		U8	drd:1;		// Data Ready. Byte should be read from chip
@@ -34,10 +34,9 @@ typedef union {
 		U8	cmp:1;		// Command completed
 		U8	acc:1;		// Command accepted
 		U8	err:1;		// Error occured
-	} i;
+	};
 	U8 b;
 } Stat;
-
 
 // --- Functions prototypes -----
 void	WReg(U8);

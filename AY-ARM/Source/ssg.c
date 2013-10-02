@@ -80,23 +80,23 @@ __inline DAC_Sum SSG_Chan_Tick(int chan) {
 	DAC_Sum Sum;
 	
 	// Check if channel active and its state is not 'stall'
-	if (SSG[chan].Control.i.act && SSG[chan].State.play) {
+	if (SSG[chan].Control.act && SSG[chan].State.play) {
 
 		s1 = *SSG[chan].Addr;			// read next DAC sample (left)
-		if (SSG[chan].Control.i.sgn)
+		if (SSG[chan].Control.sgn)
 			s1 = s1 ^ 0x80;				// convert to signed if need
 
-		if (SSG[chan].Control.i.chn) {		// if sample is stereo
+		if (SSG[chan].Control.chn) {		// if sample is stereo
 			s2 = *(SSG[chan].Addr + SSG[chan].StepC);	// read next DAC sample (right)
-			if (SSG[chan].Control.i.sgn)
+			if (SSG[chan].Control.sgn)
 				s2 = s2 ^ 0x80;			// convert to signed if need
 		}
 		else
 			s2 = s1;	// if mono - just use left for right
 			
 		// Calculate linear interpolation
-		sl = SSG[chan].IntL * (0x100 - SSG[chan].SubAddr.b.b1) + s1 * SSG[chan].SubAddr.b.b1;
-		sr = SSG[chan].IntR * (0x100 - SSG[chan].SubAddr.b.b1) + s2 * SSG[chan].SubAddr.b.b1;
+		sl = SSG[chan].IntL * (0x100 - SSG[chan].SubAddr.b1) + s1 * SSG[chan].SubAddr.b1;
+		sr = SSG[chan].IntR * (0x100 - SSG[chan].SubAddr.b1) + s2 * SSG[chan].SubAddr.b1;
 
 		// Multiply DSC samples by volume values and add them to DAC summators
 		Sum.l += sl * SSG[chan].VolL;
@@ -120,12 +120,12 @@ __inline DAC_Sum SSG_Chan_Tick(int chan) {
 				if (SSG[chan].Addr > SSG[chan].EndAddr) {
 				
 					// Loop of a 'forward' type
-					if (SSG[chan].Control.i.loop == CH_LP_FWD) {
+					if (SSG[chan].Control.loop == CH_LP_FWD) {
 						SSG[chan].Addr = SSG[chan].LoopAddr;		// set addr to loop start
 					}
 					
 					// Loop of a 'bidi' type
-					else if (SSG[chan].Control.i.loop == CH_LP_BIDI) {
+					else if (SSG[chan].Control.loop == CH_LP_BIDI) {
 						SSG[chan].Addr = SSG[chan].EndAddr;			// set addr to sample end
 						SSG[chan].State.dir = 1;					// change direction to backwards
 					}

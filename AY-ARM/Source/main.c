@@ -26,19 +26,19 @@
 // Executed after reset
 
 extern	U8 AYChipNum;
-extern	SSG_Regs	SSG[SSG_CH_MAX];
+extern	SSG_Regs SSG[SSG_CH_MAX];
 
 int main (void) {
 
 	// memset((U8*)0x20000000, 0xCC, 0x10000);
-	GPIO_Init();
-	INT_Init();
+	//GPIO_Init_My();
+	//INT_Init_My();
 	
-	while(1)
-	{
+	//while(1)
+	//{
 		// int t = (GPIOA->IDR & 2) ? 1:0;
 		// GPIO_Bit_Set(D, 15, t);
-	};
+	//};
 	
 	AY_Init();
 	SSG_Init();
@@ -49,11 +49,11 @@ int main (void) {
 	SSG[0].EndAddr = (U8*)0x08000010;
 	SSG[0].LoopAddr = (U8*)0x08000005;
 	SSG[0].SubAddr.h = 0x9000;
-	SSG[0].Control.i.act = 1;
-	SSG[0].Control.i.chn = 1;
-	SSG[0].Control.i.sgn = 1;
-	SSG[0].Control.i.bw = 1;
-	SSG[0].Control.i.loop = 1;
+	SSG[0].Control.act = 1;
+	SSG[0].Control.chn = 1;
+	SSG[0].Control.sgn = 1;
+	SSG[0].Control.bw = 1;
+	SSG[0].Control.loop = 1;
 	SSG[0].State.play = 1;
 	SSG[0].State.dir = 0;
 	SSG[0].SubStep = 0x8000;
@@ -81,4 +81,4 @@ int main (void) {
 // ---------- Scratchpad -----------
 
 			// Calc addr increment from step
-			// = SSG[chan].Control.i.chn ? (SSG[chan].Control.i.bw ? (SSG[chan].Step << 2) : (SSG[chan].Step << 1)) : (SSG[chan].Control.i.bw ? (SSG[chan].Step << 1) : SSG[chan].Step);
+			// = SSG[chan].Control.chn ? (SSG[chan].Control.bw ? (SSG[chan].Step << 2) : (SSG[chan].Step << 1)) : (SSG[chan].Control.bw ? (SSG[chan].Step << 1) : SSG[chan].Step);

@@ -7,13 +7,14 @@
 // Demoscene is alive!!!
 
 
-//--- Includes ------
+//--- Includes ---
 
 //#include <stdio.h>
 //#include <stdlib.h>
-//#include <string.h>
+#include <string.h>
 #include "stm32f4xx.h"
 #include "types.h"
+#include "hw.h"
 #include "ay-arm.h"
 #include "ay.h"
 #include "ssg.h"
@@ -21,13 +22,24 @@
 #include "main.h"
 
 
-//--- Main function -----
+//--- Main function (RESET) ---
 // Executed after reset
 
 extern	U8 AYChipNum;
 extern	SSG_Regs	SSG[SSG_CH_MAX];
 
 int main (void) {
+
+	// memset((U8*)0x20000000, 0xCC, 0x10000);
+	GPIO_Init();
+	INT_Init();
+	
+	while(1)
+	{
+		// int t = (GPIOA->IDR & 2) ? 1:0;
+		// GPIO_Bit_Set(D, 15, t);
+	};
+	
 	AY_Init();
 	SSG_Init();
 	CmdF(0xF1);
@@ -54,7 +66,8 @@ int main (void) {
 	WAddr(0x0D);
 	WReg(0x0E);
 
-	while(1)	{
+	while(1)
+	{
 		// U32 t = a + b;
 
 
@@ -65,15 +78,7 @@ int main (void) {
 }
 
 
-
-
 // ---------- Scratchpad -----------
 
 			// Calc addr increment from step
 			// = SSG[chan].Control.i.chn ? (SSG[chan].Control.i.bw ? (SSG[chan].Step << 2) : (SSG[chan].Step << 1)) : (SSG[chan].Control.i.bw ? (SSG[chan].Step << 1) : SSG[chan].Step);
-
-
-
-
-
-

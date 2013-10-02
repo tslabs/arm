@@ -7,10 +7,7 @@
 // A lány még mindig nagyon szép, de hol van már a vágy?
 
 
-#ifndef __AY_H
-#define __AY_H
-
-
+#pragma once
 #include "types.h"
 
 
@@ -29,7 +26,17 @@ typedef union {
 		U8	i1:1;
 	} i;
 	U8 b;
-} AYMix;
+} AYMix_t;
+
+
+typedef union {
+	struct {
+		U8	vol:5;
+		U8	mode:1;
+		U8	padding:2;
+	} i;
+	U8 b;
+} AYVol_t;
 
 
 typedef struct {	//registers re-ordered to match memory alignment
@@ -43,10 +50,10 @@ typedef struct {	//registers re-ordered to match memory alignment
 	U16		ctr_tn2;	// Tone Generator Counter2
 	U16		ctr_ev; 	// Envelope Period Counter
 	U8		NF;			// AY Reg #06 - Noise frequency
-	AYMix	MX;			// AY Reg #07 - Channels mux, I/O mode, kept inverted (!!!)
-	U8		V0;			// AY Reg #08 - Volume for CH0
-	U8		V1;			// AY Reg #09 - Volume for CH1
-	U8		V2;			// AY Reg #0A - Volume for CH2
+	AYMix_t	MX;			// AY Reg #07 - Channels mux, I/O mode, kept inverted (!!!)
+	AYVol_t	V0;			// AY Reg #08 - Volume for CH0
+	AYVol_t	V1;			// AY Reg #09 - Volume for CH1
+	AYVol_t	V2;			// AY Reg #0A - Volume for CH2
 	U8		EC;			// AY Reg #0D - Envelope control
 	U8		IOA;		// AY Reg #0E - I/O port A
 	U8		IOB;		// AY Reg #0F - I/O port B
@@ -90,7 +97,4 @@ void AY_Tick_noise(int);
 void AY_Tick_env(int, int, int);
 void AY_Env_Proc(int, int, int);
 DAC_Sum AY_DAC_Sum(int);
-
-
-#endif /* __AY_H */
 

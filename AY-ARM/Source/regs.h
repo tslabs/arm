@@ -7,11 +7,6 @@
 // Jätan kõik ja riskin veel
 
 
+#pragma once
 #include "types.h"
 
-#ifndef __REGS_H
-#define __REGS_H
-
-
-
-#endif /* __REGS_H */

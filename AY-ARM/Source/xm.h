@@ -7,15 +7,6 @@
 // Simti ca poti sa rupi firul de inox la al tau destin
 
 
+#pragma once
 #include "types.h"
 
-#ifndef __XM_H
-#define __XM_H
-
-
-
-
-
-
-
-#endif /* __XM_H */

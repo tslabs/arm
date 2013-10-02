@@ -89,17 +89,17 @@ void W_07(U8 RegVal) {
 
 // AY Reg 08
 void W_08(U8 RegVal) {
-	AY[AYChip].V0 = RegVal & 0x1F;
+	AY[AYChip].V0.b = (RegVal & 0x1F) << 1;
 }
 
 // AY Reg 09
 void W_09(U8 RegVal) {
-	AY[AYChip].V1 = RegVal & 0x1F;
+	AY[AYChip].V1.b = (RegVal & 0x1F) << 1;
 }
 
 // AY Reg 0A
 void W_0A(U8 RegVal) {
-	AY[AYChip].V2 = RegVal & 0x1F;
+	AY[AYChip].V2.b = (RegVal & 0x1F) << 1;
 }
 
 // AY Reg 0B
@@ -251,17 +251,17 @@ U8 R_07(void) {
 
 // AY Reg 08
 U8 R_08(void) {
-	return AY[AYChip].V0;
+	return AY[AYChip].V0.b >> 1;
 }
 
 // AY Reg 09
 U8 R_09(void) {
-	return AY[AYChip].V1;
+	return AY[AYChip].V1.b >> 1;
 }
 
 // AY Reg 0A
 U8 R_0A(void) {
-	return AY[AYChip].V2;
+	return AY[AYChip].V2.b >> 1;
 }
 
 // AY Reg 0B

@@ -7,8 +7,7 @@
 // Ποιος είπε πως οι άγγελοι στη γη δεν κατεβαίνουν
 
 
-#ifndef __TYPES_H
-#define __TYPES_H
+#pragma once
 
 #ifdef __cplusplus
  extern "C" {
@@ -107,4 +106,3 @@ typedef struct {
 }
 #endif /* __cplusplus */
 
-#endif /* __TYPES_H */

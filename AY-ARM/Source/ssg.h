@@ -7,10 +7,7 @@
 // I wtedy wrescie sam tez wlacze sie do akcji
 
 
-#ifndef __AUDIO_H
-#define __AUDIO_H
-
-
+#pragma once
 #include "types.h"
 
 
@@ -76,7 +73,4 @@ typedef struct {
 void 	SSG_Init(void);
 void 	SSG_Tick(void);
 DAC_Sum	SSG_Chan_Tick(int);
-
-
-#endif /* __AUDIO_H */
 

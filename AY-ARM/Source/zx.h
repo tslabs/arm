@@ -7,10 +7,8 @@
 // `Twas brillig and the slithy toves
 
 
+#pragma once
 #include "types.h"
-
-#ifndef __ZX_H
-#define __ZX_H
 
 
 // --- Commands -----
@@ -47,5 +45,3 @@ U8		RReg(void);
 void	WAddr(U8);
 void	CmdF(U8);
 
-
-#endif /* __ZX_H */

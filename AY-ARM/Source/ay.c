@@ -203,9 +203,9 @@ __inline DAC_Sum AY_DAC_Sum(int n) {
 	env_vol = env_tab[AY[n].env_ctr];
 	
 	// outputs per each PSG channel, unsigned, 5 bit
-	out0 = ((AY[n].ph_tn0 & AY[n].MX.i.t0) ^ (ns & AY[n].MX.i.n0) ^ 0x01) * ((AY[n].V0 & 0x10) ? env_vol : (AY[n].V0 << 1));
-	out1 = ((AY[n].ph_tn1 & AY[n].MX.i.t1) ^ (ns & AY[n].MX.i.n1) ^ 0x01) * ((AY[n].V1 & 0x10) ? env_vol : (AY[n].V1 << 1));
-	out2 = ((AY[n].ph_tn2 & AY[n].MX.i.t2) ^ (ns & AY[n].MX.i.n2) ^ 0x01) * ((AY[n].V2 & 0x10) ? env_vol : (AY[n].V2 << 1));
+	out0 = ((AY[n].ph_tn0 & AY[n].MX.i.t0) ^ (ns & AY[n].MX.i.n0)) ? 0 : ((AY[n].V0.i.mode) ? env_vol : (AY[n].V0.i.vol));
+	out1 = ((AY[n].ph_tn1 & AY[n].MX.i.t1) ^ (ns & AY[n].MX.i.n1)) ? 0 : ((AY[n].V1.i.mode) ? env_vol : (AY[n].V1.i.vol));
+	out2 = ((AY[n].ph_tn2 & AY[n].MX.i.t2) ^ (ns & AY[n].MX.i.n2)) ? 0 : ((AY[n].V2.i.mode) ? env_vol : (AY[n].V2.i.vol));
 	
 	// outputs per each audio channel, unsigned, sum of 3 values, each 11 bits (5 value + 6 volume)
 	Out.l = out0 * AY[n].vol_0l + out1 * AY[n].vol_1l + out2 * AY[n].vol_2l;

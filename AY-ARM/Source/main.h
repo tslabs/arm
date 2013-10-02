@@ -7,3 +7,4 @@
 // Verivalan taika on aina suojanamme
 
 
+#pragma once

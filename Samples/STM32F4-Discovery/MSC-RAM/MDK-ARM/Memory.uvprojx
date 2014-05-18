@@ -427,12 +427,12 @@
             <File>
               <FileName>USBD_Demo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USBD_Demo.c</FilePath>
+              <FilePath>..\USBD_Demo.c</FilePath>
             </File>
             <File>
               <FileName>usbd_user_msc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\usbd_user_msc.c</FilePath>
+              <FilePath>..\usbd_user_msc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -892,12 +892,12 @@
             <File>
               <FileName>USBD_Demo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USBD_Demo.c</FilePath>
+              <FilePath>..\USBD_Demo.c</FilePath>
             </File>
             <File>
               <FileName>usbd_user_msc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\usbd_user_msc.c</FilePath>
+              <FilePath>..\usbd_user_msc.c</FilePath>
             </File>
           </Files>
         </Group>

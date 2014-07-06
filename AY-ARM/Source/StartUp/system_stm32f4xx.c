@@ -115,7 +115,7 @@
 #define PLL_N      336
 
 /* SYSCLK = PLL_VCO / PLL_P */
-//		<o> PLL_P	<2=> 2 <4=> 4 <6=> 6 <8=> 8
+//		<o> PLL_P <2=> 2 <4=> 4 <6=> 6 <8=> 8
 #define PLL_P      2
 
 /* USB OTG FS, SDIO and RNG Clock =  PLL_VCO / PLLQ */

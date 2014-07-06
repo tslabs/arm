@@ -1,7 +1,7 @@
 
 // AY-ARM main module
 //
-// (c) 2012, TS-Labs inc.
+// (c) 2014, TS-Labs inc.
 // All rights fucked out
 //
 // Demoscene is alive!!!
@@ -12,9 +12,9 @@
 //#include <stdio.h>
 //#include <stdlib.h>
 #include <string.h>
-#include "stm32f4xx.h"
 #include "types.h"
 #include "hw.h"
+#include "interrupts.h"
 #include "ay-arm.h"
 #include "ay.h"
 #include "ssg.h"
@@ -31,14 +31,16 @@ extern	SSG_Regs SSG[SSG_CH_MAX];
 int main (void) {
 
 	// memset((U8*)0x20000000, 0xCC, 0x10000);
-	//GPIO_Init_My();
-	//INT_Init_My();
+	GPIO_Init();
+	Int_Init();
 	
-	//while(1)
-	//{
-		// int t = (GPIOA->IDR & 2) ? 1:0;
+	while(1);
+	{
+		int t;
+        // int t = (GPIOA->IDR & 2) ? 1:0;
 		// GPIO_Bit_Set(D, 15, t);
-	//};
+        t = ~t;
+	};
 	
 	AY_Init();
 	SSG_Init();

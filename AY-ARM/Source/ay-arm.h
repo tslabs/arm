@@ -41,17 +41,17 @@
 // </h>
 
 
-//--- SSG parameters -----
-// <h> SSG
+//--- WS parameters -----
+// <h> WS
 
 //	<o> Default output audio samplerate, Hz <8000-50000>
-#define SSG_FREQ	44100
+#define WS_FREQ	44100
 
-//	<o> Max number of SSG channels <1-64>
-#define SSG_CH_MAX	64
+//	<o> Max number of WS channels <1-64>
+#define WS_CH_MAX	64
 
-//	<o> Default number of SSG channels <1-64>
-#define SSG_CH_DEF	32
+//	<o> Default number of WS channels <1-64>
+#define WS_CH_DEF	32
 
 // </h>
 

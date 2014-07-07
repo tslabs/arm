@@ -17,7 +17,7 @@
 #include "interrupts.h"
 #include "ay-arm.h"
 #include "ay.h"
-#include "ssg.h"
+#include "ws.h"
 #include "zx.h"
 #include "main.h"
 
@@ -26,7 +26,7 @@
 // Executed after reset
 
 extern	U8 AYChipNum;
-extern	SSG_Regs SSG[SSG_CH_MAX];
+extern	WS_Regs WS[WS_CH_MAX];
 
 int main (void) {
 
@@ -43,27 +43,27 @@ int main (void) {
 	};
 	
 	AY_Init();
-	SSG_Init();
+	WS_Init();
 	CmdF(0xF1);
 	WAddr(0xE2);
 
-	SSG[0].Addr = (U8*)0x08000000;
-	SSG[0].EndAddr = (U8*)0x08000010;
-	SSG[0].LoopAddr = (U8*)0x08000005;
-	SSG[0].SubAddr.h = 0x9000;
-	SSG[0].Control.act = 1;
-	SSG[0].Control.chn = 1;
-	SSG[0].Control.sgn = 1;
-	SSG[0].Control.bw = 1;
-	SSG[0].Control.loop = 1;
-	SSG[0].State.play = 1;
-	SSG[0].State.dir = 0;
-	SSG[0].SubStep = 0x8000;
-	SSG[0].Step = 1;
-	SSG[0].StepA = 4;
-	SSG[0].StepC = 2;
-	SSG[0].VolL = 64;
-	SSG[0].VolR = 64;
+	WS[0].Addr = (U8*)0x08000000;
+	WS[0].EndAddr = (U8*)0x08000010;
+	WS[0].LoopAddr = (U8*)0x08000005;
+	WS[0].SubAddr.h = 0x9000;
+	WS[0].Control.act = 1;
+	WS[0].Control.chn = 1;
+	WS[0].Control.sgn = 1;
+	WS[0].Control.bw = 1;
+	WS[0].Control.loop = 1;
+	WS[0].State.play = 1;
+	WS[0].State.dir = 0;
+	WS[0].SubStep = 0x8000;
+	WS[0].Step = 1;
+	WS[0].StepA = 4;
+	WS[0].StepC = 2;
+	WS[0].VolL = 64;
+	WS[0].VolR = 64;
 	
 	WAddr(0x0D);
 	WReg(0x0E);
@@ -74,7 +74,7 @@ int main (void) {
 
 
 		AY_Tick();
-		//SSG_Tick();
+		//WS_Tick();
 		//i = RReg();
 	}
 }
@@ -83,4 +83,4 @@ int main (void) {
 // ---------- Scratchpad -----------
 
 			// Calc addr increment from step
-			// = SSG[chan].Control.chn ? (SSG[chan].Control.bw ? (SSG[chan].Step << 2) : (SSG[chan].Step << 1)) : (SSG[chan].Control.bw ? (SSG[chan].Step << 1) : SSG[chan].Step);
+			// = WS[chan].Control.chn ? (WS[chan].Control.bw ? (WS[chan].Step << 2) : (WS[chan].Step << 1)) : (WS[chan].Control.bw ? (WS[chan].Step << 1) : WS[chan].Step);

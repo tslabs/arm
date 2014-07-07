@@ -36,7 +36,7 @@ typedef struct
 	U8		*Addr;              // Address of next DAC sample to read
 	U8		*EndAddr;           // End Address of Sample
 	U8		*LoopAddr;          // Loop Address of Sample
-	U32		NewAddr;            // New Start Address (reloaded at the start of SSG burst)
+	U32		NewAddr;            // New Start Address (reloaded at the start of WS burst)
 	U32		NewEndAddr;         // New End Address
 	U32		NewLoopAddr;		// New Loop Address
 	W16		SubAddr;			// Current Sub-Address
@@ -62,7 +62,7 @@ typedef struct
 	U8		isUserFreq;			// Indicates that Steps should be updated from User Frequency
 	U8		isUserSamp;			// Indicates that Sample should be updated from User Sample
 	U8		padding[7];			// ! Always calculate padding value to align this structure by the power of 2 size
-} SSG_Regs;		//--- SSG Registers and Variables -----
+} WS_Regs;		//--- WS Registers and Variables -----
 
 #define		SAMPLE_MONO_STEREO	0x01
 #define		SAMPLE_8_16_BIT		0x02
@@ -74,7 +74,7 @@ typedef struct
 
 
 // --- Functions prototypes -----
-void 	SSG_Init(void);
-void 	SSG_Tick(void);
-DAC_Sum	SSG_Chan_Tick(int);
+void 	WS_Init(void);
+void 	WS_Tick(void);
+DAC_Sum	WS_Chan_Tick(int);
 

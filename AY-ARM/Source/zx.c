@@ -10,7 +10,7 @@
 #include "zx.h"
 #include "ay-arm.h"
 #include "ay.h"
-#include "ssg.h"
+#include "ws.h"
 
 
 // --- Variables declaration -----
@@ -23,7 +23,7 @@
 		U8			RegNum = 0;			// Currently selected Chip register
 		U8			RegVal = 0;			// Value to be written into the register (should be replaced by read Z80 Bus value)
 		U8			AYChip = 0;			// Selected AY Chip
-		U8			SSGChan = 0;		// Selected SSG Channel
+		U8			WSChan = 0;		// Selected WS Channel
 		U8			*DataAddr = &dummy;	// Pointer to next data to be read
 		int			DataCtr = 0;		// Counter for data to be transferred, bytes
 		U8			Cmd = 0;			// Command
@@ -34,10 +34,10 @@
 
 	// external
 extern	AY_Regs		AY[AY_CHIPS_MAX];	// Registers for virtual AY chips
-extern	SSG_Regs	SSG[AY_CHIPS_MAX];	// Registers for SSG channels
+extern	WS_Regs	WS[AY_CHIPS_MAX];	// Registers for WS channels
 extern	U8			AYChipNum;
-extern	U8			SSGChNum;
-extern	W16			SSGFreq;
+extern	U8			WSChNum;
+extern	W16			WSFreq;
 
 //------------------------------------------------------------------------------------------
 // - Write Register Functions -
@@ -139,16 +139,16 @@ void W_31(U8 RegVal){
 	AYChip = (RegVal > AYChipNum) ? AYChipNum : RegVal;;
 }
 
-// Current number of SSG channels
+// Current number of WS channels
 void W_34(U8 RegVal){
-	SSGChNum = (RegVal >= SSG_CH_MAX) ? SSG_CH_MAX-1 : RegVal;
-	if (SSGChan >= SSGChNum)
-		SSGChan = SSGChNum-1;
+	WSChNum = (RegVal >= WS_CH_MAX) ? WS_CH_MAX-1 : RegVal;
+	if (WSChan >= WSChNum)
+		WSChan = WSChNum-1;
 }
 
-// SSG Channel Select
+// WS Channel Select
 void W_35(U8 RegVal){
-	SSGChan = (RegVal > SSGChNum) ? SSGChNum : RegVal;
+	WSChan = (RegVal > WSChNum) ? WSChNum : RegVal;
 }
 
 // Command
@@ -298,24 +298,24 @@ U8 R_31(void){
 	return AYChip;
 }
 
-// Current number of SSG channels
+// Current number of WS channels
 U8 R_34(void){
-	return SSGChNum;
+	return WSChNum;
 }
 
-// SSG Channel Number
+// WS Channel Number
 U8 R_35(void){
-	return SSGChan;
+	return WSChan;
 }
 
 // Output Audio Sample Rate, Lower Byte
 U8 R_36(void){
-	return SSGFreq.b0;
+	return WSFreq.b0;
 }
 
 // Output Audio Sample Rate, Higher Byte
 U8 R_37(void){
-	return SSGFreq.b1;
+	return WSFreq.b1;
 }
 
 // Max supported number of AY chips
@@ -323,9 +323,9 @@ U8 R_DA(void){
 	return AY_CHIPS_MAX;
 }
 
-// Max supported number of SSG channels
+// Max supported number of WS channels
 U8 R_DB(void){
-	return SSG_CH_MAX;
+	return WS_CH_MAX;
 }
 
 // Device byte 0

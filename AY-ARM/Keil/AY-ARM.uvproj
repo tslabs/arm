@@ -455,11 +455,6 @@
               <FilePath>..\Source\ay-arm.c</FilePath>
             </File>
             <File>
-              <FileName>ssg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Source\ssg.c</FilePath>
-            </File>
-            <File>
               <FileName>hw.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Source\hw.c</FilePath>
@@ -473,6 +468,11 @@
               <FileName>isr.s</FileName>
               <FileType>2</FileType>
               <FilePath>..\Source\isr.s</FilePath>
+            </File>
+            <File>
+              <FileName>ws.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Source\ws.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -927,11 +927,6 @@
               <FilePath>..\Source\ay-arm.c</FilePath>
             </File>
             <File>
-              <FileName>ssg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Source\ssg.c</FilePath>
-            </File>
-            <File>
               <FileName>hw.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Source\hw.c</FilePath>
@@ -945,6 +940,11 @@
               <FileName>isr.s</FileName>
               <FileType>2</FileType>
               <FilePath>..\Source\isr.s</FilePath>
+            </File>
+            <File>
+              <FileName>ws.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Source\ws.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1399,11 +1399,6 @@
               <FilePath>..\Source\ay-arm.c</FilePath>
             </File>
             <File>
-              <FileName>ssg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Source\ssg.c</FilePath>
-            </File>
-            <File>
               <FileName>hw.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Source\hw.c</FilePath>
@@ -1417,6 +1412,11 @@
               <FileName>isr.s</FileName>
               <FileType>2</FileType>
               <FilePath>..\Source\isr.s</FilePath>
+            </File>
+            <File>
+              <FileName>ws.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Source\ws.c</FilePath>
             </File>
           </Files>
         </Group>

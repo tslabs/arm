@@ -66,8 +66,8 @@ const FUNC_W WRegVec[0x100] =
 		W_31,			// 0x31 - AY-Chip Select
 		W__,			// 0x32
 		W__,			// 0x33
-		W_34,			// 0x34 - Current number of SSG channels
-		W_35,			// 0x35 - SSG Channel Select
+		W_34,			// 0x34 - Current number of WS channels
+		W_35,			// 0x35 - WS Channel Select
 		W__,			// 0x36
 		W__,			// 0x37
 		W__,			// 0x38
@@ -343,8 +343,8 @@ const FUNC_R RRegVec[0x100] =
 		R_31,			// 0x31 - AY-Chip Number
 		R__,			// 0x32
 		R__,			// 0x33
-		R_34,			// 0x34 - Current number of SSG channels
-		R_35,			// 0x35 - Current SSG channel
+		R_34,			// 0x34 - Current number of WS channels
+		R_35,			// 0x35 - Current WS channel
 		R_36,			// 0x36 - Output Samplerate
 		R_37,			// 0x37 ^
 		R__,			// 0x38
@@ -520,7 +520,7 @@ const FUNC_R RRegVec[0x100] =
 		R__,			// 0xD8
 		R__,			// 0xD9
 		R_DA,			// 0xDA - Max number of AY chips
-		R_DB,			// 0xDB - Max number of SSG channels
+		R_DB,			// 0xDB - Max number of WS channels
 		R_DC,			// 0xDC - Device Byte0, #55
 		R_DD,			// 0xDD - Device Byte0, #AA
 		R_DE,			// 0xDE - Chip Version

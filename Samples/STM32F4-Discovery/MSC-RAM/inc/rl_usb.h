@@ -17,7 +17,7 @@ extern "C"  {
 #endif
 
 #include <stdint.h>
-#include <..\..\RL\USB\INC\usb.h>
+#include <usb.h>
 
 /*****************  Functions *************************************************/
 

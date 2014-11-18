@@ -11,12 +11,18 @@
 
 #include <RTL.h>
 #include <rl_usb.h>
-#include <stm32f4xx.h>                  /* STM32F4xx Definitions              */
+#include <stm32f4xx.h>
 
 int main (void) {
 
-  usbd_init();                          /* USB Initialization                 */
-  usbd_connect(__TRUE);                 /* USB Connect                        */
+  // USB Initialization
+  USBD_HighSpeed = 0;
+  usbd_class_init();
+  USBD_RTX_TaskInit();
+  USBD_Init();
 
-  while (1);                            /* Loop forever                       */
+  // USB Connect
+  USBD_Connect(__TRUE);
+
+  while (1);
 }

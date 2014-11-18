@@ -72,8 +72,6 @@
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
-            <nStopB1X>0</nStopB1X>
-            <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
@@ -130,7 +128,6 @@
             <RestoreFunctions>1</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
             <LimitSpeedToRealTime>0</LimitSpeedToRealTime>
-            <RestoreSysVw>1</RestoreSysVw>
           </Simulator>
           <Target>
             <UseTarget>1</UseTarget>
@@ -142,7 +139,8 @@
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
             <RestoreTracepoints>0</RestoreTracepoints>
-            <RestoreSysVw>1</RestoreSysVw>
+            <RestoreTracepoints>1</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
           <TargetSelection>11</TargetSelection>
@@ -361,9 +359,9 @@
             <useXO>0</useXO>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define></Define>
+              <Define>STM32F40_41xxx STM32F40XX</Define>
               <Undefine></Undefine>
-              <IncludePath>c:\Tools\PROG\Keil4\ARM\RV31\INC\</IncludePath>
+              <IncludePath>..\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -404,26 +402,6 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>Configuration</GroupName>
-          <Files>
-            <File>
-              <FileName>usb_config_FS.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\usb_config_FS.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>USB HW Driver</GroupName>
-          <Files>
-            <File>
-              <FileName>usbd_STM32F4xx_FS.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\usbd_STM32F4xx_FS.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>Source</GroupName>
           <Files>
             <File>
@@ -436,6 +414,26 @@
               <FileType>1</FileType>
               <FilePath>..\usbd_user_msc.c</FilePath>
             </File>
+            <File>
+              <FileName>system_stm32f4xx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\system_stm32f4xx.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_config_FS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\usb_config_FS.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_STM32F4xx_FS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\usbd_STM32F4xx_FS.c</FilePath>
+            </File>
+            <File>
+              <FileName>startup_stm32f40_41xxx.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\startup_stm32f40_41xxx.s</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -444,25 +442,7 @@
             <File>
               <FileName>USB_CM3.lib</FileName>
               <FileType>4</FileType>
-              <FilePath>C:\Tools\PROG\Keil4\ARM\RV31\LIB\USB_CM3.lib</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>::CMSIS</GroupName>
-        </Group>
-        <Group>
-          <GroupName>::Device</GroupName>
-          <Files>
-            <File>
-              <FileName>system_stm32f4xx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>RTE\Device\STM32F407VG\system_stm32f4xx.c</FilePath>
-            </File>
-            <File>
-              <FileName>startup_stm32f407xx.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>RTE\Device\STM32F407VG\startup_stm32f407xx.s</FilePath>
+              <FilePath>..\lib\USB_CM3.lib</FilePath>
             </File>
           </Files>
         </Group>
@@ -476,8 +456,6 @@
         <TargetCommonOption>
           <Device>STM32F407VG</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F4xx_DFP.2.2.0</PackID>
-          <PackURL>http://www.keil.com/pack</PackURL>
           <Cpu>IRAM(0x20000000-0x2001FFFF) IRAM2(0x10000000-0x1000FFFF) IROM(0x8000000-0x80FFFFF) CLOCK(25000000) CPUTYPE("Cortex-M4") FPU2</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile>"Startup\ST\STM32F4xx\startup_stm32f4xx.s" ("STM32F4xx Startup Code")</StartupFile>
@@ -536,8 +514,6 @@
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
-            <nStopB1X>0</nStopB1X>
-            <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
@@ -594,7 +570,6 @@
             <RestoreFunctions>1</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
             <LimitSpeedToRealTime>0</LimitSpeedToRealTime>
-            <RestoreSysVw>1</RestoreSysVw>
           </Simulator>
           <Target>
             <UseTarget>1</UseTarget>
@@ -606,7 +581,8 @@
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
             <RestoreTracepoints>0</RestoreTracepoints>
-            <RestoreSysVw>1</RestoreSysVw>
+            <RestoreTracepoints>1</RestoreTracepoints>
+            <RestoreTracepoints>1</RestoreTracepoints>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
           <TargetSelection>11</TargetSelection>
@@ -825,9 +801,9 @@
             <useXO>0</useXO>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>STM32F40_41xxx</Define>
+              <Define>STM32F40_41xxx STM32F40XX</Define>
               <Undefine></Undefine>
-              <IncludePath>c:\Tools\PROG\Keil5\ARM\RV31\INC\;c:\Tools\PROG\Keil5\ARM\INC\ST\STM32F4xx</IncludePath>
+              <IncludePath>..\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -868,26 +844,6 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>Configuration</GroupName>
-          <Files>
-            <File>
-              <FileName>usb_config_FS.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\usb_config_FS.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>USB HW Driver</GroupName>
-          <Files>
-            <File>
-              <FileName>usbd_STM32F4xx_FS.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\usbd_STM32F4xx_FS.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>Source</GroupName>
           <Files>
             <File>
@@ -900,6 +856,26 @@
               <FileType>1</FileType>
               <FilePath>..\usbd_user_msc.c</FilePath>
             </File>
+            <File>
+              <FileName>system_stm32f4xx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\system_stm32f4xx.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_config_FS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\usb_config_FS.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_STM32F4xx_FS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\usbd_STM32F4xx_FS.c</FilePath>
+            </File>
+            <File>
+              <FileName>startup_stm32f40_41xxx.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\startup_stm32f40_41xxx.s</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -908,25 +884,7 @@
             <File>
               <FileName>USB_CM3.lib</FileName>
               <FileType>4</FileType>
-              <FilePath>C:\Tools\PROG\Keil4\ARM\RV31\LIB\USB_CM3.lib</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>::CMSIS</GroupName>
-        </Group>
-        <Group>
-          <GroupName>::Device</GroupName>
-          <Files>
-            <File>
-              <FileName>system_stm32f4xx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>RTE\Device\STM32F407VG\system_stm32f4xx.c</FilePath>
-            </File>
-            <File>
-              <FileName>startup_stm32f407xx.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>RTE\Device\STM32F407VG\startup_stm32f407xx.s</FilePath>
+              <FilePath>..\lib\USB_CM3.lib</FilePath>
             </File>
           </Files>
         </Group>
@@ -936,22 +894,7 @@
 
   <RTE>
     <apis/>
-    <components>
-      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="3.20.0" condition="CMSIS Core">
-        <package name="CMSIS" schemaVersion="1.0" url="http://www.keil.com/pack/" vendor="ARM" version="3.20.4"/>
-        <targetInfos>
-          <targetInfo name="Debug"/>
-          <targetInfo name="Release"/>
-        </targetInfos>
-      </component>
-      <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.3.1" condition="STM32F4xx CMSIS Device">
-        <package name="STM32F4xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack" vendor="Keil" version="1.0.7"/>
-        <targetInfos>
-          <targetInfo name="Debug"/>
-          <targetInfo name="Release"/>
-        </targetInfos>
-      </component>
-    </components>
+    <components/>
     <files>
       <file attr="config" category="header" name="RTE_Driver\Config\RTE_Device.h" version="1.3.1">
         <instance index="0" removed="1">RTE\Device\STM32F407VG\RTE_Device.h</instance>
@@ -960,13 +903,10 @@
         <targetInfos/>
       </file>
       <file attr="config" category="source" condition="STM32F407xx_ARMCC" name="Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f407xx.s" version="2.1.0">
-        <instance index="0">RTE\Device\STM32F407VG\startup_stm32f407xx.s</instance>
+        <instance index="0" removed="1">RTE\Device\STM32F407VG\startup_stm32f407xx.s</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="2.1.0" condition="STM32F4 CMSIS"/>
         <package name="STM32F4xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack" vendor="Keil" version="2.2.0"/>
-        <targetInfos>
-          <targetInfo name="Debug"/>
-          <targetInfo name="Release"/>
-        </targetInfos>
+        <targetInfos/>
       </file>
       <file attr="config" category="source" condition="STM32F40x" name="Device\Source\ARM\startup_stm32f40_41xxx.s" version="1.0.0">
         <instance index="0" removed="1">RTE\Device\STM32F407VG\startup_stm32f40_41xxx.s</instance>
@@ -975,13 +915,10 @@
         <targetInfos/>
       </file>
       <file attr="config" category="source" name="Device\Source\system_stm32f4xx.c" version="1.3.0">
-        <instance index="0">RTE\Device\STM32F407VG\system_stm32f4xx.c</instance>
+        <instance index="0" removed="1">RTE\Device\STM32F407VG\system_stm32f4xx.c</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.3.1" condition="STM32F4xx CMSIS Device"/>
         <package name="STM32F4xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack" vendor="Keil" version="1.0.7"/>
-        <targetInfos>
-          <targetInfo name="Debug"/>
-          <targetInfo name="Release"/>
-        </targetInfos>
+        <targetInfos/>
       </file>
     </files>
   </RTE>

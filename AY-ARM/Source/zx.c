@@ -34,7 +34,7 @@
 
 	// external
 extern	AY_Regs		AY[AY_CHIPS_MAX];	// Registers for virtual AY chips
-extern	WS_Regs	WS[AY_CHIPS_MAX];	// Registers for WS channels
+extern	WS_Regs	    WS[AY_CHIPS_MAX];	// Registers for WS channels
 extern	U8			AYChipNum;
 extern	U8			WSChNum;
 extern	W16			WSFreq;
@@ -455,7 +455,7 @@ void C_F1(void){
 //------------------------------------------------------------------------------------------
 // - Common Functions -
 
-// - Write Address -
+// Write Address
 void WAddr(U8 addr){
 	RegNum = addr;		// Write AY Register Address
 	if (!(~addr & MASK_TURBO_AY))	// If Address is from Turbo-AY decoding span,

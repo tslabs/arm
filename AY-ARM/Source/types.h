@@ -95,10 +95,14 @@ typedef struct
 	S32	r;
 } DAC_Sum;
 
-typedef struct
+typedef union
 {
-	U16	l;
-	U16	r;
+	struct
+    {
+        U16	l;
+        U16	r;
+    };
+    U32 w;
 } DAC_t;
 
 #ifdef __cplusplus

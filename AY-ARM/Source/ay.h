@@ -4,7 +4,7 @@
 // (c) 2012, TS-Labs inc.
 // All rights fucked out
 //
-// A lány is mindig nagyon szép, de hol van már a vágy?
+// A lány még mindig nagyon szép, de hol van már a vágy?
 
 #pragma once
 #pragma anon_unions
@@ -80,7 +80,6 @@ typedef struct
 	U8		padding[21];
 } AY_Regs;		//--- AY Registers and Variables-----
 
-
 typedef union
 {
 	struct
@@ -95,6 +94,11 @@ typedef union
 	U8 b;
 } AYCtrl;
 
+enum
+{
+    AY_TYP_AY = 0,
+    AY_TYP_YM
+};
 
 // --- Functions prototypes -----
 void AY_Init(void);

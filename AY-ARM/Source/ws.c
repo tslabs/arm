@@ -35,11 +35,9 @@
 // --- Functions -----
 
 // Initialize WS
-void WS_Init(void) {
-	U8 i;
-	for (i=0; i<WS_CH_MAX; i++) {
-		memset(&WS[i], 0, sizeof(WS_Regs));
-	}
+void WS_Init(void)
+{
+    memset(WS, 0, sizeof(WS));
 }
 
 
@@ -78,7 +76,7 @@ __inline DAC_Sum WS_Chan_Tick(int chan) {
 	S16 sl, sr;			// 16 bit signed interpolated DAC samples
 	U32 tmp32;
 	DAC_Sum Sum;
-	
+
 	// Check if channel active and its state is not 'stall'
 	if (WS[chan].Control.act && WS[chan].State.play) {
 
@@ -93,7 +91,7 @@ __inline DAC_Sum WS_Chan_Tick(int chan) {
 		}
 		else
 			s2 = s1;	// if mono - just use left for right
-			
+
 		// Calculate linear interpolation
 		sl = WS[chan].IntL * (0x100 - WS[chan].SubAddr.b1) + s1 * WS[chan].SubAddr.b1;
 		sr = WS[chan].IntR * (0x100 - WS[chan].SubAddr.b1) + s2 * WS[chan].SubAddr.b1;
@@ -105,42 +103,42 @@ __inline DAC_Sum WS_Chan_Tick(int chan) {
 		// Process Address
 		tmp32 = (WS[chan].SubAddr.h + WS[chan].SubStep);
 		WS[chan].SubAddr.h = (U16)tmp32;
-		
+
 		if (tmp32 > 0xFFFF) {		// If actual address changed
-			
+
 			// Store new DAC samples as interpolation values
 			WS[chan].IntL = s1;
 			WS[chan].IntR = s2;
-		
+
 			// Move forward
 			if (!WS[chan].State.dir) {
 				WS[chan].Addr += WS[chan].StepA;
-				
+
 				// Check if moved out from the sample end point
 				if (WS[chan].Addr > WS[chan].EndAddr) {
-				
+
 					// Loop of a 'forward' type
 					if (WS[chan].Control.loop == CH_LP_FWD) {
 						WS[chan].Addr = WS[chan].LoopAddr;		// set addr to loop start
 					}
-					
+
 					// Loop of a 'bidi' type
 					else if (WS[chan].Control.loop == CH_LP_BIDI) {
 						WS[chan].Addr = WS[chan].EndAddr;			// set addr to sample end
 						WS[chan].State.dir = 1;					// change direction to backwards
 					}
-					
+
 					// No loop
 					else {
 						WS[chan].State.play = 0;					// turn off the light
 					}
 				}
 			}
-		
+
 			// Move backward
 			else {
 				WS[chan].Addr -= WS[chan].StepA;
-				
+
 				// Check if moved out from the loop point
 				// (the only way to get here is to have a 'bidi' loop, so no check of loop type needed)
 				if (WS[chan].Addr < WS[chan].LoopAddr) {
@@ -150,6 +148,6 @@ __inline DAC_Sum WS_Chan_Tick(int chan) {
 			}
 		}
 	}
-	
+
 	return Sum;
 }

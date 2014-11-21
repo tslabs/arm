@@ -33,7 +33,7 @@
 #define AY_CHIPS_MAX	16
 
 //	<o> Default number of AY chips emulated <1-16>
-#define AY_CHIPS_DEF	8
+#define AY_CHIPS_DEF	2
 
 //	<o> Range for Turbo AY decoding <0xF0=> #F0-#FF <0xF8=> #F8-#FF <0xFE=> #FE-#FF
 #define MASK_TURBO_AY	0xF8

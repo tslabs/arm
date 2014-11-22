@@ -298,22 +298,13 @@ namespace dcmi {
    * @brief Configures the size of the cropped image.
    * @note  Image indices start at 0.
    */
-  template<
+  void Functions::setCropDimensions(
       u32 Left,
       u32 Top,
       u32 Width,
       u32 Height,
-      Format FORMAT
-  >
-  void Functions::setCropDimensions()
+      Format FORMAT)
   {
-    static_assert(
-        (Left < 2048) && (Top < 2048) &&
-        (Width >= 1) && (Width <= 2048) &&
-        (Height >= 1) && (Height <= 2048),
-        "Max image size is 2048 x 2048 pixels"
-    );
-
     DCMI_REGS->CWSTRTR =
         ((Left * FORMAT) << cwstrtr::hoffcnt::POSITION) +
             (Top << cwstrtr::vst::POSITION);

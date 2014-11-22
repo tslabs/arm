@@ -89,14 +89,12 @@ namespace dcmi {
           dcmi::cr::edm::States,
           dcmi::cr::enable::States);
 
-      template<
-          u32,
-          u32,
-          u32,
-          u32,
-          Format
-      >
-      static inline void setCropDimensions();
+      static inline void setCropDimensions(
+          u32 Left,
+          u32 Top,
+          u32 Width,
+          u32 Height,
+          Format FORMAT);
 
     private:
       Functions();

@@ -99,7 +99,7 @@ namespace spi {
   }
 
   template<Address S>
-  bool Functions<S>::candSendData()
+  bool Functions<S>::canSendData()
   {
     return *(bool volatile*) (bitband::peripheral<
         S + sr::OFFSET,
@@ -116,6 +116,15 @@ namespace spi {
     >());
   }
 
+  template<Address S>
+  bool Functions<S>::busy()
+  {
+    return *(bool volatile*) (bitband::peripheral<
+        S + sr::OFFSET,
+        sr::bsy::POSITION
+    >());
+  }
+
   /**
    * @note  The peripheral must be turned off during the configuration.
    */
@@ -123,10 +132,11 @@ namespace spi {
   void Functions<S>::configure(
       cr1::cpha::States CPHA,
       cr1::cpol::States CPOL,
-      cr1::msrt::States MSRT,
+      cr1::mstr::States MSTR,
       cr1::br::States BR,
       cr1::lsbfirst::States LSBFIRST,
       cr1::ssm::States SSM,
+      cr1::ssi::States SSI,
       cr1::rxonly::States RXONLY,
       cr1::dff::States DFF,
       cr1::crcnext::States CRCNEXT,
@@ -141,8 +151,8 @@ namespace spi {
       cr2::txdmaen::States TXDMAEN,
       cr2::txeie::States TXEIE)
   {
-    reinterpret_cast<Registers*>(S)->CR1 = CPHA + CPOL + MSRT + BR +
-        LSBFIRST + SSM + RXONLY + DFF + CRCNEXT + CRCEN + BIDIOE + BIDIMODE;
+    reinterpret_cast<Registers*>(S)->CR1 = CPHA + CPOL + MSTR + BR +
+        LSBFIRST + SSM + SSI + RXONLY + DFF + CRCNEXT + CRCEN + BIDIOE + BIDIMODE;
 
     reinterpret_cast<Registers*>(S)->CR2 = ERRIE + FRF + RXDMAEN + RXNEIE +
         SSOE + TXDMAEN + TXEIE;

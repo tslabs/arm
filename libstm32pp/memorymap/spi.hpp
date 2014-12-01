@@ -84,7 +84,7 @@ namespace spi {
       };
     }  // namespace cpol
 
-    namespace msrt {
+    namespace mstr {
       enum {
         POSITION = 2,
         MASK = 1 << POSITION
@@ -93,7 +93,7 @@ namespace spi {
         SLAVE_CONFIGURATION = 0 << POSITION,
         MASTER_CONFIGURATION = 1 << POSITION
       };
-    }  // namespace msrt
+    }  // namespace mstr
 
     namespace br {
       enum {
@@ -138,6 +138,10 @@ namespace spi {
       enum {
         POSITION = 8,
         MASK = 1 << POSITION
+      };
+      enum States {
+        INTERNAL_SLAVE_SELECT_DISABLED = 0 << POSITION,
+        INTERNAL_SLAVE_SELECT_ENABLED = 1 << POSITION
       };
     }  // namespace ssi
 

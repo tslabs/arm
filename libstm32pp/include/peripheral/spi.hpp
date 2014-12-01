@@ -52,15 +52,17 @@ namespace spi {
       static inline u16 getWord();
       static inline void enable();
       static inline void disable();
-      static inline bool candSendData();
+      static inline bool canSendData();
       static inline bool hasReceivedData();
+      static inline bool busy();
       static inline void configure(
           spi::cr1::cpha::States,
           spi::cr1::cpol::States,
-          spi::cr1::msrt::States,
+          spi::cr1::mstr::States,
           spi::cr1::br::States,
           spi::cr1::lsbfirst::States,
           spi::cr1::ssm::States,
+          spi::cr1::ssi::States,
           spi::cr1::rxonly::States,
           spi::cr1::dff::States,
           spi::cr1::crcnext::States,

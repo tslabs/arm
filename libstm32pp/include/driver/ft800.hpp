@@ -7,105 +7,106 @@
 #include "../peripheral/gpio.hpp"
 #include "peripheral/spi.hpp"
 
-namespace ft800 {
+namespace ft800
+{
 
   /* Host commands */
   enum {
-    FT_ACTIVE				= 0x00,			// Place FT800 in active state
-    FT_STANDBY			= 0x41,			// Place FT800 in Standby (clk running)
-    FT_SLEEP				= 0x42,			// Place FT800 in Sleep (clk off)
-    FT_PWRDOWN			= 0x50,			// Place FT800 in Power Down (core off)
-    FT_CLKEXT				= 0x44,			// Select external clock source
-    FT_CLKINT				= 0x48,			// Select internal clock source
-    FT_CLK48M				= 0x62,			// Select 48MHz PLL output
-    FT_CLK36M				= 0x61,			// Select 36MHz PLL output
-    FT_CORERST			= 0x68			// Reset core - all registers default and processors reset
+    FT_ACTIVE       = 0x00,      // Place FT800 in active state
+    FT_STANDBY      = 0x41,      // Place FT800 in Standby (clk running)
+    FT_SLEEP        = 0x42,      // Place FT800 in Sleep (clk off)
+    FT_PWRDOWN      = 0x50,      // Place FT800 in Power Down (core off)
+    FT_CLKEXT       = 0x44,      // Select external clock source
+    FT_CLKINT       = 0x48,      // Select internal clock source
+    FT_CLK48M       = 0x62,      // Select 48MHz PLL output
+    FT_CLK36M       = 0x61,      // Select 36MHz PLL output
+    FT_CORERST      = 0x68      // Reset core - all registers default and processors reset
   };
 
   /* Registers */
   enum {
-    REG_ID							    = 0x102400UL,
-    REG_FRAMES						  = 0x102404UL,
-    REG_CLOCK						    = 0x102408UL,
-    REG_FREQUENCY					  = 0x10240CUL,
-    REG_SCREENSHOT_EN				= 0x102410UL,
-    REG_SCREENSHOT_Y				= 0x102414UL,
-    REG_SCREENSHOT_START 		= 0x102418UL,
-    REG_CPURESET 					  = 0x10241CUL,
-    REG_TAP_CRC 					  = 0x102420UL,
-    REG_TAP_MASK 					  = 0x102424UL,
-    REG_HCYCLE 						  = 0x102428UL,
-    REG_HOFFSET 					  = 0x10242CUL,
-    REG_HSIZE 						  = 0x102430UL,
-    REG_HSYNC0 						  = 0x102434UL,
-    REG_HSYNC1 						  = 0x102438UL,
-    REG_VCYCLE 						  = 0x10243CUL,
-    REG_VOFFSET 					  = 0x102440UL,
-    REG_VSIZE 						  = 0x102444UL,
-    REG_VSYNC0 						  = 0x102448UL,
-    REG_VSYNC1 						  = 0x10244CUL,
-    REG_DLSWAP 						  = 0x102450UL,
-    REG_ROTATE 						  = 0x102454UL,
-    REG_OUTBITS 					  = 0x102458UL,
-    REG_DITHER 						  = 0x10245CUL,
-    REG_SWIZZLE 					  = 0x102460UL,
-    REG_CSPREAD 					  = 0x102464UL,
-    REG_PCLK_POL 					  = 0x102468UL,
-    REG_PCLK 						    = 0x10246CUL,
-    REG_TAG_X 						  = 0x102470UL,
-    REG_TAG_Y 						  = 0x102474UL,
-    REG_TAG 						    = 0x102478UL,
-    REG_VOL_PB 						  = 0x10247CUL,
-    REG_VOL_SOUND 					= 0x102480UL,
-    REG_SOUND 						  = 0x102484UL,
-    REG_PLAY 						    = 0x102488UL,
-    REG_GPIO_DIR 					  = 0x10248CUL,
-    REG_GPIO 						    = 0x102490UL,
-    REG_INT_FLAGS           = 0x102498UL,
-    REG_INT_EN              = 0x10249CUL,
-    REG_INT_MASK            = 0x1024A0UL,
-    REG_PLAYBACK_START      = 0x1024A4UL,
-    REG_PLAYBACK_LENGTH     = 0x1024A8UL,
-    REG_PLAYBACK_READPTR    = 0x1024ACUL,
-    REG_PLAYBACK_FREQ       = 0x1024B0UL,
-    REG_PLAYBACK_FORMAT     = 0x1024B4UL,
-    REG_PLAYBACK_LOOP       = 0x1024B8UL,
-    REG_PLAYBACK_PLAY       = 0x1024BCUL,
-    REG_PWM_HZ              = 0x1024C0UL,
-    REG_PWM_DUTY            = 0x1024C4UL,
-    REG_MACRO_0             = 0x1024C8UL,
-    REG_MACRO_1             = 0x1024CCUL,
-    REG_SCREENSHOT_BUSY			= 0x1024D8UL,
-    REG_CMD_READ            = 0x1024E4UL,
-    REG_CMD_WRITE           = 0x1024E8UL,
-    REG_CMD_DL              = 0x1024ECUL,
-    REG_TOUCH_MODE          = 0x1024F0UL,
-    REG_TOUCH_ADC_MODE      = 0x1024F4UL,
-    REG_TOUCH_CHARGE        = 0x1024F8UL,
-    REG_TOUCH_SETTLE        = 0x1024FCUL,
-    REG_TOUCH_OVERSAMPLE    = 0x102500UL,
-    REG_TOUCH_RZTHRESH      = 0x102504UL,
-    REG_TOUCH_RAW_XY        = 0x102508UL,
-    REG_TOUCH_RZ            = 0x10250CUL,
-    REG_TOUCH_SCREEN_XY     = 0x102510UL,
-    REG_TOUCH_TAG_XY        = 0x102514UL,
-    REG_TOUCH_TAG           = 0x102518UL,
-    REG_TOUCH_TRANSFORM_A   = 0x10251CUL,
-    REG_TOUCH_TRANSFORM_B   = 0x102520UL,
-    REG_TOUCH_TRANSFORM_C   = 0x102524UL,
-    REG_TOUCH_TRANSFORM_D   = 0x102528UL,
-    REG_TOUCH_TRANSFORM_E   = 0x10252CUL,
-    REG_TOUCH_TRANSFORM_F   = 0x102530UL,
-    REG_SCREENSHOT_READ			= 0x102554UL,
-    REG_TRIM						    = 0x10256CUL,
-    REG_TOUCH_DIRECT_XY 		= 0x102574UL,
-    REG_TOUCH_DIRECT_Z1Z2 	= 0x102578UL,
-    REG_TRACKER						  = 0x109000UL
+    REG_ID                  = 0x102400,
+    REG_FRAMES              = 0x102404,
+    REG_CLOCK               = 0x102408,
+    REG_FREQUENCY           = 0x10240C,
+    REG_SCREENSHOT_EN       = 0x102410,
+    REG_SCREENSHOT_Y        = 0x102414,
+    REG_SCREENSHOT_START    = 0x102418,
+    REG_CPURESET            = 0x10241C,
+    REG_TAP_CRC             = 0x102420,
+    REG_TAP_MASK            = 0x102424,
+    REG_HCYCLE              = 0x102428,
+    REG_HOFFSET             = 0x10242C,
+    REG_HSIZE               = 0x102430,
+    REG_HSYNC0              = 0x102434,
+    REG_HSYNC1              = 0x102438,
+    REG_VCYCLE              = 0x10243C,
+    REG_VOFFSET             = 0x102440,
+    REG_VSIZE               = 0x102444,
+    REG_VSYNC0              = 0x102448,
+    REG_VSYNC1              = 0x10244C,
+    REG_DLSWAP              = 0x102450,
+    REG_ROTATE              = 0x102454,
+    REG_OUTBITS             = 0x102458,
+    REG_DITHER              = 0x10245C,
+    REG_SWIZZLE             = 0x102460,
+    REG_CSPREAD             = 0x102464,
+    REG_PCLK_POL            = 0x102468,
+    REG_PCLK                = 0x10246C,
+    REG_TAG_X               = 0x102470,
+    REG_TAG_Y               = 0x102474,
+    REG_TAG                 = 0x102478,
+    REG_VOL_PB              = 0x10247C,
+    REG_VOL_SOUND           = 0x102480,
+    REG_SOUND               = 0x102484,
+    REG_PLAY                = 0x102488,
+    REG_GPIO_DIR            = 0x10248C,
+    REG_GPIO                = 0x102490,
+    REG_INT_FLAGS           = 0x102498,
+    REG_INT_EN              = 0x10249C,
+    REG_INT_MASK            = 0x1024A0,
+    REG_PLAYBACK_START      = 0x1024A4,
+    REG_PLAYBACK_LENGTH     = 0x1024A8,
+    REG_PLAYBACK_READPTR    = 0x1024AC,
+    REG_PLAYBACK_FREQ       = 0x1024B0,
+    REG_PLAYBACK_FORMAT     = 0x1024B4,
+    REG_PLAYBACK_LOOP       = 0x1024B8,
+    REG_PLAYBACK_PLAY       = 0x1024BC,
+    REG_PWM_HZ              = 0x1024C0,
+    REG_PWM_DUTY            = 0x1024C4,
+    REG_MACRO_0             = 0x1024C8,
+    REG_MACRO_1             = 0x1024CC,
+    REG_SCREENSHOT_BUSY     = 0x1024D8,
+    REG_CMD_READ            = 0x1024E4,
+    REG_CMD_WRITE           = 0x1024E8,
+    REG_CMD_DL              = 0x1024EC,
+    REG_TOUCH_MODE          = 0x1024F0,
+    REG_TOUCH_ADC_MODE      = 0x1024F4,
+    REG_TOUCH_CHARGE        = 0x1024F8,
+    REG_TOUCH_SETTLE        = 0x1024FC,
+    REG_TOUCH_OVERSAMPLE    = 0x102500,
+    REG_TOUCH_RZTHRESH      = 0x102504,
+    REG_TOUCH_RAW_XY        = 0x102508,
+    REG_TOUCH_RZ            = 0x10250C,
+    REG_TOUCH_SCREEN_XY     = 0x102510,
+    REG_TOUCH_TAG_XY        = 0x102514,
+    REG_TOUCH_TAG           = 0x102518,
+    REG_TOUCH_TRANSFORM_A   = 0x10251C,
+    REG_TOUCH_TRANSFORM_B   = 0x102520,
+    REG_TOUCH_TRANSFORM_C   = 0x102524,
+    REG_TOUCH_TRANSFORM_D   = 0x102528,
+    REG_TOUCH_TRANSFORM_E   = 0x10252C,
+    REG_TOUCH_TRANSFORM_F   = 0x102530,
+    REG_SCREENSHOT_READ     = 0x102554,
+    REG_TRIM                = 0x10256C,
+    REG_TOUCH_DIRECT_XY     = 0x102574,
+    REG_TOUCH_DIRECT_Z1Z2   = 0x102578,
+    REG_TRACKER             = 0x109000
   };
 
   /* Chip identifier */
   enum {
-    FT800_CHIPID	= 0x00010008UL
+    FT800_CHIPID  = 0x00010008
   };
 
   /* Graphics commands constants */
@@ -209,92 +210,93 @@ namespace ft800 {
 
   /* GPIO bit macros */
   enum {
-    FT_GPIO0	  = 0,
-    FT_AUD_EN	  = 1, 	// default GPIO for audio shutdown: 1 - enable, 0 - disable
-    FT_DISP_EN  = 7 	// default GPIO for display enable: 1 - enable, 0 - disable
+    FT_GPIO0    = 0,
+    FT_AUD_EN   = 1,   // default GPIO for audio shutdown: 1 - enable, 0 - disable
+    FT_DISP_EN  = 7   // default GPIO for display enable: 1 - enable, 0 - disable
   };
 
   /* Memory definitions */
   enum {
-    FT_RAM_G						= 0x000000UL,
-    FT_ROM_CHIPID				= 0x0C0000UL,
-    FT_ROM_FONT					= 0x0BB23CUL,
-    FT_ROM_FONT_ADDR		= 0x0FFFFCUL,
-    FT_RAM_DL						= 0x100000UL,
-    FT_RAM_PAL					= 0x102000UL,
-    FT_RAM_CMD					= 0x108000UL,
-    FT_RAM_SCREENSHOT		= 0x1C2000UL
+    FT_RAM_G            = 0x000000,
+    FT_ROM_CHIPID       = 0x0C0000,
+    FT_ROM_FONT         = 0x0BB23C,
+    FT_ROM_FONT_ADDR    = 0x0FFFFC,
+    FT_RAM_DL           = 0x100000,
+    FT_RAM_PAL          = 0x102000,
+    FT_RAM_CMD          = 0x108000,
+    FT_RAM_SCREENSHOT   = 0x1C2000,
+    FT_FONT_TABLE       = 0x0FFFFC
   };
 
   enum {
 /* Memory buffer sizes */
-    FT_RAM_G_SIZE				= 256*1024L,
-    FT_CMDFIFO_SIZE			= 	4*1024L,
-    FT_RAM_DL_SIZE			= 	8*1024L,
-    FT_RAM_PAL_SIZE			= 	1*1024L
+    FT_RAM_G_SIZE        = 256*1024,
+    FT_CMDFIFO_SIZE      =   4*1024,
+    FT_RAM_DL_SIZE       =   8*1024,
+    FT_RAM_PAL_SIZE      =   1*1024
   };
 
   /* Coprocessor related commands */
   enum {
-    CMD_APPEND           			= 0xFFFFFF1EUL,
-    CMD_BGCOLOR          			= 0xFFFFFF09UL,
-    CMD_BITMAP_TRANSFORM 			= 0xFFFFFF21UL,
-    CMD_BUTTON           			= 0xFFFFFF0DUL,
-    CMD_CALIBRATE        			= 0xFFFFFF15UL,
-    CMD_CLOCK            			= 0xFFFFFF14UL,
-    CMD_COLDSTART        			= 0xFFFFFF32UL,
-    CMD_CRC              			= 0xFFFFFF03UL,
-    CMD_DIAL             			= 0xFFFFFF2DUL,
-    CMD_DLSTART          			= 0xFFFFFF00UL,
-    CMD_EXECUTE          			= 0xFFFFFF07UL,
-    CMD_FGCOLOR          			= 0xFFFFFF0AUL,
-    CMD_GAUGE            			= 0xFFFFFF13UL,
-    CMD_GETMATRIX        			= 0xFFFFFF33UL,
-    CMD_GETPOINT         			= 0xFFFFFF08UL,
-    CMD_GETPROPS         			= 0xFFFFFF25UL,
-    CMD_GETPTR           			= 0xFFFFFF23UL,
-    CMD_GRADCOLOR        			= 0xFFFFFF34UL,
-    CMD_GRADIENT         			= 0xFFFFFF0BUL,
-    CMD_HAMMERAUX        			= 0xFFFFFF04UL,
-    CMD_IDCT             			= 0xFFFFFF06UL,
-    CMD_INFLATE          			= 0xFFFFFF22UL,
-    CMD_INTERRUPT        			= 0xFFFFFF02UL,
-    CMD_KEYS             			= 0xFFFFFF0EUL,
-    CMD_LOADIDENTITY     			= 0xFFFFFF26UL,
-    CMD_LOADIMAGE        			= 0xFFFFFF24UL,
-    CMD_LOGO             			= 0xFFFFFF31UL,
-    CMD_MARCH            			= 0xFFFFFF05UL,
-    CMD_MEMCPY           			= 0xFFFFFF1DUL,
-    CMD_MEMCRC           			= 0xFFFFFF18UL,
-    CMD_MEMSET           			= 0xFFFFFF1BUL,
-    CMD_MEMWRITE         			= 0xFFFFFF1AUL,
-    CMD_MEMZERO          			= 0xFFFFFF1CUL,
-    CMD_NUMBER           			= 0xFFFFFF2EUL,
-    CMD_PROGRESS         			= 0xFFFFFF0FUL,
-    CMD_REGREAD          			= 0xFFFFFF19UL,
-    CMD_ROTATE           			= 0xFFFFFF29UL,
-    CMD_SCALE            			= 0xFFFFFF28UL,
-    CMD_SCREENSAVER      			= 0xFFFFFF2FUL,
-    CMD_SCROLLBAR        			= 0xFFFFFF11UL,
-    CMD_SETFONT          			= 0xFFFFFF2BUL,
-    CMD_SETMATRIX        			= 0xFFFFFF2AUL,
-    CMD_SKETCH           			= 0xFFFFFF30UL,
-    CMD_SLIDER           			= 0xFFFFFF10UL,
-    CMD_SNAPSHOT         			= 0xFFFFFF1FUL,
-    CMD_SPINNER          			= 0xFFFFFF16UL,
-    CMD_STOP             			= 0xFFFFFF17UL,
-    CMD_SWAP             			= 0xFFFFFF01UL,
-    CMD_TEXT             			= 0xFFFFFF0CUL,
-    CMD_TOGGLE           			= 0xFFFFFF12UL,
-    CMD_TOUCH_TRANSFORM  			= 0xFFFFFF20UL,
-    CMD_TRACK            			= 0xFFFFFF2CUL,
-    CMD_TRANSLATE        			= 0xFFFFFF27UL
+    CMD_APPEND                 = 0xFFFFFF1E,
+    CMD_BGCOLOR                = 0xFFFFFF09,
+    CMD_BITMAP_TRANSFORM       = 0xFFFFFF21,
+    CMD_BUTTON                 = 0xFFFFFF0D,
+    CMD_CALIBRATE              = 0xFFFFFF15,
+    CMD_CLOCK                  = 0xFFFFFF14,
+    CMD_COLDSTART              = 0xFFFFFF32,
+    CMD_CRC                    = 0xFFFFFF03,
+    CMD_DIAL                   = 0xFFFFFF2D,
+    CMD_DLSTART                = 0xFFFFFF00,
+    CMD_EXECUTE                = 0xFFFFFF07,
+    CMD_FGCOLOR                = 0xFFFFFF0A,
+    CMD_GAUGE                  = 0xFFFFFF13,
+    CMD_GETMATRIX              = 0xFFFFFF33,
+    CMD_GETPOINT               = 0xFFFFFF08,
+    CMD_GETPROPS               = 0xFFFFFF25,
+    CMD_GETPTR                 = 0xFFFFFF23,
+    CMD_GRADCOLOR              = 0xFFFFFF34,
+    CMD_GRADIENT               = 0xFFFFFF0B,
+    CMD_HAMMERAUX              = 0xFFFFFF04,
+    CMD_IDCT                   = 0xFFFFFF06,
+    CMD_INFLATE                = 0xFFFFFF22,
+    CMD_INTERRUPT              = 0xFFFFFF02,
+    CMD_KEYS                   = 0xFFFFFF0E,
+    CMD_LOADIDENTITY           = 0xFFFFFF26,
+    CMD_LOADIMAGE              = 0xFFFFFF24,
+    CMD_LOGO                   = 0xFFFFFF31,
+    CMD_MARCH                  = 0xFFFFFF05,
+    CMD_MEMCPY                 = 0xFFFFFF1D,
+    CMD_MEMCRC                 = 0xFFFFFF18,
+    CMD_MEMSET                 = 0xFFFFFF1B,
+    CMD_MEMWRITE               = 0xFFFFFF1A,
+    CMD_MEMZERO                = 0xFFFFFF1C,
+    CMD_NUMBER                 = 0xFFFFFF2E,
+    CMD_PROGRESS               = 0xFFFFFF0F,
+    CMD_REGREAD                = 0xFFFFFF19,
+    CMD_ROTATE                 = 0xFFFFFF29,
+    CMD_SCALE                  = 0xFFFFFF28,
+    CMD_SCREENSAVER            = 0xFFFFFF2F,
+    CMD_SCROLLBAR              = 0xFFFFFF11,
+    CMD_SETFONT                = 0xFFFFFF2B,
+    CMD_SETMATRIX              = 0xFFFFFF2A,
+    CMD_SKETCH                 = 0xFFFFFF30,
+    CMD_SLIDER                 = 0xFFFFFF10,
+    CMD_SNAPSHOT               = 0xFFFFFF1F,
+    CMD_SPINNER                = 0xFFFFFF16,
+    CMD_STOP                   = 0xFFFFFF17,
+    CMD_SWAP                   = 0xFFFFFF01,
+    CMD_TEXT                   = 0xFFFFFF0C,
+    CMD_TOGGLE                 = 0xFFFFFF12,
+    CMD_TOUCH_TRANSFORM        = 0xFFFFFF20,
+    CMD_TRACK                  = 0xFFFFFF2C,
+    CMD_TRANSLATE              = 0xFFFFFF27
   };
 
   /* Coprocessor reset */
   enum {
-    FT_RESET_HOLD_COPROCESSOR		  = 1,
-    FT_RESET_RELEASE_COPROCESSOR	= 0
+    FT_RESET_HOLD_COPROCESSOR     = 1,
+    FT_RESET_RELEASE_COPROCESSOR  = 0
   };
 
   /* Widget commands */
@@ -317,15 +319,50 @@ namespace ft800 {
 
   /* Display rotation */
   enum {
-    FT_DISPLAY_0	  = 0,	//0 degrees rotation
-    FT_DISPLAY_180  = 1	  //180 degrees rotation
+    FT_DISPLAY_0    = 0,  //0 degrees rotation
+    FT_DISPLAY_180  = 1    //180 degrees rotation
   };
 
   /* Audio sample types */
   enum {
-    FT_LINEAR_SAMPLES   = 0,	//8bit signed samples
-    FT_ULAW_SAMPLES     = 1,	//8bit ulaw samples
-    FT_ADPCM_SAMPLES    = 2	  //4bit ima adpcm samples
+    FT_LINEAR_SAMPLES   = 0,  //8bit signed samples
+    FT_ULAW_SAMPLES     = 1,  //8bit ulaw samples
+    FT_ADPCM_SAMPLES    = 2    //4bit ima adpcm samples
+  };
+
+  /* Synthesized sounds */
+  enum {
+    FT_SILENCE      = 0x00,
+    FT_SQUAREWAVE   = 0x01,
+    FT_SINEWAVE     = 0x02,
+    FT_SAWTOOTH     = 0x03,
+    FT_TRIANGLE     = 0x04,
+    FT_BEEPING      = 0x05,
+    FT_ALARM        = 0x06,
+    FT_WARBLE       = 0x07,
+    FT_CAROUSEL     = 0x08,
+    FT_PIPS         = 0x0F,
+    FT_HARP         = 0x40,
+    FT_XYLOPHONE    = 0x41,
+    FT_TUBA         = 0x42,
+    FT_GLOCKENSPIEL = 0x43,
+    FT_ORGAN        = 0x44,
+    FT_TRUMPET      = 0x45,
+    FT_PIANO        = 0x46,
+    FT_CHIMES       = 0x47,
+    FT_MUSICBOX     = 0x48,
+    FT_BELL         = 0x49,
+    FT_CLICK        = 0x50,
+    FT_SWITCH       = 0x51,
+    FT_COWBELL      = 0x52,
+    FT_NOTCH        = 0x53,
+    FT_HIHAT        = 0x54,
+    FT_KICKDRUM     = 0x55,
+    FT_POP          = 0x56,
+    FT_CLACK        = 0x57,
+    FT_CHACK        = 0x58,
+    FT_MUTE         = 0x60,
+    FT_UNMUTE       = 0x61
   };
 
   /* Synthesized sound frequencies, midi notes */
@@ -420,14 +457,15 @@ namespace ft800 {
     FT_MIDI_C8      = 108
   };
 
+  /* Register set struct type */
   struct REGSET
   {
     u32 addr;
     u32 data;
   };
 
-/* Common graphics mode parameters */
-// WQVGA 480x272
+  /* Common graphics mode parameters */
+  // WQVGA 480x272
   const REGSET wqvga_mode[] = {
     REG_VSYNC0,   0,
     REG_VSYNC1,   10,
@@ -445,7 +483,7 @@ namespace ft800 {
     0, 0
   };
 
-// QVGA 320x240
+  // QVGA 320x240
   const REGSET qvga_mode[] = {
     REG_VSYNC0,   0,
     REG_VSYNC1,   2,
@@ -491,7 +529,7 @@ namespace ft800 {
     private:
       Functions();
   };
-}
+}  // namespace ft800
 
 /* FT800 graphics engine specific macros for static display list generation */
 #define VERTEX2F(x,y) ((1UL<<30)|(((x)&32767UL)<<15)|(((y)&32767UL)<<0))

@@ -134,7 +134,7 @@ namespace dcmi {
   /**
    * @brief Enables the capture complete interrupt.
    */
-  void Functions::enableCaptureCompleInterrupt()
+  void Functions::enableCaptureCompleteInterrupt()
   {
     DCMI_REGS->IER |= ier::frame::
         CAPTURE_COMPLETE_INTERRUPT_ENABLED;
@@ -305,6 +305,35 @@ namespace dcmi {
       u32 Height,
       Format FORMAT)
   {
+    DCMI_REGS->CWSTRTR =
+        ((Left * FORMAT) << cwstrtr::hoffcnt::POSITION) +
+            (Top << cwstrtr::vst::POSITION);
+
+    DCMI_REGS->CWSIZER =
+        ((FORMAT * Width - 1) << cwsizer::capcnt::POSITION) +
+            ((Height - 1) << cwsizer::vline::POSITION);
+  }
+
+  /**
+   * @brief Configures the size of the cropped image with constant parameters.
+   * @note  Image indices start at 0.
+   */
+  template<
+      u32 Left,
+      u32 Top,
+      u32 Width,
+      u32 Height,
+      Format FORMAT
+  >
+  void Functions::setCropDimensions()
+  {
+    static_assert(
+        (Left < 2048) && (Top < 2048) &&
+        (Width >= 1) && (Width <= 2048) &&
+        (Height >= 1) && (Height <= 2048),
+        "Max image size is 2048 x 2048 pixels"
+    );
+
     DCMI_REGS->CWSTRTR =
         ((Left * FORMAT) << cwstrtr::hoffcnt::POSITION) +
             (Top << cwstrtr::vst::POSITION);

@@ -44,3 +44,9 @@ typedef uint64_t u64;
 
 // Read/Write permission
 #define __RW volatile
+
+enum BOOL
+{
+  FALSE = 0,
+  TRUE  = 1
+};

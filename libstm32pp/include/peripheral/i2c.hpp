@@ -49,16 +49,18 @@ namespace i2c {
         FREQUENCY = clk::APB1
       };
 
+    // Configuration
       static inline void configure(
-          i2c::cr1::pe::States,
+          i2c::cr1::smbus::States,
+          i2c::cr1::smbtype::States,
+          i2c::cr1::enarp::States,
           i2c::cr1::enpec::States,
           i2c::cr1::engc::States,
           i2c::cr1::nostretch::States,
           i2c::cr2::iterren::States,
           i2c::cr2::itevten::States,
           i2c::cr2::itbufen::States,
-          i2c::cr2::dmaen::States,
-          i2c::cr2::last::States);
+          i2c::cr2::dmaen::States);
 
       template<
           i2c::ccr::f_s::States,
@@ -67,12 +69,28 @@ namespace i2c {
       >
       static inline void configureClock();
 
+      static inline void configureOwnAddress7(u8 addr);
+      static inline void configureOwnAddress7Dual(u8 addr1, u8 addr2);
+      static inline void configureOwnAddress10(u16 addr);
+
+    // Init
+      static inline void reset();
+
+    // Enable/disable
       static inline void enableClock();
       static inline void disableClock();
       static inline void enablePeripheral();
       static inline void disablePeripheral();
+      static inline void unmaskEventInterrupts();
+      static inline void unmaskErrorInterrupts();
+      static inline void enableACK();
+      static inline void disableACK();
+
+    // Send events
       static inline void sendStart();
       static inline void sendStop();
+
+    // Data
       static inline void sendData(u8 const data);
       static inline u8 getData();
 
@@ -80,8 +98,13 @@ namespace i2c {
           u8 const add,
           operation::E op);
 
-      static inline void enableACK();
-      static inline void disableACK();
+    // Clear flags
+      static inline void clearPendingEventInterrupts();
+      static inline void clearPendingErrorInterrupts();
+      static inline void clearAF();
+
+    // Get statuses
+      static inline u32 getLastEvent();
       static inline bool hasSentStart();
       static inline bool hasSentStop();
       static inline bool hasAddressTransmitted();
@@ -89,15 +112,16 @@ namespace i2c {
       static inline bool canSendData();
       static inline bool hasTranferFinished();
       static inline bool isTheBusBusy();
+
+    // High level functions
       static void writeSlaveRegister(
           u8 const slaveAddress,
           u8 const registerAddress,
           u8 const value);
+
       static u8 readSlaveRegister(
           u8 const slaveAddress,
           u8 const registerAddress);
-
-      // TODO I2C state machine functions
 
     private:
       Standard();
@@ -107,5 +131,6 @@ namespace i2c {
 // High-level access to the peripheral
 typedef i2c::Standard<i2c::I2C1> I2C1;
 typedef i2c::Standard<i2c::I2C2> I2C2;
+typedef i2c::Standard<i2c::I2C3> I2C3;
 
 #include "../../bits/i2c.tcc"

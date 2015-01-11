@@ -399,8 +399,7 @@ namespace gpio {
   void Pin<P, N>::setAlternateFunction(afr::States Alternate)
   {
     reinterpret_cast<Registers*>(P)->AFR[N > 7 ? 1 : 0] &=
-        ~(afr::MASK <<
-            afr::POSITION * (N > 7 ? (N - 8) : N));
+        ~(afr::MASK << afr::POSITION * (N > 7 ? (N - 8) : N));
 
     reinterpret_cast<Registers*>(P)->AFR[N > 7 ? 1 : 0] |=
         Alternate << (afr::POSITION * (N > 7 ? (N - 8) : N));

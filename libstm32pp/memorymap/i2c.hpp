@@ -129,8 +129,8 @@ namespace i2c {
         MASK = 1 << POSITION
       };
       enum States {
-        CLOCK_STRETCHING_DISABLED = 0 << POSITION,
-        CLOCK_STRETCHING_ENABLED = 1 << POSITION,
+        CLOCK_STRETCHING_ENABLED = 0 << POSITION,
+        CLOCK_STRETCHING_DISABLED = 1 << POSITION,
       };
     }  // namespace nostretch
 
@@ -283,12 +283,50 @@ namespace i2c {
     enum {
       OFFSET = 0x08
     };
+    namespace add10 {
+      enum {
+        POSITION = 0,
+        MASK = 0b1111111111 << POSITION
+      };
+    }  // namespace add10
+    namespace add7 {
+      enum {
+        POSITION = 1,
+        MASK = 0b1111111 << POSITION
+      };
+    }  // namespace add7
+    namespace addmode {
+      enum {
+        POSITION = 15,
+        MASK = 1 << POSITION
+      };
+      enum States {
+        MODE_7_BIT_SLAVE_ADDRESS = 0 << POSITION,
+        MODE_10_BIT_SLAVE_ADDRESS = 1 << POSITION,
+      };
+    }  // namespace addmode
   }  // namespace oar1
 
   namespace oar2 {
     enum {
       OFFSET = 0x0C
     };
+    namespace endual {
+      enum {
+        POSITION = 0,
+        MASK = 1 << POSITION
+      };
+      enum States {
+        DUAL_ADDRESSING_MODE_DISABLE = 0,
+        DUAL_ADDRESSING_MODE_ENABLE = 1
+      };
+    } // namespace endual
+    namespace add7 {
+      enum {
+        POSITION = 1,
+        MASK = 0b1111111 << POSITION
+      };
+    }  // namespace add7
   }  // namespace oar2
 
   namespace dr {

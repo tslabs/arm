@@ -59,7 +59,7 @@ namespace dcmi {
       static inline bool isInFrameSynchronization();
       static inline bool hasBufferOverrunOccurred();
       static inline bool hasErrorSynchronizationOccurred();
-      static inline void enableCaptureCompleInterrupt();
+      static inline void enableCaptureCompleteInterrupt();
       static inline void disableCaptureCompleteInterrupt();
       static inline void clearCaptureCompleteFlag();
       static inline void enableBufferOverrunInterrupt();
@@ -96,6 +96,15 @@ namespace dcmi {
           u32 Height,
           Format FORMAT);
 
+      template<
+          u32,
+          u32,
+          u32,
+          u32,
+          Format
+      >
+      static inline void setCropDimensions();
+      
     private:
       Functions();
   };

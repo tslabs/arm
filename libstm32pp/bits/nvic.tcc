@@ -41,6 +41,15 @@ namespace nvic {
   }
 
   /**
+   * @brief Clears a pending interrupt request.
+   */
+  template<irqn::E I>
+  void Functions::clearPendingIrq(void)
+  {
+    reinterpret_cast<Registers*>(ADDRESS)->ICPR[I >> 5] = 1 << (I % 32);
+  }
+
+  /**
    * @brief Sets the interrupt priority level.
    * @note  A lower priority number, means higher priority.
    */

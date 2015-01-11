@@ -43,10 +43,16 @@ namespace nvic {
           nvic::irqn::E I
       >
       static inline void enableIrq();
+      
       template<
           nvic::irqn::E I
       >
       static inline void disableIrq();
+
+      template<
+          nvic::irqn::E I
+      >
+      static inline void clearPendingIrq();
 
       template<
           nvic::irqn::E I, u8 P

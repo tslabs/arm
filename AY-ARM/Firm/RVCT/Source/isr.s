@@ -8,9 +8,8 @@
 
 TIM3_IRQHandler proc
             ldr r2, =0x40020400
-            ldr r1, [r2, #0x10]     ; GPIOB->IDR
-            mov r0, r1
-            and r1, r1, #3
+            ldr r0, [r2, #0x10]     ; GPIOB->IDR
+            and r1, r0, #3
             cmp r1, #2
             bne l01
 
@@ -45,7 +44,7 @@ l02
 
 ; write address (out #FFFD)
             push {lr, r2}
-			bl WAddr
+            bl WAddr
 l03
             bl RReg
             pop {lr, r2}

@@ -1,10 +1,10 @@
-
+﻿
 // Audio output functions definitions
 //
 // (c) 2012, TS-Labs inc.
 // All rights fucked out
 //
-// I wtedy wrescie sam tez wlacze sie do akcji
+// I wtedy wreszcie sam też włączę się do akcji
 
 #pragma once
 #pragma anon_unions

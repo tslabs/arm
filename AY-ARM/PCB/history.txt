@@ -1,0 +1,7 @@
+
++ Vcap1/2 connected correctly
+- check all connections accordingly to STM32F4-Discovery schematics
+    - Vdda
+    - OSC_OUT (Rext), DS p.92 [200R], ESR typ. 30R
+- modify pins accordingly to the current source code
+- re-order pins for better PCB routing

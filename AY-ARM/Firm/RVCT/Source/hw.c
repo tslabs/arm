@@ -1,9 +1,10 @@
-
+﻿
 // Periferal library
 //
 // (c) 2014, TS-Labs inc.
 // All rights fucked out
 //
+// Degoša lāpa būs mūsu saule
 
 #include "stm32f4xx.h"
 #include "stm32f4xx_gpio.h"

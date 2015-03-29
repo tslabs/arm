@@ -48,37 +48,30 @@ namespace gpio {
 
   struct Registers {
 #ifdef STM32F1XX
-      __RW
-      u32 CR[2];   // 0x00: Configuration
-      __RW
-      u32 IDR;// 0x08: Input data
-      __RW
-      u32 ODR;// 0x0C: Output data
-      __RW
-      u32 BSRR;// 0x10: Bit set/reset
-      __RW
-      u32 BRR;// 0x14: Bit reset
-      __RW
-      u32 LCKR;// 0x18: Configuration lock
+      __RW u32 CR[2];   // 0x00: Configuration
+      __RW u32 IDR;// 0x08: Input data
+      __RW u32 ODR;// 0x0C: Output data
+      __RW u32 BSRR;// 0x10: Bit set/reset
+      __RW u32 BRR;// 0x14: Bit reset
+      __RW u32 LCKR;// 0x18: Configuration lock
 #else // STM32F1XX
-      __RW
-      u32 MODER;   // 0x00: Mode
-      __RW
-      u32 OTYPER;   // 0x04: Output type
-      __RW
-      u32 OSPEEDR;   // 0x08: Output speed
-      __RW
-      u32 PUPDR;   // 0x0C: Pull-up/pull-down
-      __RW
-      u32 IDR;   // 0x10: Input data
-      __RW
-      u32 ODR;   // 0x14: Output data
-      __RW
-      u32 BSRR;   // 0x18: Bit set/reset
-      __RW
-      u32 LCKR;   // 0x1C: Configuration lock
-      __RW
-      u32 AFR[2];   // 0x20: Alternate function
+      union
+      {
+        __RW u32 MODER;   // 0x00: Mode
+        __RW u16 MODERH[2];
+      };
+      __RW u32 OTYPER;   // 0x04: Output type
+      __RW u32 OSPEEDR;   // 0x08: Output speed
+      __RW u32 PUPDR;   // 0x0C: Pull-up/pull-down
+      __RW u32 IDR;   // 0x10: Input data
+      union
+      {
+        __RW u32 ODR;   // 0x14: Output data
+        __RW u8 ODRB[4];
+      };
+      __RW u32 BSRR;   // 0x18: Bit set/reset
+      __RW u32 LCKR;   // 0x1C: Configuration lock
+      __RW u32 AFR[2];   // 0x20: Alternate function
 #endif  // STM32F1XX
   };
 

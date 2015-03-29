@@ -33,4 +33,14 @@ namespace dac {
   {
     RCC::disableClocks<rcc::apb1enr::DAC>();
   }
+
+  void Functions::enablePeripheral()
+  {
+    DAC_REGS->CR |= cr::dac1::enable::ENABLED | cr::dac2::enable::ENABLED;
+  }
+  
+  void Functions::disablePeripheral()
+  {
+    DAC_REGS->CR |= cr::dac1::enable::DISABLED | cr::dac2::enable::DISABLED;
+  }
 } // namespace dac

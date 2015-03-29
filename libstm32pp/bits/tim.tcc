@@ -716,7 +716,7 @@ namespace tim {
 
   /**
    * @brief Configures the timer to generate a periodic interrupt.
-   * @note  This functions doesn't starts the counter.
+   * @note  This functions doesn't start the counter.
    */
   template<Address T>
   template<u32 Frequency>

@@ -104,6 +104,7 @@ namespace gpio {
         gpio::cr::States);
 
     static inline void setValue(u32 const value);
+    static inline void setValue(u8 const b, u8 const value);
     static inline u32 getValue();
 
     private:
@@ -147,6 +148,7 @@ namespace gpio {
       static inline void enableClock();
       static inline void disableClock();
       static inline void setOutput(u16 const);
+      static inline void setOutput(u8 const b, u8 const value);
       static inline u16 getInput();
 
       static inline void setModes(
@@ -158,6 +160,17 @@ namespace gpio {
           gpio::moder::States,
           gpio::moder::States,
           gpio::moder::States,
+          gpio::moder::States,
+          gpio::moder::States,
+          gpio::moder::States,
+          gpio::moder::States,
+          gpio::moder::States,
+          gpio::moder::States,
+          gpio::moder::States,
+          gpio::moder::States);
+
+      static inline void setModes(
+          u8 const,
           gpio::moder::States,
           gpio::moder::States,
           gpio::moder::States,

@@ -61,6 +61,236 @@ namespace dac {
     enum {
       OFFSET = 0x00
     };
+    
+    namespace dac1 {
+      namespace enable {
+        enum {
+          POSITION = 0,
+          MASK = 0b1 << POSITION
+        };
+      
+        enum States {
+          DISABLED = 0 << POSITION,
+          ENABLED = 1 << POSITION
+        };
+      } // namespace enable
+      
+      namespace boff {
+        enum {
+          POSITION = 1,
+          MASK = 0b1 << POSITION
+        };
+      
+        enum States {
+          DISABLED = 0 << POSITION,
+          ENABLED = 1 << POSITION
+        };
+      } // namespace boff
+      
+      namespace ten {
+        enum {
+          POSITION = 2,
+          MASK = 0b1 << POSITION
+        };
+      
+        enum States {
+          DISABLED = 0 << POSITION,
+          ENABLED = 1 << POSITION
+        };
+      } // namespace ten
+      
+      namespace tsel {
+        enum {
+          POSITION = 3,
+          MASK = 0b111 << POSITION
+        };
+      
+        enum States {
+          TIM6TRGO = 0 << POSITION,
+          TIM8TRGO = 1 << POSITION,
+          TIM7TRGO = 2 << POSITION,
+          TIM5TRGO = 3 << POSITION,
+          TIM2TRGO = 4 << POSITION,
+          TIM4TRGO = 5 << POSITION,
+          EXTI9 = 6 << POSITION,
+          SWTRG = 7 << POSITION
+        };
+      } // namespace tsel
+      
+      namespace wave {
+        enum {
+          POSITION = 6,
+          MASK = 0b11 << POSITION
+        };
+      
+        enum States {
+          DISABLED = 0 << POSITION,
+          NOISE = 1 << POSITION,
+          TRIANGLE = 2 << POSITION
+        };
+      } // namespace wave
+      
+      namespace mamp {
+        enum {
+          POSITION = 8,
+          MASK = 0b1111 << POSITION
+        };
+      
+        enum States {
+          UMSK0 = 0 << POSITION,
+          UMSK1_0 = 1 << POSITION,
+          UMSK2_0 = 2 << POSITION,
+          UMSK3_0 = 3 << POSITION,
+          UMSK4_0 = 4 << POSITION,
+          UMSK5_0 = 5 << POSITION,
+          UMSK6_0 = 6 << POSITION,
+          UMSK7_0 = 7 << POSITION,
+          UMSK8_0 = 8 << POSITION,
+          UMSK9_0 = 9 << POSITION,
+          UMSK10_0 = 10 << POSITION,
+          UMSK11_0 = 11 << POSITION
+        };
+      } // namespace mamp
+      
+      namespace dma {
+        enum {
+          POSITION = 12,
+          MASK = 0b1 << POSITION
+        };
+      
+        enum States {
+          DISABLED = 0 << POSITION,
+          ENABLED = 1 << POSITION
+        };
+      } // namespace dma
+      
+      namespace dmaudrie {
+        enum {
+          POSITION = 13,
+          MASK = 0b1 << POSITION
+        };
+      
+        enum States {
+          DISABLED = 0 << POSITION,
+          ENABLED = 1 << POSITION
+        };
+      } // namespace dmaudrie
+    } // namespace dac1
+    
+    namespace dac2 {
+      namespace enable {
+        enum {
+          POSITION = 16,
+          MASK = 0b1 << POSITION
+        };
+      
+        enum States {
+          DISABLED = 0 << POSITION,
+          ENABLED = 1 << POSITION
+        };
+      } // namespace enable
+      
+      namespace boff {
+        enum {
+          POSITION = 17,
+          MASK = 0b1 << POSITION
+        };
+      
+        enum States {
+          DISABLED = 0 << POSITION,
+          ENABLED = 1 << POSITION
+        };
+      } // namespace boff
+      
+      namespace ten {
+        enum {
+          POSITION = 18,
+          MASK = 0b1 << POSITION
+        };
+      
+        enum States {
+          DISABLED = 0 << POSITION,
+          ENABLED = 1 << POSITION
+        };
+      } // namespace ten
+      
+      namespace tsel {
+        enum {
+          POSITION = 19,
+          MASK = 0b111 << POSITION
+        };
+      
+        enum States {
+          TIM6TRGO = 0 << POSITION,
+          TIM8TRGO = 1 << POSITION,
+          TIM7TRGO = 2 << POSITION,
+          TIM5TRGO = 3 << POSITION,
+          TIM2TRGO = 4 << POSITION,
+          TIM4TRGO = 5 << POSITION,
+          EXTI9 = 6 << POSITION,
+          SWTRG = 7 << POSITION
+        };
+      } // namespace tsel
+      
+      namespace wave {
+        enum {
+          POSITION = 22,
+          MASK = 0b11 << POSITION
+        };
+      
+        enum States {
+          DISABLED = 0 << POSITION,
+          NOISE = 1 << POSITION,
+          TRIANGLE = 2 << POSITION
+        };
+      } // namespace wave
+      
+      namespace mamp {
+        enum {
+          POSITION = 24,
+          MASK = 0b1111 << POSITION
+        };
+      
+        enum States {
+          UMSK0 = 0 << POSITION,
+          UMSK1_0 = 1 << POSITION,
+          UMSK2_0 = 2 << POSITION,
+          UMSK3_0 = 3 << POSITION,
+          UMSK4_0 = 4 << POSITION,
+          UMSK5_0 = 5 << POSITION,
+          UMSK6_0 = 6 << POSITION,
+          UMSK7_0 = 7 << POSITION,
+          UMSK8_0 = 8 << POSITION,
+          UMSK9_0 = 9 << POSITION,
+          UMSK10_0 = 10 << POSITION,
+          UMSK11_0 = 11 << POSITION
+        };
+      } // namespace mamp
+      
+      namespace dma {
+        enum {
+          POSITION = 28,
+          MASK = 0b1 << POSITION
+        };
+      
+        enum States {
+          DISABLED = 0 << POSITION,
+          ENABLED = 1 << POSITION
+        };
+      } // namespace dma
+      
+      namespace dmaudrie {
+        enum {
+          POSITION = 29,
+          MASK = 0b1 << POSITION
+        };
+      
+        enum States {
+          DISABLED = 0 << POSITION,
+          ENABLED = 1 << POSITION
+        };
+      } // namespace dmaudrie
+    } // namespace dac2
   }  // namespace cr
 
   namespace swtrigr {

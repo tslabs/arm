@@ -41,6 +41,8 @@ namespace dac {
     public:
       static inline void enableClock();
       static inline void disableClock();
+      static inline void enablePeripheral();
+      static inline void disablePeripheral();
 
     private:
       Functions();

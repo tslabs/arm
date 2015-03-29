@@ -130,12 +130,10 @@ namespace gpio {
   template<Address P, u8 N>
   void Pin<P, N>::setMode(cr::States Mode)
   {
-    reinterpret_cast<Registers*>(P)->CR[N > 7 ? 1 : 0] &=
-    ~(cr::MASK <<
-        cr::POSITION * (N > 7 ? (N - 8) : N));
-
-    reinterpret_cast<Registers*>(P)->CR[N > 7 ? 1 : 0] |=
-    Mode << cr::POSITION * (N > 7 ? (N - 8) : N);
+    u32 s = reinterpret_cast<Registers*>(P)->CR[N > 7 ? 1 : 0];
+    s &= ~(cr::MASK << cr::POSITION * (N > 7 ? (N - 8) : N));
+    s |= Mode << cr::POSITION * (N > 7 ? (N - 8) : N);
+    reinterpret_cast<Registers*>(P)->CR[N > 7 ? 1 : 0] = s;
   }
 
   /**
@@ -250,8 +248,13 @@ namespace gpio {
   template<Address P>
   void Port<P>::setValue(u32 const value)
   {
-    reinterpret_cast<Registers *>(P)->ODR =
-    value;
+    reinterpret_cast<Registers *>(P)->ODR = value;
+  }
+
+  template<Address P>
+  void Port<P>::setValue(u8 const b, u8 const value)
+  {
+    reinterpret_cast<Registers *>(P)->ODRB[b] = value;
   }
 
   /**
@@ -350,10 +353,10 @@ namespace gpio {
   template<Address P, u8 N>
   void Pin<P, N>::setMode(moder::States Mode)
   {
-    reinterpret_cast<Registers *>(P)->MODER &=
-        ~(moder::MASK << (2 * N));
-    reinterpret_cast<Registers *>(P)->MODER |=
-        (Mode << (2 * N));
+    u32 s = reinterpret_cast<Registers *>(P)->MODER;
+    s &= ~(moder::MASK << (2 * N));
+    s |= (Mode << (2 * N));
+    reinterpret_cast<Registers *>(P)->MODER = s;
   }
 
   /**
@@ -478,6 +481,12 @@ namespace gpio {
     reinterpret_cast<Registers*>(P)->ODR = value;
   }
 
+  template<Address P>
+  void Port<P>::setOutput(u8 const b, u8 const value)
+  {
+    reinterpret_cast<Registers*>(P)->ODRB[b] = value;
+  }
+
   /**
    * @brief Gets the logic state of the port.
    */
@@ -516,6 +525,23 @@ namespace gpio {
             (M5 << 10) + (M6 << 12) + (M7 << 14) + (M8 << 16) + (M9 << 18) +
             (M10 << 20) + (M11 << 22) + (M12 << 24) + (M13 << 26) +
             (M14 << 28) + (M15 << 30);
+  }
+
+  template<Address P>
+  void Port<P>::setModes(
+      u8 const h,
+      moder::States M0,
+      moder::States M1,
+      moder::States M2,
+      moder::States M3,
+      moder::States M4,
+      moder::States M5,
+      moder::States M6,
+      moder::States M7)
+  {
+    reinterpret_cast<Registers *>(P)->MODERH[h] =
+        (M0 << 0) + (M1 << 2) + (M2 << 4) + (M3 << 6) + (M4 << 8) +
+            (M5 << 10) + (M6 << 12) + (M7 << 14);
   }
 
   /**

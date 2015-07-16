@@ -364,6 +364,7 @@ namespace rcc {
   void Functions::enableClocks()
   {
     RCC_REGS->APB1ENR |= cSum<APB1ENR...>::value;
+    RCC_REGS->APB1ENR |= cSum<APB1ENR...>::value;
   }
 
   /**
@@ -397,6 +398,7 @@ namespace rcc {
   >
   void Functions::enableClocks()
   {
+    RCC_REGS->APB2ENR |= cSum<APB2ENR...>::value;
     RCC_REGS->APB2ENR |= cSum<APB2ENR...>::value;
   }
 
@@ -433,6 +435,7 @@ namespace rcc {
   >
   void Functions::enableClocks()
   {
+    RCC_REGS->AHBENR |= cSum<AHBENR...>::value;
     RCC_REGS->AHBENR |= cSum<AHBENR...>::value;
   }
 
@@ -669,6 +672,7 @@ namespace rcc {
   void Functions::enableClocks()
   {
     RCC_REGS->AHB1ENR |= cSum<AHB1ENR...>::value;
+    RCC_REGS->AHB1ENR |= cSum<AHB1ENR...>::value;
   }
 
   /**
@@ -703,6 +707,7 @@ namespace rcc {
   void Functions::enableClocks()
   {
     RCC_REGS->AHB2ENR |= cSum<AHB2ENR...>::value;
+    RCC_REGS->AHB2ENR |= cSum<AHB2ENR...>::value;
   }
 
   /**
@@ -736,6 +741,7 @@ namespace rcc {
   >
   void Functions::enableClocks()
   {
+    RCC_REGS->AHB3ENR |= cSum<AHB3ENR...>::value;
     RCC_REGS->AHB3ENR |= cSum<AHB3ENR...>::value;
   }
 

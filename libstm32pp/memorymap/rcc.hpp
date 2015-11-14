@@ -123,154 +123,154 @@ namespace cr {
   namespace hsion {
     enum {
       POSITION = 0,
-      MASK = 1 << POSITION
+      MASK = 1U << POSITION
     };
     enum States {
-      HSI_OSCILLATOR_OFF = 0 << POSITION,
-      HSI_OSCILLATOR_ON = 1 << POSITION,
+      HSI_OSCILLATOR_OFF = 0U << POSITION,
+      HSI_OSCILLATOR_ON = 1U << POSITION,
     };
   }  // namespace hsion
 
   namespace hsirdy {
     enum {
       POSITION = 1,
-      MASK = 1 << POSITION
+      MASK = 1U << POSITION
     };
     enum States {
-      HSI_OSCILLATOR_NOT_READY = 0 << POSITION,
-      HSI_OSCILLATOR_READY = 1 << POSITION,
+      HSI_OSCILLATOR_NOT_READY = 0U << POSITION,
+      HSI_OSCILLATOR_READY = 1U << POSITION,
     };
   }  // namespace hsirdy
 
   namespace hseon {
     enum {
       POSITION = 16,
-      MASK = 1 << POSITION
+      MASK = 1U << POSITION
     };
     enum States {
-      HSE_OSCILLATOR_OFF = 0 << POSITION,
-      HSE_OSCILLATOR_ON = 1 << POSITION,
+      HSE_OSCILLATOR_OFF = 0U << POSITION,
+      HSE_OSCILLATOR_ON = 1U << POSITION,
     };
   }  // namespace hseon
 
   namespace hserdy {
     enum {
       POSITION = 17,
-      MASK = 1 << POSITION
+      MASK = 1U << POSITION
     };
     enum States {
-      HSE_OSCILLATOR_NOT_READY = 0 << POSITION,
-      HSE_OSCILLATOR_READY = 1 << POSITION,
+      HSE_OSCILLATOR_NOT_READY = 0U << POSITION,
+      HSE_OSCILLATOR_READY = 1U << POSITION,
     };
   }  // namespace hserdy
 
   namespace hsebyp {
     enum {
       POSITION = 18,
-      MASK = 1 << POSITION
+      MASK = 1U << POSITION
     };
     enum States {
-      HSE_OSCILLATOR_NOT_BYPASSED = 0 << POSITION,
-      HSE_OSCILLATOR_BYPASSED_WITH_EXTERNAL_CLOCK = 1 << POSITION,
+      HSE_OSCILLATOR_NOT_BYPASSED = 0U << POSITION,
+      HSE_OSCILLATOR_BYPASSED_WITH_EXTERNAL_CLOCK = 1U << POSITION,
     };
   }  // namespace hsebyp
 
   namespace csson {
     enum {
       POSITION = 19,
-      MASK = 1 << POSITION
+      MASK = 1U << POSITION
     };
     enum States {
-      CLOCK_DETECTOR_OFF = 0 << POSITION,
-      CLOCK_DETECTOR_ON = 1 << POSITION,
+      CLOCK_DETECTOR_OFF = 0U << POSITION,
+      CLOCK_DETECTOR_ON = 1U << POSITION,
     };
   }  // namespace csson
 
   namespace pllon {
     enum {
       POSITION = 24,
-      MASK = 1 << POSITION
+      MASK = 1U << POSITION
     };
     enum States {
-      PLL_OFF = 0 << POSITION,
-      PLL_ON = 1 << POSITION,
+      PLL_OFF = 0U << POSITION,
+      PLL_ON = 1U << POSITION,
     };
   }  // namespace pllon
 
   namespace pllrdy {
     enum {
       POSITION = 25,
-      MASK = 1 << POSITION
+      MASK = 1U << POSITION
     };
     enum States {
-      PLL_UNLOCKED = 0 << POSITION,
-      PLL_LOCKED = 1 << POSITION,
+      PLL_UNLOCKED = 0U << POSITION,
+      PLL_LOCKED = 1U << POSITION,
     };
   }  // namespace pllrdy
 #ifndef STM32F1XX
   namespace plli2son {
     enum {
       POSITION = 26,
-      MASK = 1 << POSITION
+      MASK = 1U << POSITION
     };
     enum States {
-      PLLI2S_OFF = 0 << POSITION,
-      PLLI2S_ON = 1 << POSITION,
+      PLLI2S_OFF = 0U << POSITION,
+      PLLI2S_ON = 1U << POSITION,
     };
   }  // namespace plli2son
 
   namespace plli2srdy {
     enum {
       POSITION = 27,
-      MASK = 1 << POSITION
+      MASK = 1U << POSITION
     };
     enum States {
-      PLLI2S_UNLOCKED = 0 << POSITION,
-      PLLI2S_LOCKED = 1 << POSITION,
+      PLLI2S_UNLOCKED = 0U << POSITION,
+      PLLI2S_LOCKED = 1U << POSITION,
     };
   }  // namespace plli2srdy
 #elif defined CONNECTIVITY_LINE
   namespace pll2on {
     enum {
       POSITION = 26,
-      MASK = 1 << POSITION
+      MASK = 1U << POSITION
     };
     enum States {
-      PLL2_OFF = 0 << POSITION,
-      PLL2_ON = 1 << POSITION,
+      PLL2_OFF = 0U << POSITION,
+      PLL2_ON = 1U << POSITION,
     };
   }  // namespace pll2on
 
   namespace pll2rdy {
     enum {
       POSITION = 27,
-      MASK = 1 << POSITION
+      MASK = 1U << POSITION
     };
     enum States {
-      PLL2_UNLOCKED = 0 << POSITION,
-      PLL2_LOCKED = 1 << POSITION,
+      PLL2_UNLOCKED = 0U << POSITION,
+      PLL2_LOCKED = 1U << POSITION,
     };
   }  // namespace pll2rdy
 
   namespace pll3on {
     enum {
       POSITION = 28,
-      MASK = 1 << POSITION
+      MASK = 1U << POSITION
     };
     enum States {
-      PLL3_OFF = 0 << POSITION,
-      PLL3_ON = 1 << POSITION,
+      PLL3_OFF = 0U << POSITION,
+      PLL3_ON = 1U << POSITION,
     };
   }  // namespace pll3on
 
   namespace pll3rdy {
     enum {
       POSITION = 29,
-      MASK = 1 << POSITION
+      MASK = 1U << POSITION
     };
     enum States {
-      PLL3_UNLOCKED = 0 << POSITION,
-      PLL3_LOCKED = 1 << POSITION,
+      PLL3_UNLOCKED = 0U << POSITION,
+      PLL3_LOCKED = 1U << POSITION,
     };
   }  // namespace pll3rdy
 #endif // CONNECTIVITY_LINE
@@ -284,39 +284,39 @@ namespace pllcfgr {
   namespace pllm {
     enum {
       POSITION = 0,
-      MASK = 0b111111 << POSITION
+      MASK = 0b111111U << POSITION
     };
   }  // namespace pllm
 
   namespace plln {
     enum {
       POSITION = 6,
-      MASK = 0b111111111 << POSITION
+      MASK = 0b111111111U << POSITION
     };
   }  // namespace plln
 
   namespace pllp {
     enum {
       POSITION = 16,
-      MASK = 0b11 << POSITION
+      MASK = 0b11U << POSITION
     };
   }  // namespace pllp
 
   namespace pllsrc {
     enum {
       POSITION = 22,
-      MASK = 1 << POSITION
+      MASK = 1U << POSITION
     };
     enum States {
-      USE_HSI_CLOCK_AS_PLL_CLOCK_SOURCE = 0 << POSITION,
-      USE_HSE_CLOCK_AS_PLL_CLOCK_SOURCE = 1 << POSITION,
+      USE_HSI_CLOCK_AS_PLL_CLOCK_SOURCE = 0U << POSITION,
+      USE_HSE_CLOCK_AS_PLL_CLOCK_SOURCE = 1U << POSITION,
     };
   }  // namespace pllsrc
 
   namespace pllq {
     enum {
       POSITION = 24,
-      MASK = 0b1111 << POSITION
+      MASK = 0b1111U << POSITION
     };
   }  // namespace pllq
 }  // namespace pllcfgr
@@ -332,42 +332,42 @@ namespace cfgr {
 namespace sw {
   enum {
     POSITION = 0,
-    MASK = 0b11 << POSITION
+    MASK = 0b11U << POSITION
   };
   enum States {
-    HSI_OSCILLATOR_SELECTED_AS_SYSTEM_CLOCK = 0 << POSITION,
-    HSE_OSCILLATOR_SELECTED_AS_SYSTEM_CLOCK = 1 << POSITION,
-    PLL_SELECTED_AS_SYSTEM_CLOCK = 2 << POSITION,
+    HSI_OSCILLATOR_SELECTED_AS_SYSTEM_CLOCK = 0U << POSITION,
+    HSE_OSCILLATOR_SELECTED_AS_SYSTEM_CLOCK = 1U << POSITION,
+    PLL_SELECTED_AS_SYSTEM_CLOCK = 2U << POSITION,
   };
 }  // namespace sw
 
 namespace sws {
   enum {
     POSITION = 2,
-    MASK = 0b11 << POSITION
+    MASK = 0b11U << POSITION
   };
   enum States {
-    HSI_OSCILLATOR_USED_AS_SYSTEM_CLOCK = 0 << POSITION,
-    HSE_OSCILLATOR_USED_AS_SYSTEM_CLOCK = 1 << POSITION,
-    PLL_USED_AS_SYSTEM_CLOCK = 2 << POSITION,
+    HSI_OSCILLATOR_USED_AS_SYSTEM_CLOCK = 0U << POSITION,
+    HSE_OSCILLATOR_USED_AS_SYSTEM_CLOCK = 1U << POSITION,
+    PLL_USED_AS_SYSTEM_CLOCK = 2U << POSITION,
   };
 }  // namespace sws
 
 namespace hpre {
   enum {
     POSITION = 4,
-    MASK = 0b1111 << POSITION
+    MASK = 0b1111U << POSITION
   };
   enum States {
-    SYSCLK_NOT_DIVIDED = 0 << POSITION,
-    SYSCLK_DIVIDED_BY_2 = 8 << POSITION,
-    SYSCLK_DIVIDED_BY_4 = 9 << POSITION,
-    SYSCLK_DIVIDED_BY_8 = 10 << POSITION,
-    SYSCLK_DIVIDED_BY_16 = 11 << POSITION,
-    SYSCLK_DIVIDED_BY_64 = 12 << POSITION,
-    SYSCLK_DIVIDED_BY_128 = 13 << POSITION,
-    SYSCLK_DIVIDED_BY_256 = 14 << POSITION,
-    SYSCLK_DIVIDED_BY_512 = 15 << POSITION,
+    SYSCLK_NOT_DIVIDED = 0U << POSITION,
+    SYSCLK_DIVIDED_BY_2 = 8U << POSITION,
+    SYSCLK_DIVIDED_BY_4 = 9U << POSITION,
+    SYSCLK_DIVIDED_BY_8 = 10U << POSITION,
+    SYSCLK_DIVIDED_BY_16 = 11U << POSITION,
+    SYSCLK_DIVIDED_BY_64 = 12U << POSITION,
+    SYSCLK_DIVIDED_BY_128 = 13U << POSITION,
+    SYSCLK_DIVIDED_BY_256 = 14U << POSITION,
+    SYSCLK_DIVIDED_BY_512 = 15U << POSITION,
   };
 }  // namespace hpre
 
@@ -378,14 +378,14 @@ namespace ppre1 {
     #else // STM32F1XX
     POSITION = 10,
 #endif // STM32F1XX
-    MASK = 0b111 << POSITION
+    MASK = 0b111U << POSITION
   };
   enum States {
-    HCLK_NOT_DIVIDED = 0 << POSITION,
-    HCLK_DIVIDED_BY_2 = 4 << POSITION,
-    HCLK_DIVIDED_BY_4 = 5 << POSITION,
-    HCLK_DIVIDED_BY_8 = 6 << POSITION,
-    HCLK_DIVIDED_BY_16 = 7 << POSITION,
+    HCLK_NOT_DIVIDED = 0U << POSITION,
+    HCLK_DIVIDED_BY_2 = 4U << POSITION,
+    HCLK_DIVIDED_BY_4 = 5U << POSITION,
+    HCLK_DIVIDED_BY_8 = 6U << POSITION,
+    HCLK_DIVIDED_BY_16 = 7U << POSITION,
   };
 }  // namespace ppre1
 
@@ -396,78 +396,78 @@ namespace ppre2 {
     #else // STM32F1XX
     POSITION = 13,
 #endif // STM32F1XX
-    MASK = 0b111 << POSITION
+    MASK = 0b111U << POSITION
   };
   enum States {
-    HCLK_NOT_DIVIDED = 0 << POSITION,
-    HCLK_DIVIDED_BY_2 = 4 << POSITION,
-    HCLK_DIVIDED_BY_4 = 5 << POSITION,
-    HCLK_DIVIDED_BY_8 = 6 << POSITION,
-    HCLK_DIVIDED_BY_16 = 7 << POSITION,
+    HCLK_NOT_DIVIDED = 0U << POSITION,
+    HCLK_DIVIDED_BY_2 = 4U << POSITION,
+    HCLK_DIVIDED_BY_4 = 5U << POSITION,
+    HCLK_DIVIDED_BY_8 = 6U << POSITION,
+    HCLK_DIVIDED_BY_16 = 7U << POSITION,
   };
 }  // namespace ppre2
 
 namespace adcpre {
   enum {
     POSITION = 14,
-    MASK = 0b11 << POSITION
+    MASK = 0b11U << POSITION
   };
   enum States {
-    P2CLK_DIVIDED_BY_2 = 0 << POSITION,
-    P2CLK_DIVIDED_BY_4 = 1 << POSITION,
-    P2CLK_DIVIDED_BY_6 = 2 << POSITION,
-    P2CLK_DIVIDED_BY_8 = 3 << POSITION,
+    P2CLK_DIVIDED_BY_2 = 0U << POSITION,
+    P2CLK_DIVIDED_BY_4 = 1U << POSITION,
+    P2CLK_DIVIDED_BY_6 = 2U << POSITION,
+    P2CLK_DIVIDED_BY_8 = 3U << POSITION,
   };
 }  // namespace adcpre
 #ifdef STM32F1XX
 namespace pllsrc {
   enum {
     POSITION = 16,
-    MASK = 1 << POSITION
+    MASK = 1U << POSITION
   };
   enum States {
-    USE_HSI_CLOCK_OVER_2_AS_PLL_SOURCE = 0 << POSITION,
-    USE_PREDIV1_OUTPUT_AS_PLL_SOURCE = 1 << POSITION,
+    USE_HSI_CLOCK_OVER_2_AS_PLL_SOURCE = 0U << POSITION,
+    USE_PREDIV1_OUTPUT_AS_PLL_SOURCE = 1U << POSITION,
   };
 }  // namespace pllsrc
 
 namespace pllxtpre {
   enum {
     POSITION = 17,
-    MASK = 1 << POSITION
+    MASK = 1U << POSITION
   };
   enum States {
-    HSE_SELECTED_AS_PREDIV1_SOURCE = 0 << POSITION,
-    HSE_OVER_2_SELECTED_AS_PREDIV1_SOURCE = 1 << POSITION,
+    HSE_SELECTED_AS_PREDIV1_SOURCE = 0U << POSITION,
+    HSE_OVER_2_SELECTED_AS_PREDIV1_SOURCE = 1U << POSITION,
   };
 }  // namespace pllxtpre
 
 namespace pllmul {
   enum {
     POSITION = 18,
-    MASK = 0b111 << POSITION
+    MASK = 0b111U << POSITION
   };
   enum States {
 #ifndef CONNECTIVITY_LINE
-    PLL_INPUT_CLOCK_X_2 = 0 << POSITION,
-    PLL_INPUT_CLOCK_X_3 = 1 << POSITION,
+    PLL_INPUT_CLOCK_X_2 = 0U << POSITION,
+    PLL_INPUT_CLOCK_X_3 = 1U << POSITION,
     #endif // CONNECTIVITY_LINE
-    PLL_INPUT_CLOCK_X_4 = 2 << POSITION,
-    PLL_INPUT_CLOCK_X_5 = 3 << POSITION,
-    PLL_INPUT_CLOCK_X_6 = 4 << POSITION,
-    PLL_INPUT_CLOCK_X_7 = 5 << POSITION,
-    PLL_INPUT_CLOCK_X_8 = 6 << POSITION,
-    PLL_INPUT_CLOCK_X_9 = 7 << POSITION,
+    PLL_INPUT_CLOCK_X_4 = 2U << POSITION,
+    PLL_INPUT_CLOCK_X_5 = 3U << POSITION,
+    PLL_INPUT_CLOCK_X_6 = 4U << POSITION,
+    PLL_INPUT_CLOCK_X_7 = 5U << POSITION,
+    PLL_INPUT_CLOCK_X_8 = 6U << POSITION,
+    PLL_INPUT_CLOCK_X_9 = 7U << POSITION,
     #ifndef CONNECTIVITY_LINE
-    PLL_INPUT_CLOCK_X_10 = 8 << POSITION,
-    PLL_INPUT_CLOCK_X_11 = 9 << POSITION,
-    PLL_INPUT_CLOCK_X_12 = 10 << POSITION,
-    PLL_INPUT_CLOCK_X_13 = 11 << POSITION,
-    PLL_INPUT_CLOCK_X_14 = 12 << POSITION,
-    PLL_INPUT_CLOCK_X_15 = 13 << POSITION,
-    PLL_INPUT_CLOCK_X_16 = 14 << POSITION,
+    PLL_INPUT_CLOCK_X_10 = 8U << POSITION,
+    PLL_INPUT_CLOCK_X_11 = 9U << POSITION,
+    PLL_INPUT_CLOCK_X_12 = 10U << POSITION,
+    PLL_INPUT_CLOCK_X_13 = 11U << POSITION,
+    PLL_INPUT_CLOCK_X_14 = 12U << POSITION,
+    PLL_INPUT_CLOCK_X_15 = 13U << POSITION,
+    PLL_INPUT_CLOCK_X_16 = 14U << POSITION,
 #else // !CONNECTIVITY_LINE
-  PLL_INPUT_CLOCK_X_6_DOT_5 = 13 << POSITION,
+  PLL_INPUT_CLOCK_X_6_DOT_5 = 13U << POSITION,
 #endif // !CONNECTIVITY_LINE
 };
 }  // namespace pllmul
@@ -475,42 +475,42 @@ namespace pllmul {
 namespace usbpre {
 enum {
   POSITION = 22,
-  MASK = 1 << POSITION
+  MASK = 1U << POSITION
 };
 enum States {
-  PLL_CLOCK_DIVIDED_BY_1_DOT_5 = 0 << POSITION,
-  PLL_CLOCK_NOT_DIVIDED = 1 << POSITION,
+  PLL_CLOCK_DIVIDED_BY_1_DOT_5 = 0U << POSITION,
+  PLL_CLOCK_NOT_DIVIDED = 1U << POSITION,
 };
 }
 #ifdef CONNECTIVITY_LINE
 namespace mco {
 enum {
   POSITION = 24,
-  MASK = 0b1111 << POSITION
+  MASK = 0b1111U << POSITION
 };
 enum States {
-  NO_CLOCK_OUTPUT = 0b0000 << POSITION,
-  OUTPUT_SYSTEM_CLOCK = 0b0100 << POSITION,
-  OUTPUT_HSI_CLOCK = 0b0101 << POSITION,
-  OUTPUT_HSE_CLOCK = 0b0110 << POSITION,
-  OUTPUT_PLL_CLOCK_OVER_2 = 0b0111 << POSITION,
-  OUTPUT_PLL2_CLOCK = 0b1000 << POSITION,
-  OUTPUT_XT1_CLOCK = 0b1010 << POSITION,
-  OUTPUT_PLL3_CLOCK = 0b1011 << POSITION,
+  NO_CLOCK_OUTPUT = 0b0000U << POSITION,
+  OUTPUT_SYSTEM_CLOCK = 0b0100U << POSITION,
+  OUTPUT_HSI_CLOCK = 0b0101U << POSITION,
+  OUTPUT_HSE_CLOCK = 0b0110U << POSITION,
+  OUTPUT_PLL_CLOCK_OVER_2 = 0b0111U << POSITION,
+  OUTPUT_PLL2_CLOCK = 0b1000U << POSITION,
+  OUTPUT_XT1_CLOCK = 0b1010U << POSITION,
+  OUTPUT_PLL3_CLOCK = 0b1011U << POSITION,
 };
 }  // namespace mco
 #else // CONNECTIVITY_LINE
 namespace mco {
 enum {
   POSITION = 24,
-  MASK = 0b111 << POSITION
+  MASK = 0b111U << POSITION
 };
 enum States {
-  NO_CLOCK_OUTPUT = 0b000 << POSITION,
-  OUTPUT_SYSTEM_CLOCK = 0b100 << POSITION,
-  OUTPUT_HSI_CLOCK = 0b101 << POSITION,
-  OUTPUT_HSE_CLOCK = 0b110 << POSITION,
-  OUTPUT_PLL_CLOCK_OVER_2 = 0b111 << POSITION,
+  NO_CLOCK_OUTPUT = 0b000U << POSITION,
+  OUTPUT_SYSTEM_CLOCK = 0b100U << POSITION,
+  OUTPUT_HSI_CLOCK = 0b101U << POSITION,
+  OUTPUT_HSE_CLOCK = 0b110U << POSITION,
+  OUTPUT_PLL_CLOCK_OVER_2 = 0b111U << POSITION,
 };
 }  // namespace mco
 #endif // CONNECTIVITY_LINE
@@ -518,58 +518,58 @@ enum States {
 namespace rtcpre {
 enum {
   POSITION = 16,
-  MASK = 0b11111 << POSITION
+  MASK = 0b11111U << POSITION
 };
 }  // namespace rtcpre
 
 namespace mco1 {
 enum {
   POSITION = 21,
-  MASK = 0b11 << POSITION
+  MASK = 0b11U << POSITION
 };
 enum States {
-  OUTPUT_HSI_CLOCK = 0 << POSITION,
-  OUTPUT_LSE_CLOCK = 1 << POSITION,
-  OUTPUT_HSE_CLOCK = 2 << POSITION,
-  OUTPUT_PLL_CLOCK = 3 << POSITION,
+  OUTPUT_HSI_CLOCK = 0U << POSITION,
+  OUTPUT_LSE_CLOCK = 1U << POSITION,
+  OUTPUT_HSE_CLOCK = 2U << POSITION,
+  OUTPUT_PLL_CLOCK = 3U << POSITION,
 };
 }  // namespace mco1
 
 namespace i2ssrc {
 enum {
   POSITION = 23,
-  MASK = 1 << POSITION
+  MASK = 1U << POSITION
 };
 enum States {
-  PLLI2S_USED_AS_I2S_CLOCK_SOURCE = 0 << POSITION,
-  I2S_CKIN_USED_AS_I2S_CLOCK_SOURCE = 1 << POSITION,
+  PLLI2S_USED_AS_I2S_CLOCK_SOURCE = 0U << POSITION,
+  I2S_CKIN_USED_AS_I2S_CLOCK_SOURCE = 1U << POSITION,
 };
 }  // namespace i2ssrc
 
 namespace mco1pre {
 enum {
   POSITION = 24,
-  MASK = 0b111 << POSITION
+  MASK = 0b111U << POSITION
 };
 }  // namespace mco1pre
 
 namespace mco2pre {
 enum {
   POSITION = 27,
-  MASK = 0b111 << POSITION
+  MASK = 0b111U << POSITION
 };
 }  // namespace mco2pre
 
 namespace mco2 {
 enum {
   POSITION = 30,
-  MASK = 0b11 << POSITION
+  MASK = 0b11U << POSITION
 };
 enum States {
-  OUTPUT_SYSTEM_CLOCK = 0 << POSITION,
-  OUTPUT_PLLI2S_CLOCK = 1 << POSITION,
-  OUTPUT_HSE_CLOCK = 2 << POSITION,
-  OUTPUT_PLL_CLOCK = 3 << POSITION,
+  OUTPUT_SYSTEM_CLOCK = 0U << POSITION,
+  OUTPUT_PLLI2S_CLOCK = 1U << POSITION,
+  OUTPUT_HSE_CLOCK = 2U << POSITION,
+  OUTPUT_PLL_CLOCK = 3U << POSITION,
 };
 }  // namespace mco2
 #endif // STM32F1XX
@@ -866,68 +866,68 @@ OFFSET = 0x70
 namespace lseon {
 enum {
 POSITION = 0,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-LSE_CLOCK_OFF = 0 << POSITION,
-LSE_CLOCK_ON = 1 << POSITION,
+LSE_CLOCK_OFF = 0U << POSITION,
+LSE_CLOCK_ON = 1U << POSITION,
 };
 }  // namespace lseon
 
 namespace lserdy {
 enum {
 POSITION = 1,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-LSE_CLOCK_NOT_READY = 0 << POSITION,
-LSE_CLOCK_READY = 1 << POSITION,
+LSE_CLOCK_NOT_READY = 0U << POSITION,
+LSE_CLOCK_READY = 1U << POSITION,
 };
 }  // namespace lserdy
 
 namespace lsebyp {
 enum {
 POSITION = 2,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-LSE_OSCILLATOR_NOT_BYPASSED = 0 << POSITION,
-LSE_OSCILLATOR_BYPASSED = 1 << POSITION,
+LSE_OSCILLATOR_NOT_BYPASSED = 0U << POSITION,
+LSE_OSCILLATOR_BYPASSED = 1U << POSITION,
 };
 }  // namespace lsebyp
 
 namespace rtcsel {
 enum {
 POSITION = 8,
-MASK = 0b11 << POSITION
+MASK = 0b11U << POSITION
 };
 enum States {
-NO_RTC_CLOCK_SOURCE = 0 << POSITION,
-LSE_CLOCK_AS_RTC_SOURCE = 1 << POSITION,
-LSI_CLOCK_AS_RTC_SOURCE = 2 << POSITION,
-HSE_CLOCK_AS_RTC_SOURCE = 3 << POSITION,
+NO_RTC_CLOCK_SOURCE = 0U << POSITION,
+LSE_CLOCK_AS_RTC_SOURCE = 1U << POSITION,
+LSI_CLOCK_AS_RTC_SOURCE = 2U << POSITION,
+HSE_CLOCK_AS_RTC_SOURCE = 3U << POSITION,
 };
 }  // namespace rtcsel
 
 namespace rtcen {
 enum {
 POSITION = 15,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-RTC_CLOCK_DISABLED = 0 << POSITION,
-RTC_CLOCK_ENABLED = 1 << POSITION,
+RTC_CLOCK_DISABLED = 0U << POSITION,
+RTC_CLOCK_ENABLED = 1U << POSITION,
 };
 }  // namespace rtcen
 
 namespace bdrst {
 enum {
 POSITION = 16,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-BACKUP_DOMAIN_NOT_RESETTED = 0 << POSITION,
-RESET_THE_BACKUP_DOMAIN = 1 << POSITION,
+BACKUP_DOMAIN_NOT_RESETTED = 0U << POSITION,
+RESET_THE_BACKUP_DOMAIN = 1U << POSITION,
 };
 }  // namespace bdrst
 }  // namespace bdcr
@@ -943,110 +943,110 @@ OFFSET = 0x74
 namespace lsion {
 enum {
 POSITION = 0,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-LSI_OSCILLATOR_OFF = 0 << POSITION,
-LSI_OSCILLATOR_ON = 1 << POSITION,
+LSI_OSCILLATOR_OFF = 0U << POSITION,
+LSI_OSCILLATOR_ON = 1U << POSITION,
 };
 }  // namespace lsion
 
 namespace lsirdy {
 enum {
 POSITION = 1,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-LSI_OSCILLATOR_NOT_READY = 0 << POSITION,
-LSI_OSCILLATOR_READY = 1 << POSITION,
+LSI_OSCILLATOR_NOT_READY = 0U << POSITION,
+LSI_OSCILLATOR_READY = 1U << POSITION,
 };
 }  // namespace lsirdy
 
 namespace rmvf {
 enum {
 POSITION = 24,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-NO_EFFECT = 0 << POSITION,
-CLEAR_THE_RESET_FLAGS = 1 << POSITION,
+NO_EFFECT = 0U << POSITION,
+CLEAR_THE_RESET_FLAGS = 1U << POSITION,
 };
 }  // namespace rmvf
 
 namespace borrstf {
 enum {
 POSITION = 25,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-NO_POR_PDR_BOR_RESET_OCCURRED = 0 << POSITION,
-POR_PDR_BOR_RESET_OCCURRED = 1 << POSITION,
+NO_POR_PDR_BOR_RESET_OCCURRED = 0U << POSITION,
+POR_PDR_BOR_RESET_OCCURRED = 1U << POSITION,
 };
 }  // namespace borrstf
 
 namespace pinrstf {
 enum {
 POSITION = 26,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-NO_NRST_PIN_RESET_OCCURRED = 0 << POSITION,
-NRST_PIN_RESET_OCCURRED = 1 << POSITION,
+NO_NRST_PIN_RESET_OCCURRED = 0U << POSITION,
+NRST_PIN_RESET_OCCURRED = 1U << POSITION,
 };
 }  // namespace pinrstf
 
 namespace porrstf {
 enum {
 POSITION = 27,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-NO_POR_PDR_RESET_OCCURRED = 0 << POSITION,
-POR_PDR_RESET_OCCURRED = 1 << POSITION,
+NO_POR_PDR_RESET_OCCURRED = 0U << POSITION,
+POR_PDR_RESET_OCCURRED = 1U << POSITION,
 };
 }  // namespace porrstf
 
 namespace sftrstf {
 enum {
 POSITION = 28,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-NO_SOFTWARE_RESET_OCCURRED = 0 << POSITION,
-SOFTWARE_RESET_OCCURRED = 1 << POSITION,
+NO_SOFTWARE_RESET_OCCURRED = 0U << POSITION,
+SOFTWARE_RESET_OCCURRED = 1U << POSITION,
 };
 }  // namespace sftrstf
 
 namespace iwdgrstf {
 enum {
 POSITION = 29,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-NO_WATCHDOG_RESET_OCCURRED = 0 << POSITION,
-WATCHDOG_RESET_OCCURRED = 1 << POSITION,
+NO_WATCHDOG_RESET_OCCURRED = 0U << POSITION,
+WATCHDOG_RESET_OCCURRED = 1U << POSITION,
 };
 }  // namespace iwdgrstf
 
 namespace wwdgrstf {
 enum {
 POSITION = 30,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-NO_WINDOW_WATCHDOG_RESET_OCCURRED = 0 << POSITION,
-WINDOW_WATCHDOG_RESET_OCCURRED = 1 << POSITION,
+NO_WINDOW_WATCHDOG_RESET_OCCURRED = 0U << POSITION,
+WINDOW_WATCHDOG_RESET_OCCURRED = 1U << POSITION,
 };
 }  // namespace wwdgrstf
 
 namespace lpwrrstf {
 enum {
 POSITION = 31,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-NO_LOW_POWER_MANAGEMENT_RESET_OCCURRED = 0 << POSITION,
-LOW_POWER_MANAGEMENT_RESET_OCCURRED = 1 << POSITION,
+NO_LOW_POWER_MANAGEMENT_RESET_OCCURRED = 0U << POSITION,
+LOW_POWER_MANAGEMENT_RESET_OCCURRED = 1U << POSITION,
 };
 }  // namespace lpwrrstf
 }  // namespace csr
@@ -1076,68 +1076,68 @@ OFFSET = 0x2C
 namespace prediv1 {
 enum {
 POSITION = 0,
-MASK = 0b1111 << POSITION
+MASK = 0b1111U << POSITION
 };
 }  // namespace prediv1
 
 namespace prediv2 {
 enum {
 POSITION = 4,
-MASK = 0b1111 << POSITION
+MASK = 0b1111U << POSITION
 };
 }  // namespace prediv2
 
 namespace pll2mul {
 enum {
 POSITION = 8,
-MASK = 0b1111 << POSITION
+MASK = 0b1111U << POSITION
 };
 }  // namespace pll2mul
 
 namespace pll3mul {
 enum {
 POSITION = 12,
-MASK = 0b1111 << POSITION
+MASK = 0b1111U << POSITION
 };
 }  // namespace pll3mul
 
 namespace prediv1src {
 enum {
 POSITION = 16,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-USE_HSE_OSCILLATOR_AS_PREDIV1_INPUT = 0 << POSITION,
-USE_PLL2_AS_PREDIV1_INPUT = 1 << POSITION
+USE_HSE_OSCILLATOR_AS_PREDIV1_INPUT = 0U << POSITION,
+USE_PLL2_AS_PREDIV1_INPUT = 1U << POSITION
 };
 }  // namespace prediv1src
 
 namespace i2s2src {
 enum {
 POSITION = 17,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-USE_SYSTEM_CLOCK_AS_I2S2_CLOCK = 0 << POSITION,
-USE_PLL3_CLOCK_AS_I2S2_CLOCK = 1 << POSITION
+USE_SYSTEM_CLOCK_AS_I2S2_CLOCK = 0U << POSITION,
+USE_PLL3_CLOCK_AS_I2S2_CLOCK = 1U << POSITION
 };
 }  // namespace i2s2src
 
 namespace i2s3src {
 enum {
 POSITION = 18,
-MASK = 1 << POSITION
+MASK = 1U << POSITION
 };
 enum States {
-USE_SYSTEM_CLOCK_AS_I2S3_CLOCK = 0 << POSITION,
-USE_PLL3_CLOCK_AS_I2S3_CLOCK = 1 << POSITION
+USE_SYSTEM_CLOCK_AS_I2S3_CLOCK = 0U << POSITION,
+USE_PLL3_CLOCK_AS_I2S3_CLOCK = 1U << POSITION
 };
 }  // namespace i2s3src
 #else // CONNECTIVITY_LINE
 namespace prediv1 {
 enum {
 POSITION = 0,
-MASK = 0b1111 << POSITION
+MASK = 0b1111U << POSITION
 };
 }  // namespace prediv1
 #endif // CONNECTIVITY_LINE
@@ -1288,14 +1288,14 @@ OFFSET = 0x84
 namespace plli2sn {
 enum {
 POSITION = 6,
-MASK = 0b111111111 << POSITION
+MASK = 0b111111111U << POSITION
 };
 }  // namespace plli2sn
 
 namespace plli2sr {
 enum {
 POSITION = 28,
-MASK = 0b111 << POSITION
+MASK = 0b111U << POSITION
 };
 }  // namespace plli2sr
 }  // namespace plli2scfgr

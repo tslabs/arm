@@ -27,13 +27,13 @@
 
 #pragma once
 
-#include "../device_select.hpp"
+#include <device_select.hpp>
 
 #include "../defs.hpp"
 #include "../../memorymap/mpu.hpp"
 
 // Low-level access to the registers
-#define _MPU reinterpret_cast<mpu::Registers*>(mpu::ADDRESS)
+#define MPU_REGS reinterpret_cast<mpu::Registers*>(mpu::ADDRESS)
 
 // High-level functions
 namespace mpu {

@@ -27,11 +27,11 @@
 
 #pragma once
 
-#include "../device_select.hpp"
+#include <device_select.hpp>
 
 #include "../defs.hpp"
 
-#include "../clock.hpp"
+#include <clock.hpp>
 #include "../../memorymap/usart.hpp"
 
 // Low-level access to the registers
@@ -64,6 +64,9 @@ namespace usart {
       static inline bool isThereDataAvailable();
       template<u32 BAUD_RATE>
       static inline void setBaudRate();
+      static inline void clearRXNE();
+      static inline void clearTC();
+      static inline void clearCTS();
 
       /**
        * @brief Configures the USART for asynchronous operation.

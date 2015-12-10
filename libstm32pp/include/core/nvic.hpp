@@ -27,13 +27,13 @@
 
 #pragma once
 
-#include "../device_select.hpp"
+#include <device_select.hpp>
 #include "../defs.hpp"
 
 #include "../../memorymap/nvic.hpp"
 
 // Low-level access to the registers
-#define _NVIC reinterpret_cast<nvic::Registers *>(nvic::ADDRESS)
+#define NVIC_REGS reinterpret_cast<nvic::Registers *>(nvic::ADDRESS)
 
 // High-level functions
 namespace nvic {

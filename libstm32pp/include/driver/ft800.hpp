@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "../device_select.hpp"
+#include <device_select.hpp>
 #include "../defs.hpp"
 
 #include "../peripheral/gpio.hpp"

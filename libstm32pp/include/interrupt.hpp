@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "device_select.hpp"
+#include <device_select.hpp>
 
 namespace interrupt {
   extern "C" {

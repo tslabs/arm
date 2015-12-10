@@ -189,6 +189,15 @@ namespace tim {
   }
 
   /**
+   * @brief Configures the prescaler, so the counter counts on max frequency.
+   */
+  template<Address T>
+  void Functions<T>::setMaxResolution()
+  {
+    setPrescaler(1);
+  }
+
+  /**
    * @brief Configures the prescaler, so the counter counts in microseconds.
    */
   template<Address T>
@@ -257,6 +266,42 @@ namespace tim {
   void Functions<T>::setAutoReload(u16 const rld)
   {
     reinterpret_cast<Registers*>(T)->ARR = rld;
+  }
+
+  /**
+   * @brief Sets the capture compare 1 value of the counter.
+   */
+  template<Address T>
+  void Functions<T>::setCaptureCompare1(u16 const cc)
+  {
+    reinterpret_cast<Registers*>(T)->CCR1 = cc;
+  }
+
+  /**
+   * @brief Sets the capture compare 2 value of the counter.
+   */
+  template<Address T>
+  void Functions<T>::setCaptureCompare2(u16 const cc)
+  {
+    reinterpret_cast<Registers*>(T)->CCR2 = cc;
+  }
+
+  /**
+   * @brief Sets the capture compare 3 value of the counter.
+   */
+  template<Address T>
+  void Functions<T>::setCaptureCompare3(u16 const cc)
+  {
+    reinterpret_cast<Registers*>(T)->CCR3 = cc;
+  }
+
+  /**
+   * @brief Sets the capture compare 4 value of the counter.
+   */
+  template<Address T>
+  void Functions<T>::setCaptureCompare4(u16 const cc)
+  {
+    reinterpret_cast<Registers*>(T)->CCR4 = cc;
   }
 
   /**
@@ -667,6 +712,102 @@ namespace tim {
   }
 
   /**
+   * @brief Enables the capture compare 1 interrupt.
+   */
+  template<Address T>
+  void Functions<T>::enableCaptureCompare1Interrupt()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        T + dier::OFFSET,
+        dier::cc1ie::POSITION
+    >()) = 1;
+  }
+
+  /**
+   * @brief Disables the capture compare 1 interrupt.
+   */
+  template<Address T>
+  void Functions<T>::disableCaptureCompare1Interrupt()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        T + dier::OFFSET,
+        dier::cc1ie::POSITION
+    >()) = 0;
+  }
+
+  /**
+   * @brief Enables the capture compare 2 interrupt.
+   */
+  template<Address T>
+  void Functions<T>::enableCaptureCompare2Interrupt()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        T + dier::OFFSET,
+        dier::cc2ie::POSITION
+    >()) = 1;
+  }
+
+  /**
+   * @brief Disables the capture compare 2 interrupt.
+   */
+  template<Address T>
+  void Functions<T>::disableCaptureCompare2Interrupt()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        T + dier::OFFSET,
+        dier::cc2ie::POSITION
+    >()) = 0;
+  }
+
+  /**
+   * @brief Enables the capture compare 3 interrupt.
+   */
+  template<Address T>
+  void Functions<T>::enableCaptureCompare3Interrupt()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        T + dier::OFFSET,
+        dier::cc3ie::POSITION
+    >()) = 1;
+  }
+
+  /**
+   * @brief Disables the capture compare 3 interrupt.
+   */
+  template<Address T>
+  void Functions<T>::disableCaptureCompare3Interrupt()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        T + dier::OFFSET,
+        dier::cc3ie::POSITION
+    >()) = 0;
+  }
+
+  /**
+   * @brief Enables the capture compare 4 interrupt.
+   */
+  template<Address T>
+  void Functions<T>::enableCaptureCompare4Interrupt()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        T + dier::OFFSET,
+        dier::cc4ie::POSITION
+    >()) = 1;
+  }
+
+  /**
+   * @brief Disables the capture compare 4 interrupt.
+   */
+  template<Address T>
+  void Functions<T>::disableCaptureCompare4Interrupt()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        T + dier::OFFSET,
+        dier::cc4ie::POSITION
+    >()) = 0;
+  }
+
+  /**
    * @brief Clears the update interrupt flag.
    */
   template<Address T>
@@ -675,6 +816,54 @@ namespace tim {
     *(u32 volatile*) (bitband::peripheral<
         T + sr::OFFSET,
         sr::uif::POSITION
+    >()) = 0;
+  }
+
+  /**
+   * @brief Clears the capture compare 1 interrupt flag.
+   */
+  template<Address T>
+  void Functions<T>::clearCaptureCompare1Flag()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        T + sr::OFFSET,
+        sr::cc1if::POSITION
+    >()) = 0;
+  }
+
+  /**
+   * @brief Clears the capture compare 2 interrupt flag.
+   */
+  template<Address T>
+  void Functions<T>::clearCaptureCompare2Flag()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        T + sr::OFFSET,
+        sr::cc2if::POSITION
+    >()) = 0;
+  }
+
+  /**
+   * @brief Clears the capture compare 3 interrupt flag.
+   */
+  template<Address T>
+  void Functions<T>::clearCaptureCompare3Flag()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        T + sr::OFFSET,
+        sr::cc3if::POSITION
+    >()) = 0;
+  }
+
+  /**
+   * @brief Clears the capture compare 4 interrupt flag.
+   */
+  template<Address T>
+  void Functions<T>::clearCaptureCompare4Flag()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        T + sr::OFFSET,
+        sr::cc4if::POSITION
     >()) = 0;
   }
 

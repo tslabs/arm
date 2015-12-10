@@ -29,10 +29,10 @@
 
 #pragma once
 
-#include "../device_select.hpp"
+#include <device_select.hpp>
 
 #include "../defs.hpp"
-#include "../clock.hpp"
+#include <clock.hpp>
 #include "../../memorymap/tim.hpp"
 
 // Low-level access to the registers
@@ -73,11 +73,16 @@ namespace tim {
       static inline void startCounter();
       static inline void stopCounter();
       static inline bool isCounting();
+      static inline void setMaxResolution();
       static inline void setMicroSecondResolution();
       static inline void setMiliSecondResolution();
       static void delay(u16 const);
       static inline void setPrescaler(u16 const);
       static inline void setAutoReload(u16 const);
+      static inline void setCaptureCompare1(u16 const);
+      static inline void setCaptureCompare2(u16 const);
+      static inline void setCaptureCompare3(u16 const);
+      static inline void setCaptureCompare4(u16 const);
       static inline void setCounter(u16 const);
       static inline u16 getCounter();
       static inline void generateUpdate();
@@ -85,7 +90,19 @@ namespace tim {
       static inline void maskInterrupts();
       static inline void enableUpdateInterrupt();
       static inline void disableUpdateInterrupt();
+      static inline void enableCaptureCompare1Interrupt();
+      static inline void disableCaptureCompare1Interrupt();
+      static inline void enableCaptureCompare2Interrupt();
+      static inline void disableCaptureCompare2Interrupt();
+      static inline void enableCaptureCompare3Interrupt();
+      static inline void disableCaptureCompare3Interrupt();
+      static inline void enableCaptureCompare4Interrupt();
+      static inline void disableCaptureCompare4Interrupt();
       static inline void clearUpdateFlag();
+      static inline void clearCaptureCompare1Flag();
+      static inline void clearCaptureCompare2Flag();
+      static inline void clearCaptureCompare3Flag();
+      static inline void clearCaptureCompare4Flag();
       static inline void enableUpdateDma();
       static inline void disableUpdateDma();
       static inline bool hasUpdateEventOccurred();

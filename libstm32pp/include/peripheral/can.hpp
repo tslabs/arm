@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include "../device_select.hpp"
+#include <device_select.hpp>
 
 #ifndef VALUE_LINE
 

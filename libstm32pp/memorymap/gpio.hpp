@@ -50,7 +50,11 @@ namespace gpio {
 #ifdef STM32F1XX
       __RW u32 CR[2];   // 0x00: Configuration
       __RW u32 IDR;// 0x08: Input data
-      __RW u32 ODR;// 0x0C: Output data
+      union
+      {
+        __RW u32 ODR;// 0x0C: Output data
+        __RW u8 ODRB[4];
+      };
       __RW u32 BSRR;// 0x10: Bit set/reset
       __RW u32 BRR;// 0x14: Bit reset
       __RW u32 LCKR;// 0x18: Configuration lock

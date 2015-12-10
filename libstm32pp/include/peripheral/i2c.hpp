@@ -27,10 +27,10 @@
 
 #pragma once
 
-#include "../device_select.hpp"
+#include <device_select.hpp>
 
 #include "../defs.hpp"
-#include "../clock.hpp"
+#include <clock.hpp>
 #include "../../memorymap/i2c.hpp"
 
 // Low-level access to the registers

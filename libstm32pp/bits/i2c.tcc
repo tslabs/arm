@@ -69,25 +69,17 @@ namespace i2c {
   void Standard<I>::configureClock()
   {
     enum {
-      CCR = FREQUENCY
-          / (FREQUENCY_HZ
-              *
-              (F_S == ccr::f_s::STANDARD_MODE ?
-                  2 :
-                  (DUTY
-                      == ccr::duty::T_LOW_16_T_HIGH_9 ?
-                                                        25 :
-                                                        3)))
+      CCR = FREQUENCY / (FREQUENCY_HZ * (F_S == ccr::f_s::STANDARD_MODE ? 2 : (DUTY == ccr::duty::T_LOW_16_T_HIGH_9 ? 25 : 3)))
     };
 
     static_assert(CCR < 2048,
-        "This frequency can't be archived with this configuration.");
+        "This frequency can't be achieved with this configuration.");
     static_assert((CCR >= 1) ||
         (F_S == ccr::f_s::STANDARD_MODE),
-        "This frequency can't be archived with this configuration.");
+        "This frequency can't be achieved with this configuration.");
     static_assert((CCR >= 4) ||
         (F_S == ccr::f_s::FAST_MODE),
-        "This frequency can't be archived with this configuration.");
+        "This frequency can't be achieved with this configuration.");
 
     reinterpret_cast<Registers*>(I)->CCR = F_S + DUTY + CCR;
   }

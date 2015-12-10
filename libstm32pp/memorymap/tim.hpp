@@ -357,11 +357,198 @@ namespace tim {
 
       namespace states {
         enum E {
-          NO_UPDATE_OCURRED = 0 << POSITION,
-          UPDATE_INTERRUPT_PENDING = 1 << POSITION,
+          NO_INTERRUPT_OCURRED = 0 << POSITION,
+          INTERRUPT_PENDING = 1 << POSITION,
         };
       }  // namespace states
     }  // namespace uif
+
+    namespace cc1if {
+      enum {
+        POSITION = 1
+      };
+
+      enum {
+        MASK = 1 << POSITION
+      };
+
+      namespace states {
+        enum E {
+          NO_INTERRUPT_OCURRED = 0 << POSITION,
+          INTERRUPT_PENDING = 1 << POSITION,
+        };
+      }  // namespace states
+    }  // namespace cc1if
+
+    namespace cc2if {
+      enum {
+        POSITION = 2
+      };
+
+      enum {
+        MASK = 1 << POSITION
+      };
+
+      namespace states {
+        enum E {
+          NO_INTERRUPT_OCURRED = 0 << POSITION,
+          INTERRUPT_PENDING = 1 << POSITION,
+        };
+      }  // namespace states
+    }  // namespace cc2if
+
+    namespace cc3if {
+      enum {
+        POSITION = 3
+      };
+
+      enum {
+        MASK = 1 << POSITION
+      };
+
+      namespace states {
+        enum E {
+          NO_INTERRUPT_OCURRED = 0 << POSITION,
+          INTERRUPT_PENDING = 1 << POSITION,
+        };
+      }  // namespace states
+    }  // namespace cc3if
+
+    namespace cc4if {
+      enum {
+        POSITION = 4
+      };
+
+      enum {
+        MASK = 1 << POSITION
+      };
+
+      namespace states {
+        enum E {
+          NO_INTERRUPT_OCURRED = 0 << POSITION,
+          INTERRUPT_PENDING = 1 << POSITION,
+        };
+      }  // namespace states
+    }  // namespace cc4if
+
+    namespace comif {
+      enum {
+        POSITION = 5
+      };
+
+      enum {
+        MASK = 1 << POSITION
+      };
+
+      namespace states {
+        enum E {
+          NO_INTERRUPT_OCURRED = 0 << POSITION,
+          INTERRUPT_PENDING = 1 << POSITION,
+        };
+      }  // namespace states
+    }  // namespace comif
+
+    namespace tif {
+      enum {
+        POSITION = 6
+      };
+
+      enum {
+        MASK = 1 << POSITION
+      };
+
+      namespace states {
+        enum E {
+          NO_INTERRUPT_OCURRED = 0 << POSITION,
+          INTERRUPT_PENDING = 1 << POSITION,
+        };
+      }  // namespace states
+    }  // namespace tif
+
+    namespace bif {
+      enum {
+        POSITION = 7
+      };
+
+      enum {
+        MASK = 1 << POSITION
+      };
+
+      namespace states {
+        enum E {
+          NO_INTERRUPT_OCURRED = 0 << POSITION,
+          INTERRUPT_PENDING = 1 << POSITION,
+        };
+      }  // namespace states
+    }  // namespace bif
+
+    namespace cc1of {
+      enum {
+        POSITION = 9
+      };
+
+      enum {
+        MASK = 1 << POSITION
+      };
+
+      namespace states {
+        enum E {
+          NO_INTERRUPT_OCURRED = 0 << POSITION,
+          INTERRUPT_PENDING = 1 << POSITION,
+        };
+      }  // namespace states
+    }  // namespace cc1of
+
+    namespace cc2of {
+      enum {
+        POSITION = 10
+      };
+
+      enum {
+        MASK = 1 << POSITION
+      };
+
+      namespace states {
+        enum E {
+          NO_INTERRUPT_OCURRED = 0 << POSITION,
+          INTERRUPT_PENDING = 1 << POSITION,
+        };
+      }  // namespace states
+    }  // namespace cc2of
+
+    namespace cc3of {
+      enum {
+        POSITION = 11
+      };
+
+      enum {
+        MASK = 1 << POSITION
+      };
+
+      namespace states {
+        enum E {
+          NO_INTERRUPT_OCURRED = 0 << POSITION,
+          INTERRUPT_PENDING = 1 << POSITION,
+        };
+      }  // namespace states
+    }  // namespace cc3of
+
+    namespace cc4of {
+      enum {
+        POSITION = 12
+      };
+
+      enum {
+        MASK = 1 << POSITION
+      };
+
+      namespace states {
+        enum E {
+          NO_INTERRUPT_OCURRED = 0 << POSITION,
+          INTERRUPT_PENDING = 1 << POSITION,
+        };
+      }  // namespace states
+    }  // namespace cc4of
   }  // namespace sr
 
   namespace egr {

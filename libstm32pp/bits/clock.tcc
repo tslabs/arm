@@ -194,7 +194,7 @@ namespace clk {
   static_assert((__PLLMUL >= 2) && (__PLLMUL <= 16),
       "PLLMUL must be between 2 and 16 (inclusive)");
   enum {
-    PLL = _PLLSRC * __PLLMUL
+    PLL = _PLLSRC * (__PLLMUL + 2)
   };
 #ifdef VALUE_LINE
   static_assert(PLL <= 24000000,
@@ -765,12 +765,12 @@ void initialize()
 #ifdef STM32F1XX
 #ifdef VALUE_LINE
   FLASH::configure(flash::acr::hlfcya::
-      FLASH_HALF_CYCLE_ACCESS_ENABLED);
+      FLASH_HALF_CYCLE_ACCESS_DISABLED);
 #else // VALUE_LINE
   FLASH::configure(
       __LATENCY,
       flash::acr::hlfcya::
-      FLASH_HALF_CYCLE_ACCESS_ENABLED,
+      FLASH_HALF_CYCLE_ACCESS_DISABLED,
       flash::acr::prftbe::
       PREFETCH_ENABLED);
 #endif // VALUE_LINE

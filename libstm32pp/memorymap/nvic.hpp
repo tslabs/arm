@@ -23,41 +23,39 @@
 
 #include "common.hpp"
 
-namespace nvic {
-  struct Registers
+namespace nvic
+{
+  enum
   {
-      __RW
-      u32 ISER[3];  // 0x000: Set enable
-      u32 _RESERVED0[29];
-      __RW
-      u32 ICER[3];  // 0x080: Clear enable
-      u32 RSERVED1[29];
-      __RW
-      u32 ISPR[3];  // 0x100: Set pending
-      u32 _RESERVED2[29];
-      __RW
-      u32 ICPR[3];  // 0x180: Clear pending
-      u32 _RESERVED3[29];
-      __R
-      u32 IABR[3];  // 0x200: Active bit
-      u32 _RESERVED4[61];
-      __RW
-      u32 IPR[21];  // 0x300: Priority
-      u32 _RESERVED5[683];
-      __W
-      u32 STIR;  // 0xE00: Software trigger
-  };
-
-  enum {
     ADDRESS = alias::PPB + 0x100
   };
 
-  namespace irqn {
-    enum {
-      MASK = 0b1111
+  struct Registers
+  {
+      __RW u32 ISER[3];   // 0x000: Set enable
+      u32 _RESERVED0[29];
+      __RW u32 ICER[3];   // 0x080: Clear enable
+      u32 RSERVED1[29];
+      __RW u32 ISPR[3];   // 0x100: Set pending
+      u32 _RESERVED2[29];
+      __RW u32 ICPR[3];   // 0x180: Clear pending
+      u32 _RESERVED3[29];
+      __R u32 IABR[3];    // 0x200: Active bit
+      u32 _RESERVED4[61];
+      __RW u32 IPR[21];   // 0x300: Priority
+      u32 _RESERVED5[683];
+      __W u32 STIR;       // 0xE00: Software trigger
+  };
+
+  namespace irqn
+  {
+    enum
+    {
+      MASK = 0xFF
     };
 
-    enum E {
+    enum E
+    {
       WWDG = 0,
       PVD = 1,
   #if defined VALUE_LINE || \

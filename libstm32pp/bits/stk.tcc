@@ -1,26 +1,24 @@
-/*******************************************************************************
- *
- * Copyright (C) 2012 Jorge Aparicio <jorge.aparicio.r@gmail.com>
- *
- * This file is part of libstm32pp.
- *
- * libstm32pp is free software: you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or (at your option)
- * any later version.
- *
- * libstm32pp is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with libstm32pp. If not, see <http://www.gnu.org/licenses/>.
- *
- ******************************************************************************/
 
 #pragma once
 
-namespace stk {
-// TODO STK functions implementation
-}// namespace stk
+namespace stk
+{
+  template<
+    u32 RELOAD_VALUE,
+    stk::cr::clksource::States CS,
+    stk::cr::tickint::States TI,
+    stk::cr::enable::States EN>
+  void Functions::configure()
+  {
+    enum 
+    {
+      RLD = ((CS ? clk::SYSTEM : (clk::AHB / 8)) * (u64)RELOAD_VALUE) / 1000000 - 1
+    };
+    
+    static_assert(RLD < (1 << 24), "Period is too long for selected clock!");
+
+    STK_REGS->CTRL = 0;
+    STK_REGS->RELOAD = RLD;
+    STK_REGS->CTRL = CS + TI + EN;
+  }
+} // namespace stk

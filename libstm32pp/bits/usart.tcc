@@ -128,6 +128,42 @@ namespace usart {
   }
 
   /**
+   * @brief Clears RXNE flag.
+   */
+  template<Address A>
+  void Asynchronous<A>::clearRXNE()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        A + sr::OFFSET,
+        sr::rxne::POSITION
+    >()) = 0;
+  }
+
+  /**
+   * @brief Clears TC flag.
+   */
+  template<Address A>
+  void Asynchronous<A>::clearTC()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        A + sr::OFFSET,
+        sr::tc::POSITION
+    >()) = 0;
+  }
+
+  /**
+   * @brief Clears CTS flag.
+   */
+  template<Address A>
+  void Asynchronous<A>::clearCTS()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        A + sr::OFFSET,
+        sr::cts::POSITION
+    >()) = 0;
+  }
+
+  /**
    * @brief Sets the baud rate.
    * @note  Only valid for OVERSAMPLING_BY_16 configuration
    */

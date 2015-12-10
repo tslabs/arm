@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include "../device_select.hpp"
+#include <device_select.hpp>
 
 #include "../defs.hpp"
 #include "../include/peripheral/i2c.hpp"

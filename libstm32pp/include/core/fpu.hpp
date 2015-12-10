@@ -27,13 +27,13 @@
 
 #pragma once
 
-#include "../device_select.hpp"
+#include <device_select.hpp>
 
 #include "../defs.hpp"
 #include "../../memorymap/fpu.hpp"
 
 // Low-level access to the registers
-#define _FPU reinterpret_cast<fpu::Registers*>(fpu::ADDRESS)
+#define FPU_REGS reinterpret_cast<fpu::Registers*>(fpu::ADDRESS)
 
 // High-level functions
 namespace fpu {

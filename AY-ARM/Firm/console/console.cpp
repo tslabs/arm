@@ -1,3 +1,10 @@
+﻿
+// Console
+//
+// AY-ARM project
+// (c)2015 TS-Labs
+//
+// Was hält uns wach wenn der Himmel brennt
 
 namespace console
 {
@@ -129,7 +136,7 @@ namespace console
   void m_sysinf()
   {
     print_header("System info");
-    print_enter(25);
+    print_enter(30);
 
     print(_XY(12,5) _BR_ON _CYAN "CPUID: " _GREEN);
     u32 ci = SCB_REGS->CPUID;
@@ -170,14 +177,17 @@ namespace console
         print("unknown");
     }
 
-    print(_CR _F(11) _CYAN "UID: " _GREEN);
-    print_hex_str(DEVSIG_REGS_UID, 12);
+    print(_CR _F(11) _CYAN "CPU clock: " _GREEN);
+    print_dec((u16)(clk::SYSTEM / 1000000));
+    print("MHz");
 
     print(_CR _F(11) _CYAN "Flash size: " _GREEN);
     print_dec(DEVSIG_REGS_FSIZE);
     print("kB");
 
-
+    print(_CR _F(11) _CYAN "Device UID: " _GREEN);
+    print_hex_str(DEVSIG_REGS_UID, 12);
+    
     menu_next = M_MAIN;
     menu = M_ENTER;
   }

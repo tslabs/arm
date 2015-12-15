@@ -65,24 +65,19 @@ typedef union
   u64 d;
 } w64;
 
-// Function types
-// typedef void (*FUNC)();
-// typedef void (*FUNC_W)(u8);
-// typedef u8 (*FUNC_R)();
 
-// Special Types Definiton
 typedef struct
 {
-  s32  l;
-  s32  r;
+  s32 l;
+  s32 r;
 } DAC_SUM;
 
 typedef union
 {
   struct
   {
-      u16  l;
-      u16  r;
+    u16 l;
+    u16 r;
   };
   u32 w;
 } DAC_T;

@@ -306,6 +306,9 @@ void print_dec(u32 num)
 {
   dec_num = num;
   dec_f = FALSE;
+  print_dec_digit(1000000000);
+  print_dec_digit(100000000);
+  print_dec_digit(10000000);
   print_dec_digit(1000000);
   print_dec_digit(100000);
   print_dec_digit(10000);

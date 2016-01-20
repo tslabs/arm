@@ -426,7 +426,7 @@ namespace pllsrc {
     MASK = 1U << POSITION
   };
   enum States {
-    USE_HSI_CLOCK_OVER_2_AS_PLL_SOURCE = 0U << POSITION,
+    USE_HSI_CLOCK_DIV_2_AS_PLL_SOURCE = 0U << POSITION,
     USE_PREDIV1_OUTPUT_AS_PLL_SOURCE = 1U << POSITION,
   };
 }  // namespace pllsrc
@@ -438,7 +438,7 @@ namespace pllxtpre {
   };
   enum States {
     HSE_SELECTED_AS_PREDIV1_SOURCE = 0U << POSITION,
-    HSE_OVER_2_SELECTED_AS_PREDIV1_SOURCE = 1U << POSITION,
+    HSE_SELECTED_AS_PREDIV1_SOURCE_DIV_2 = 1U << POSITION,
   };
 }  // namespace pllxtpre
 

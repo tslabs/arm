@@ -35,7 +35,6 @@ namespace alias
     FSMC = 0xA0000000,
     APB1 = PERIPH,
     APB2 = PERIPH + 0x00010000,
-    DSIG = 0x1FFFF7E0,
 #ifdef STM32F1XX
     USB = 0x50000000,
     AHB = PERIPH + 0x00020000,

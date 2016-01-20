@@ -688,6 +688,23 @@ namespace tim {
   }
 
   /**
+   * @brief Disables all interrupts.
+   */
+  template<Address T>
+  void Functions<T>::disableInterrupts()
+  {
+    reinterpret_cast<Registers*>(T)->DIER &=
+      ~(dier::uie::ENABLED + 
+        dier::cc1ie::ENABLED +
+        dier::cc2ie::ENABLED +
+        dier::cc3ie::ENABLED +
+        dier::cc4ie::ENABLED +
+        dier::comie::ENABLED +
+        dier::tie::ENABLED +
+        dier::bie::ENABLED);
+  }
+
+  /**
    * @brief Enables the update interrupt.
    */
   template<Address T>
@@ -900,6 +917,18 @@ namespace tim {
     return *(bool volatile*) (bitband::peripheral<
         T + sr::OFFSET,
         sr::uif::POSITION
+    >());
+  }
+
+  /**
+   * @brief Returns true if an capture compare 1 event has occurred.
+   */
+  template<Address T>
+  bool Functions<T>::hasCaptureCompare1EventOccurred()
+  {
+    return *(bool volatile*) (bitband::peripheral<
+        T + sr::OFFSET,
+        sr::cc1if::POSITION
     >());
   }
 

@@ -45,11 +45,11 @@
 #define TIM7_REGS   ((tim::Registers*) tim::TIM7)
 #define TIM8_REGS   ((tim::Registers*) tim::TIM8)
 #define TIM9_REGS   ((tim::Registers*) tim::TIM9)
-#define TIM10_REGS   ((tim::Registers*) tim::TIM10)
-#define TIM11_REGS   ((tim::Registers*) tim::TIM11)
-#define TIM12_REGS   ((tim::Registers*) tim::TIM12)
-#define TIM13_REGS   ((tim::Registers*) tim::TIM13)
-#define TIM14_REGS   ((tim::Registers*) tim::TIM14)
+#define TIM10_REGS  ((tim::Registers*) tim::TIM10)
+#define TIM11_REGS  ((tim::Registers*) tim::TIM11)
+#define TIM12_REGS  ((tim::Registers*) tim::TIM12)
+#define TIM13_REGS  ((tim::Registers*) tim::TIM13)
+#define TIM14_REGS  ((tim::Registers*) tim::TIM14)
 #ifdef VALUE_LINE
 #define TIM15_REGS  ((tim::_reserved::RegistersGP6*)tim::E::TIM15)
 #define TIM16_REGS  ((tim::_reserved::Registers*)tim::E::TIM16)
@@ -73,11 +73,11 @@ namespace tim {
       static inline void startCounter();
       static inline void stopCounter();
       static inline bool isCounting();
+      static void delay(u16 const);
+      static inline void setPrescaler(u16 const);
       static inline void setMaxResolution();
       static inline void setMicroSecondResolution();
       static inline void setMiliSecondResolution();
-      static void delay(u16 const);
-      static inline void setPrescaler(u16 const);
       static inline void setAutoReload(u16 const);
       static inline void setCaptureCompare1(u16 const);
       static inline void setCaptureCompare2(u16 const);
@@ -88,16 +88,17 @@ namespace tim {
       static inline void generateUpdate();
       static inline void unmaskInterrupts();
       static inline void maskInterrupts();
-      static inline void enableUpdateInterrupt();
+      static inline void disableInterrupts();
       static inline void disableUpdateInterrupt();
-      static inline void enableCaptureCompare1Interrupt();
       static inline void disableCaptureCompare1Interrupt();
-      static inline void enableCaptureCompare2Interrupt();
       static inline void disableCaptureCompare2Interrupt();
-      static inline void enableCaptureCompare3Interrupt();
       static inline void disableCaptureCompare3Interrupt();
-      static inline void enableCaptureCompare4Interrupt();
       static inline void disableCaptureCompare4Interrupt();
+      static inline void enableUpdateInterrupt();
+      static inline void enableCaptureCompare1Interrupt();
+      static inline void enableCaptureCompare2Interrupt();
+      static inline void enableCaptureCompare3Interrupt();
+      static inline void enableCaptureCompare4Interrupt();
       static inline void clearUpdateFlag();
       static inline void clearCaptureCompare1Flag();
       static inline void clearCaptureCompare2Flag();
@@ -106,12 +107,8 @@ namespace tim {
       static inline void enableUpdateDma();
       static inline void disableUpdateDma();
       static inline bool hasUpdateEventOccurred();
-
-      template<
-          u32
-      >
-      static inline void configurePeriodicInterrupt();
-
+      static inline bool hasCaptureCompare1EventOccurred();
+      template<u32> static inline void configurePeriodicInterrupt();
       static inline void setMasterMode(tim::cr2::mms::States);
       static inline void configureBasicCounter(
           tim::cr1::cen::States,

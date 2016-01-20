@@ -58,6 +58,8 @@ namespace usart {
 
       static inline void enableClock();
       static inline void disableClock();
+      static inline void enable();
+      static inline void disable();
       static inline void sendData(u8 const data);
       static inline u8 getData();
       static inline bool canSendDataYet();

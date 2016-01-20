@@ -7,13 +7,12 @@ namespace devsig
 {
   enum
   {
-    ADDRESS = alias::DSIG
-  };
-
-  struct Registers
-  {
-    u16 F_SIZE;       // 0x00: Flash Size
-    u8 dummy[6];
-    u8 U_ID[12];      // Unique ID
+#ifdef STM32F1XX
+    UID   = 0x1FFFF7E8,
+    FSIZE = 0x1FFFF7E0
+#else // STM32F2XX, STM32F4XX
+    UID   = 0x1FFF7A10,
+    FSIZE = 0x1FFF7A22
+#endif
   };
 }

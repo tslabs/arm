@@ -173,7 +173,7 @@ namespace clk {
     _PLLSRC =
     __PLLSRC ==
     rcc::cfgr::pllsrc::
-    USE_HSI_CLOCK_OVER_2_AS_PLL_SOURCE?
+    USE_HSI_CLOCK_DIV_2_AS_PLL_SOURCE?
     HSI / 2:
     (__PLLSRC !=
         rcc::cfgr::pllsrc::
@@ -182,7 +182,7 @@ namespace clk {
         (__PREDIV1SRC ==
             rcc::cfgr2::prediv1src::
             USE_HSE_OSCILLATOR_AS_PREDIV1_INPUT?
-            HSE / __PREDIV1:
+            HSE / (__PREDIV1 + 1):
             (__PREDIV1SRC ==
                 rcc::cfgr2::prediv1src::
                 USE_PLL2_AS_PREDIV1_INPUT?

@@ -88,6 +88,30 @@ namespace usart {
   }
 
   /**
+   * @brief Enables peripheral.
+   */
+  template<Address A>
+  void Asynchronous<A>::enable()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        A + cr1::OFFSET,
+        cr1::ue::POSITION
+    >()) = 1;
+  }
+
+  /**
+   * @brief Disables peripheral.
+   */
+  template<Address A>
+  void Asynchronous<A>::disable()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        A + cr1::OFFSET,
+        cr1::ue::POSITION
+    >()) = 0;
+  }
+
+  /**
    * @brief Sends data through the UART.
    */
   template<Address A>

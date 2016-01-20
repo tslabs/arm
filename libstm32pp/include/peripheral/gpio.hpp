@@ -71,6 +71,7 @@ namespace gpio {
     static inline void pullUp();
     static inline void pullDown();
     static inline bool isHigh();
+    static inline bool isLow();
     static inline void setMode(gpio::cr::States);
 
     private:

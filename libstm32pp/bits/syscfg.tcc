@@ -55,13 +55,12 @@ namespace syscfg {
   >
   void Functions::selectExtiPin()
   {
-    static_assert(LINE < 16,
-        "Only the first 16 EXTI lines can be mapped to GPIO pins");
+    static_assert(LINE < 16, "Only the first 16 EXTI lines can be mapped to GPIO pins");
 
-    SYSCFG_REGS->EXTICR[LINE / 4] &=
-        (exticr::MASK << (4 * (LINE % 4)));
-
-    SYSCFG_REGS->EXTICR[LINE / 4] |= EXTICR << (4 * (LINE % 4));
+    u32 s = SYSCFG_REGS->EXTICR[LINE >> 2];
+    s &= ~(exticr::MASK << ((LINE & 3) << 2));
+    s |= EXTICR << ((LINE & 3) << 2);
+    SYSCFG_REGS->EXTICR[LINE >> 2] = s;
   }
 }  // namespace syscfg
 

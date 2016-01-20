@@ -256,6 +256,18 @@ namespace tim {
       };
     }  // namespace cc4ie
 
+    namespace comie {
+      enum {
+        POSITION = 5,
+        MASK = 1 << POSITION
+      };
+
+      enum States {
+        DISABLED = 0 << POSITION,
+        ENABLED = 1 << POSITION,
+      };
+    }  // namespace comie
+
     namespace tie {
       enum {
         POSITION = 6,
@@ -267,6 +279,18 @@ namespace tim {
         ENABLED = 1 << POSITION,
       };
     }  // namespace tie
+
+    namespace bie {
+      enum {
+        POSITION = 7,
+        MASK = 1 << POSITION
+      };
+
+      enum States {
+        DISABLED = 0 << POSITION,
+        ENABLED = 1 << POSITION,
+      };
+    }  // namespace bie
 
     namespace ude {
       enum {

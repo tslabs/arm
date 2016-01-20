@@ -42,7 +42,7 @@ public:
   }
 
   // Puts a byte into FIFO
-  void put_byte_unsafe(u8 x)
+  void put_byte_nocheck(u8 x)
   {
     *(addr + wrptr) = x;
     wrptr = (wrptr == (size - 1)) ? 0 : (wrptr + 1);
@@ -51,13 +51,13 @@ public:
   void put_byte(u8 x)
   {
     if (free())
-      put_byte_unsafe(x);
+      put_byte_nocheck(x);
     else
       overflow = true;
   }
 
   // Extracts a byte from FIFO
-  u8 get_byte_unsafe()
+  u8 get_byte_nocheck()
   {
     u8 c = *(addr + rdptr);
     rdptr = (rdptr == (size - 1)) ? 0 : (rdptr + 1);
@@ -67,7 +67,7 @@ public:
   u8 get_byte()
   {
     if (used())
-      return get_byte_unsafe();
+      return get_byte_nocheck();
     else
       underflow = true;
   }
@@ -85,7 +85,7 @@ public:
     if ((size - used()) < num) 
       return false;        // not enough free space
 
-    while (num--) put_byte_unsafe(*buf++);
+    while (num--) put_byte_nocheck(*buf++);
     return true;
   }
 
@@ -96,7 +96,7 @@ public:
     if (used() < num) 
       return false;        // not enough data in FIFO
 
-    while (num--) *buf++ = get_byte_unsafe();
+    while (num--) *buf++ = get_byte_nocheck();
     return true;
   }
 };

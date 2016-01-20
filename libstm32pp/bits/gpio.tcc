@@ -125,6 +125,19 @@ namespace gpio {
   }
 
   /**
+   * @brief Returns true if the pin is low.
+   */
+  template<Address P, u8 N>
+  bool Pin<P, N>::isLow()
+  {
+    bool b = *(bool volatile*) (bitband::peripheral<
+        P + idr::OFFSET,
+        N
+        >());
+    return !b;
+  }
+
+  /**
    * @brief Changes the I/O mode.
    */
   template<Address P, u8 N>

@@ -6,6 +6,40 @@
 //
 // Degoša lāpa būs mūsu saule
 
+/*
+void initializeClock()
+{
+  RCC::useHseOscillator();
+  RCC::enableHse();
+  while (!RCC::isHseStable());
+  RCC::configurePll<
+    rcc::cfgr::pllsrc::USE_PREDIV1_OUTPUT_AS_PLL_SOURCE,
+    7, // rcc::cfgr::pllmul::PLL_INPUT_CLOCK_X_9
+    0, // rcc::cfgr2::prediv1
+    0, // rcc::cfgr2::prediv2
+    7, // rcc::cfgr2::pll2mul
+    6, // rcc::cfgr2::pll3mul
+    rcc::cfgr2::prediv1src::USE_HSE_OSCILLATOR_AS_PREDIV1_INPUT,
+    rcc::cfgr2::i2s2src::USE_SYSTEM_CLOCK_AS_I2S2_CLOCK,
+    rcc::cfgr2::i2s3src::USE_PLL3_CLOCK_AS_I2S3_CLOCK>();
+  RCC::configureBusPrescalers<
+    0, // rcc::cfgr::hpre::SYSCLK_NOT_DIVIDED,
+    4, // rcc::cfgr::ppre1::HCLK_DIVIDED_BY_2,
+    0, // rcc::cfgr::ppre2::HCLK_NOT_DIVIDED,
+    3, // rcc::cfgr::adcpre::P2CLK_DIVIDED_BY_6,
+    1  // rcc::cfgr::otgfspre::PLL_CLOCK_DIVIDED_BY_1_DOT_5
+  >();
+  RCC::enablePll();
+  while (!RCC::isPllStable());
+  FLASH::configure(
+    flash::acr::latency::TWO_WAIT_STATES,
+    flash::acr::hlfcya::FLASH_HALF_CYCLE_ACCESS_DISABLED,
+    flash::acr::prftbe::PREFETCH_ENABLED);
+  RCC::setSystemClockSource(rcc::cfgr::sw::PLL_SELECTED_AS_SYSTEM_CLOCK);
+  while (!RCC::isSystemClockSourceStable());
+}
+*/
+
 void initializePins()
 {
   // GPIO

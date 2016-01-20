@@ -6,6 +6,13 @@
 //
 // Ur rymdens svarta djup
 
+namespace clk
+{
+  void hseFailureHandler()
+  {
+  }
+}
+
 namespace exception
 {
   extern "C"
@@ -21,13 +28,7 @@ namespace interrupt
   // Console
   void UART_CONSOLE_IRQ()
   {
-    u32 sr = UART_CONSOLE_REGS->SR;
-
-    if (sr & usart::sr::rxne::DATA_RECEIVED)
-      console::processRecv();
-
-    if (sr & usart::sr::tc::TRANSMISSION_COMPLETED)
-      console::processSend();
+    console::processUART();
   }
 
   void AU_DMA_IRQ()

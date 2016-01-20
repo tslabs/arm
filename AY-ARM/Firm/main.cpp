@@ -7,6 +7,10 @@
 // Demoscene is alive!
 
 /// - Header includes ---
+#include <stdarg.h>
+#include <limits.h>
+#include "exception.cpp"
+#include "startup.cpp"
 #include "string.h"
 #include "clock.hpp"
 #include "interrupt.hpp"
@@ -20,6 +24,7 @@
 #include "peripheral/dac.hpp"
 #include "peripheral/exti.hpp"
 #include "peripheral/syscfg.hpp"
+#include "common/math.cpp"
 #include "../other/fifo.hpp"
 #include "types.hpp"
 #include "main.hpp"

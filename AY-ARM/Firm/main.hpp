@@ -99,5 +99,7 @@ enum
   MAGIC_FFW = 0x7841AA55, // 'Flash Firmware' magic
 };
 
+#define __SW(a, b) case a: b; break;
+
 #define CHIP_STRING "AY-ARM Sound Chip, v.1.00"
 #define CPR_STRING "(c)2015 TS-Labs"

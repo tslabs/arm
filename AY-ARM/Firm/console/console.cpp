@@ -8,7 +8,6 @@
 
 namespace console
 {
-#include "console.h"
 #include "terminal.cpp"
 #include "hw.cpp"
 
@@ -45,16 +44,19 @@ namespace console
     menu = M_MAIN;
   }
 
-  void print_hdr_ansi()
-  {
-    print(_RES _C_OFF _BBLACK _CLS _BR_ON _CYAN);
-  }
+#define print_header(a) print_hdr((a), ((CONSOLE_WIDTH - sizeof(a)) / 2))
+void print_hdr(const char *str, u8 x)
+{
+  print(_RES _C_OFF _BGBLK _CLS _BCYA);
+  set_xy(x, 2);
+  print(str);
+}
 
   // 'Press Enter'
   void print_enter(u8 y)
   {
     set_xy(10, y);
-    print(_BR_OFF _WHITE "'Enter' - return to main menu");
+    print(_WHT "'Enter' - return to main menu");
   }
 
 /// - Auxilliary menus ---
@@ -79,7 +81,7 @@ namespace console
   // HEX dump
   void m_dump()
   {
-    print(_CR _F(12) _BR_ON _CYAN "Data:");
+    print(_CR _F(12) _BCYA "Data:");
     print_num_zebra(0, 1, min(dump_num, 16), 21, 3);
 
     menu_st = 0;
@@ -95,7 +97,7 @@ namespace console
       if (!(i & 0x0F))
         print(_CR _F(18));
 
-      print((i & 1) ? (" " _BR_ON _BLACK) : (" "  _BR_OFF _WHITE));
+      print((i & 1) ? (" " _BBLK) : (" " _WHT));
       print_hex(*dump_addr++);
       i++;
     }
@@ -108,8 +110,8 @@ namespace console
   {
     print_header("AY-ARM console");
     print(
-      _XY(20,5) _BR_OFF _WHITE "Select option:"
-      _BR_ON _GREEN _XY(12, 7) _CTAB _TB
+      _XY(20,5) _WHT "Select option:"
+      _BGRN _XY(12, 7) _CTAB _TB
                "0. System info"
       // _CR _TAB "1. "
       );
@@ -138,16 +140,12 @@ namespace console
     print_header("System info");
     print_enter(30);
 
-    print(_XY(12,5) _BR_ON _CYAN "CPUID: " _GREEN);
     u32 ci = SCB_REGS->CPUID;
-    print_hex(ci);
-    print(_CR _F(13) _CYAN "Implementer: " _YELLOW);
-    print(((ci >> 24) == 0x41) ? "ARM" : "unknown");
-    print(_CR _F(13) _CYAN "Revision: " _YELLOW "r");
-    print_dec((ci >> 20) & 0xF);
-    print_char('p');
-    print_dec(ci & 0xF);
-    print(_CR _F(13) _CYAN "Architecture: " _YELLOW);
+    print(_XY(12,5) _BCYA "CPUID: " _BGRN "%Y", ci);
+    print(_CR _F(13) _BCYA "Implementer: " _BYLW "%s", ((ci >> 24) == 0x41) ? "ARM" : "unknown");
+    print(_CR _F(13) _BCYA "Revision: " _BYLW "r%dp%d", (ci >> 20) & 0xF, ci & 0xF);
+    
+    print(_CR _F(13) _BCYA "Architecture: " _BYLW);
     switch ((ci >> 16) & 0xF)
     {
       case 0xC:
@@ -161,7 +159,8 @@ namespace console
       default:
         print("unknown");
     }
-    print(_CR _F(13) _CYAN "Part No: " _YELLOW);
+    
+    print(_CR _F(13) _BCYA "Part No: " _BYLW);
     switch ((ci >> 8) & 0xFF)
     {
       case 0xC2:
@@ -177,16 +176,9 @@ namespace console
         print("unknown");
     }
 
-    print(_CR _F(11) _CYAN "CPU clock: " _GREEN);
-    print_dec((u16)(clk::SYSTEM / 1000000));
-    print("MHz");
-
-    print(_CR _F(11) _CYAN "Flash size: " _GREEN);
-    print_dec(DEVSIG_REGS_FSIZE);
-    print("kB");
-
-    print(_CR _F(11) _CYAN "Device UID: " _GREEN);
-    print_hex_str(DEVSIG_REGS_UID, 12);
+    print(_CR _F(11) _BCYA "CPU clock: " _BGRN "%dMHz", (u16)(clk::SYSTEM / 1000000));
+    print(_CR _F(11) _BCYA "Flash size: " _BGRN "%dkB", DEVSIG_REGS_FSIZE);
+    print(_CR _F(11) _BCYA "Device UID: " _BGRN "%H", DEVSIG_REGS_UID, 12);
     
     menu_next = M_MAIN;
     menu = M_ENTER;

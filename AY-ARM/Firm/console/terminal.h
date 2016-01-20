@@ -1,52 +1,55 @@
 
 #pragma once
 
-#define __BLACK   0x01
-#define __RED     0x02
-#define __GREEN   0x03
-#define __YELLOW  0x04
-#define __BLUE    0x05
-#define __MAGENTA 0x06
-#define __CYAN    0x07
-#define __WHITE   0x08
+#define __BLK    0x01
+#define __RED    0x02
+#define __GRN    0x03
+#define __YLW    0x04
+#define __BLU    0x05
+#define __MGN    0x06
+#define __CYA    0x07
+#define __WHT    0x08
 
-#define __CR      0x0A
-#define __BR_OFF  0x0B
-#define __BR_ON   0x0C
+#define __TAB    0x09
+#define __CR     0x0A
 
-#define __CTAB    0x0D
-#define __X       0x0E
-#define __XY      0x0F
-#define __NTS     0x10
-#define __FLS     0x11
-#define __NTSF    0x12
-#define __FLSF    0x13
-#define __DEC16   0x14
-#define __HEX8    0x15
+#define __X      0x0B
+#define __XY     0x0C
+#define __CTAB   0x0D
 
-#define _BLACK    "\x01"
-#define _RED      "\x02"
-#define _GREEN    "\x03"
-#define _YELLOW   "\x04"
-#define _BLUE     "\x05"
-#define _MAGENTA  "\x06"
-#define _CYAN     "\x07"
-#define _WHITE    "\x08"
+#define __BBLK   0x11
+#define __BRED   0x12
+#define __BGRN   0x13
+#define __BYLW   0x14
+#define __BBLU   0x15
+#define __BMGN   0x16
+#define __BCYA   0x17
+#define __BWHT   0x18
+
+#define _BLK    "\x01"
+#define _RED    "\x02"
+#define _GRN    "\x03"
+#define _YLW    "\x04"
+#define _BLU    "\x05"
+#define _MGN    "\x06"
+#define _CYA    "\x07"
+#define _WHT    "\x08"
 
 #define _TAB      "\x09"
 #define _CR       "\x0A"
 
-#define _BR_OFF   "\x0B"
-#define _BR_ON    "\x0C"
+#define _X(x)     "\x0B" _CT(_,x)
+#define _XY(x,y)  "\x0C" _CT(_,x) _CT(_,y)
 #define _CTAB     "\x0D"
-#define _X(x)     "\x0E" _CT(_,x)
-#define _XY(x,y)  "\x0F" _CT(_,x) _CT(_,y)
-#define _NTS      "\x10"
-#define _FLS      "\x11"
-#define _NTSF     "\x12"
-#define _FLSF     "\x13"
-#define _DEC16    "\x14"
-#define _HEX8     "\x15"
+
+#define _BBLK   "\x11"
+#define _BRED   "\x12"
+#define _BGRN   "\x13"
+#define _BYLW   "\x14"
+#define _BBLU   "\x15"
+#define _BMGN   "\x16"
+#define _BCYA   "\x17"
+#define _BWHT   "\x18"
 
 #define _TB       "\eH"
 
@@ -57,9 +60,9 @@
 
 #define _A_CSI    "\e["
 #define _A_CTAB   "\e[3g"
-#define _BBLACK   "\e[40m"
-#define _A_BR_ON  "\e[22m"
-#define _A_BR_OFF "\e[1m"
+#define _BGBLK    "\e[40m"
+#define _A_BR_OFF "\e[22m"
+#define _A_BR_ON  "\e[1m"
 #define _A_COL    "\e[3"
 #define _C_OFF    "\e[?25l"
 #define _C_ON     "\e[?25h"

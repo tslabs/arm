@@ -21,7 +21,8 @@
 
 #pragma once
 
-namespace flash {
+namespace flash
+{
 
 #ifndef VALUE_LINE
   void Functions::setLatency(acr::latency::States LATENCY)
@@ -30,63 +31,10 @@ namespace flash {
     FLASH_REGS->ACR |= LATENCY;
   }
 #endif // !VALUE_LINE
+
 #ifdef STM32F1XX
 #ifndef VALUE_LINE
-  /**
-   * @brief Enables the prefetch buffer.
-   */
-  void Functions::enablePrefetch()
-  {
-    *(u32 volatile*) (bitband::peripheral<
-        ADDRESS + flash::acr::OFFSET,
-        flash::acr::prftbe::POSITION
-        >()) = 1;
-  }
 
-  /**
-   * @brief Disables the prefetch buffer.
-   */
-  void Functions::disablePrefetch()
-  {
-    *(u32 volatile*) (bitband::peripheral<
-        ADDRESS + flash::acr::OFFSET,
-        flash::acr::prftbe::POSITION
-        >()) = 0;
-  }
-#endif // !VALUE_LINE
-  /**
-   * @brief Enables the half cycle flash access.
-   */
-  void Functions::enableHalfCycleFlashAccess()
-  {
-    *(u32 volatile*) (bitband::peripheral<
-        ADDRESS + flash::acr::OFFSET,
-        flash::acr::hlfcya::POSITION
-        >()) = 1;
-  }
-
-  /**
-   * @brief Disables the half cycle flash access.
-   */
-  void Functions::disableHalfCycleFlashAccess()
-  {
-    *(u32 volatile*) (bitband::peripheral<
-        ADDRESS + flash::acr::OFFSET,
-        flash::acr::hlfcya::POSITION
-        >()) = 0;
-  }
-#ifdef VALUE_LINE
-
-  /**
-   * @brief Configures the flash memory access.
-   * @note  Overrides the old configuration.
-   */
-  void Functions::configure(acr::hlfcya::States HLFCYA)
-  {
-    FLASH_REGS->ACR = HLFCYA;
-  }
-
-#else // VALUE_LINE
   /**
    * @brief Configures the flash memory access.
    * @note  Overrides the old configuration.
@@ -98,17 +46,13 @@ namespace flash {
   {
     FLASH_REGS->ACR = LATENCY + HLFCYA + PRFTBE;
   }
-#endif // VALUE_LINE
-#else // STM32F1XX
+
   /**
    * @brief Enables the prefetch buffer.
    */
   void Functions::enablePrefetch()
   {
-    *(u32 volatile*) (bitband::peripheral<
-        ADDRESS + flash::acr::OFFSET,
-        flash::acr::prften::POSITION
-    >()) = 1;
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + acr::OFFSET, acr::prftbe::POSITION>()) = 1;
   }
 
   /**
@@ -116,55 +60,66 @@ namespace flash {
    */
   void Functions::disablePrefetch()
   {
-    *(u32 volatile*) (bitband::peripheral<
-        ADDRESS + flash::acr::OFFSET,
-        flash::acr::prften::POSITION
-    >()) = 0;
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + acr::OFFSET, acr::prftbe::POSITION>()) = 0;
   }
 
   /**
-   * @brief Enables the data cache.
+   * @brief Erase whole Flash.
    */
-  void Functions::enableDataCache()
+  void Functions::eraseFlash()
   {
-    *(u32 volatile*) (bitband::peripheral<
-        ADDRESS + flash::acr::OFFSET,
-        flash::acr::dcen::POSITION
-    >()) = 1;
+    FLASH_REGS->CR = cr::mer::MASS_ERASE_ACTIVATED;
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + cr::OFFSET, cr::strt::POSITION>()) = 1;
   }
 
   /**
-   * @brief Disables the data cache.
+   * @brief Erase page.
    */
-  void Functions::disableDataCache()
+  void Functions::erasePage(u32 addr)
   {
-    *(u32 volatile*) (bitband::peripheral<
-        ADDRESS + flash::acr::OFFSET,
-        flash::acr::dcen::POSITION
-    >()) = 0;
+    FLASH_REGS->CR = cr::per::PAGE_ERASE_ACTIVATED;
+    FLASH_REGS->AR = addr;
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + cr::OFFSET, cr::strt::POSITION>()) = 1;
   }
 
   /**
-   * @brief Enables the instruction cache.
+   * @brief Program Flash.
    */
-  void Functions::enableInstructionCache()
+  void Functions::startProgram()
   {
-    *(u32 volatile*) (bitband::peripheral<
-        ADDRESS + flash::acr::OFFSET,
-        flash::acr::icen::POSITION
-    >()) = 1;
+    FLASH_REGS->CR = cr::pg::FLASH_PROGRAMMING_ACTIVATED;
+  }
+
+#else // !VALUE_LINE
+
+  /**
+   * @brief Configures the flash memory access.
+   * @note  Overrides the old configuration.
+   */
+  void Functions::configure(acr::hlfcya::States HLFCYA)
+  {
+    FLASH_REGS->ACR = HLFCYA;
+  }
+
+#endif // !VALUE_LINE
+
+  /**
+   * @brief Enables the half cycle flash access.
+   */
+  void Functions::enableHalfCycleFlashAccess()
+  {
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + acr::OFFSET, acr::hlfcya::POSITION>()) = 1;
   }
 
   /**
-   * @brief Disables the instruction cache.
+   * @brief Disables the half cycle flash access.
    */
-  void Functions::disableInstructionCache()
+  void Functions::disableHalfCycleFlashAccess()
   {
-    *(u32 volatile*) (bitband::peripheral<
-        ADDRESS + flash::acr::OFFSET,
-        flash::acr::icen::POSITION
-    >()) = 0;
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + acr::OFFSET, acr::hlfcya::POSITION>()) = 0;
   }
+
+#else // STM32F1XX
 
   /**
    * @brief Configures the flash memory access.
@@ -178,5 +133,128 @@ namespace flash {
   {
     FLASH_REGS->ACR = LATENCY + PRFTEN + DCEN + ICEN;
   }
+
+  /**
+   * @brief Enables the prefetch buffer.
+   */
+  void Functions::enablePrefetch()
+  {
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + acr::OFFSET, acr::prften::POSITION>()) = 1;
+  }
+
+  /**
+   * @brief Disables the prefetch buffer.
+   */
+  void Functions::disablePrefetch()
+  {
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + acr::OFFSET, acr::prften::POSITION>()) = 0;
+  }
+
+  /**
+   * @brief Enables the data cache.
+   */
+  void Functions::enableDataCache()
+  {
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + acr::OFFSET, acr::dcen::POSITION>()) = 1;
+  }
+
+  /**
+   * @brief Disables the data cache.
+   */
+  void Functions::disableDataCache()
+  {
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + acr::OFFSET, acr::dcen::POSITION>()) = 0;
+  }
+
+  /**
+   * @brief Resets the data cache.
+   */
+  void Functions::resetDataCache()
+  {
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + acr::OFFSET, acr::dcrst::POSITION>()) = 1;
+  }
+
+  /**
+   * @brief Enables the instruction cache.
+   */
+  void Functions::enableInstructionCache()
+  {
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + acr::OFFSET, acr::icen::POSITION>()) = 1;
+  }
+
+  /**
+   * @brief Disables the instruction cache.
+   */
+  void Functions::disableInstructionCache()
+  {
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + acr::OFFSET, acr::icen::POSITION>()) = 0;
+  }
+
+  /**
+   * @brief Resets the instruction cache.
+   */
+  void Functions::resetInstructionCache()
+  {
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + acr::OFFSET, acr::icrst::POSITION>()) = 1;
+  }
+
+  /**
+   * @brief Erase whole Flash.
+   */
+  void Functions::eraseFlash()
+  {
+    FLASH_REGS->CR = cr::psize::PROGRAM_X32 + cr::mer::MASS_ERASE_ACTIVATED;
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + cr::OFFSET, cr::strt::POSITION>()) = 1;
+  }
+
+  /**
+   * @brief Erase sector.
+   */
+  void Functions::eraseSector(cr::snb::States SEC)
+  {
+    FLASH_REGS->CR = cr::psize::PROGRAM_X32 + SEC + cr::ser::SECTOR_ERASE_ACTIVATED;
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + cr::OFFSET, cr::strt::POSITION>()) = 1;
+  }
+
+  /**
+   * @brief Program Flash.
+   */
+  void Functions::startProgram()
+  {
+    FLASH_REGS->CR = cr::psize::PROGRAM_X32 + cr::pg::FLASH_PROGRAMMING_ACTIVATED;
+  }
 #endif // STM32F1XX
+
+  /**
+   * @brief Returns Flash Busy state.
+   */
+  bool Functions::isBusy()
+  {
+    return *(u32 volatile*)(bitband::peripheral<ADDRESS + sr::OFFSET,sr::bsy::POSITION>());
+  }
+
+  /**
+   * @brief Wait while Flash Busy.
+   */
+  void Functions::waitBusy()
+  {
+    while (*(u32 volatile*)(bitband::peripheral<ADDRESS + sr::OFFSET,sr::bsy::POSITION>()));
+  }
+
+  /**
+   * @brief Unlocks Flash.
+   */
+  void Functions::unlock()
+  {
+    FLASH_REGS->KEYR = keyr::KEY1;
+    FLASH_REGS->KEYR = keyr::KEY2;
+  }
+
+  /**
+   * @brief Locks Flash.
+   */
+  void Functions::lock()
+  {
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + cr::OFFSET, cr::lock::POSITION>()) = 1;
+  }
 }  // namespace flash

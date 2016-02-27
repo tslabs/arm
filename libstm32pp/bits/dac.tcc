@@ -43,4 +43,13 @@ namespace dac {
   {
     DAC_REGS->CR |= cr::dac1::enable::DISABLED | cr::dac2::enable::DISABLED;
   }
+  
+  void Functions::configureBasic(
+    dac::cr::dac1::enable::States EN1,
+    dac::cr::dac1::boff::States BOFF1,
+    dac::cr::dac2::enable::States EN2,
+    dac::cr::dac2::boff::States BOFF2)
+  {
+    DAC_REGS->CR = EN1 + EN2 + BOFF1 + BOFF2;
+  }
 } // namespace dac

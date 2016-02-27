@@ -60,6 +60,10 @@ namespace adc {
       static inline bool hasRegularConversionEnded();
       static inline bool hasInjectedConversionEnded();
       static inline u16 getConversionResult();
+      static inline void resetCalibration();
+      static inline bool isCalibrationReset();
+      static inline void startCalibration();
+      static inline bool isCalibration();
 
       template<u32>
       static inline void setNumberOfRegularChannels();
@@ -98,20 +102,37 @@ namespace adc {
           adc::cr1::discnum::States,
           adc::cr1::jawden::States,
           adc::cr1::awden::States,
+#ifndef STM32F1XX
           adc::cr1::res::States,
           adc::cr1::ovrie::States,
+#endif // STM32F1XX
           adc::cr2::adon::States,
           adc::cr2::cont::States,
           adc::cr2::dma::States,
+#ifndef STM32F1XX
           adc::cr2::dds::States,
           adc::cr2::eocs::States,
+#endif // STM32F1XX
           adc::cr2::align::States,
           adc::cr2::jextsel::States,
+#ifndef STM32F1XX
           adc::cr2::jexten::States,
+#else
+          adc::cr2::jexttrig::States,
+#endif // STM32F1XX
           adc::cr2::jswstart::States,
           adc::cr2::extsel::States,
+#ifndef STM32F1XX
           adc::cr2::exten::States,
-          adc::cr2::swstart::States);
+#else
+          adc::cr2::exttrig::States,
+#endif // STM32F1XX
+          adc::cr2::swstart::States
+#ifdef STM32F1XX
+          ,
+          adc::cr2::tsvrefe::States
+#endif // STM32F1XX
+          );
 
     private:
       Functions();

@@ -135,13 +135,15 @@ namespace spiflash
       static inline void ssLow();
       static inline void ssHigh();
       static u8 sendByte(u8);
+      static void sendDummy(int);
       static u32 detectSize();
       static void readBlock(u32, u8*, u32);
       static void writeBlock(u32, u8*, u32);
       static void eraseSector(u32);
       static void eraseChip();
       static u8 readStatus();
-      static void waitWrite();
+      static void waitBusy();
+      static bool isBusy();
 
     private:
       Functions();

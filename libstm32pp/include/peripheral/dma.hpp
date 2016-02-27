@@ -201,6 +201,7 @@ namespace dma {
         static inline bool hasHalfTransferOccurred();
         static inline void clearTransferCompleteFlag();
         static inline bool hasTransferCompleteOccurred();
+        static inline bool isMemory0TheCurrentTarget();
         static inline bool isMemory1TheCurrentTarget();
 
         static inline void configure(

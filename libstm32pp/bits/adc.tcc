@@ -185,17 +185,8 @@ namespace adc {
   {
     static_assert(C <= 18, "There are only channels from 0 to 18.");
 
-    reinterpret_cast<Registers*>(A)->SMPR[(C > 9) ? 0 : 1] &=
-        ~(smp::MASK << smp::POSITION *
-            ((C > 9) ?
-                       (C - 10) :
-                       C));
-
-    reinterpret_cast<Registers*>(A)->SMPR[(C > 9) ? 0 : 1] |=
-        (SMP << smp::POSITION *
-            ((C > 9) ?
-                       (C - 10) :
-                       C));
+    reinterpret_cast<Registers*>(A)->SMPR[(C > 9) ? 0 : 1] &= ~(smp::MASK << smp::POSITION * ((C > 9) ? (C - 10) : C));
+    reinterpret_cast<Registers*>(A)->SMPR[(C > 9) ? 0 : 1] |= (SMP << smp::POSITION * ((C > 9) ? (C - 10) : C));
   }
 
   /**
@@ -204,10 +195,7 @@ namespace adc {
   template<Address A>
   bool Functions<A>::hasRegularConversionEnded()
   {
-    return *(bool volatile*) (bitband::peripheral<
-        A + sr::OFFSET,
-        sr::eoc::POSITION
-    >());
+    return *(bool volatile*) (bitband::peripheral<A + sr::OFFSET, sr::eoc::POSITION>());
   }
 
   /**
@@ -216,10 +204,7 @@ namespace adc {
   template<Address A>
   bool Functions<A>::hasInjectedConversionEnded()
   {
-    return *(bool volatile*) (bitband::peripheral<
-        A + sr::OFFSET,
-        sr::jeoc::POSITION
-    >());
+    return *(bool volatile*) (bitband::peripheral<A + sr::OFFSET, sr::jeoc::POSITION>());
   }
 
   /**
@@ -241,11 +226,8 @@ namespace adc {
     static_assert(N > 0, "There must be at least one conversion.");
     static_assert(N <= 16, "The maximum number of regular conversions is 16.");
 
-    reinterpret_cast<Registers*>(A)->SQR[0] &=
-        ~sqr1::l::MASK;
-
-    reinterpret_cast<Registers*>(A)->SQR[0] |=
-        (N - 1) << sqr1::l::POSITION;
+    reinterpret_cast<Registers*>(A)->SQR[0] &= ~sqr1::l::MASK;
+    reinterpret_cast<Registers*>(A)->SQR[0] |= (N - 1) << sqr1::l::POSITION;
   }
 
   /**
@@ -258,11 +240,8 @@ namespace adc {
     static_assert(N > 0, "There must be at least one conversion.");
     static_assert(N <= 4, "The maximum number of injected conversions is 4.");
 
-    reinterpret_cast<Registers*>(A)->JSQR &=
-        ~jsqr::jl::MASK;
-
-    reinterpret_cast<Registers*>(A)->JSQR |=
-        N << jsqr::jl::POSITION;
+    reinterpret_cast<Registers*>(A)->JSQR &= ~jsqr::jl::MASK;
+    reinterpret_cast<Registers*>(A)->JSQR |= N << jsqr::jl::POSITION;
   }
 
   /**
@@ -275,21 +254,8 @@ namespace adc {
     static_assert((O >= 1) && (O <= 16), "Order range goes from 1 to 16");
     static_assert((C >= 0) && (C <= 18), "Conversion range goes from 0 to 18");
 
-    reinterpret_cast<Registers*>(A)->SQR[(O > 12) ? 0 : ((O > 6) ? 1 : 2)] &=
-        ~(sqr::MASK << sqr::POSITION *
-            ((O > 12) ?
-                        (O - 13) :
-                        ((O > 6) ?
-                                   (O - 7) :
-                                   (O - 1))));
-
-    reinterpret_cast<Registers*>(A)->SQR[(O > 12) ? 0 : ((O > 6) ? 1 : 2)] |=
-        (C << sqr::POSITION *
-            ((O > 12) ?
-                        (O - 13) :
-                        ((O > 6) ?
-                                   (O - 7) :
-                                   (O - 1))));
+    reinterpret_cast<Registers*>(A)->SQR[(O > 12) ? 0 : ((O > 6) ? 1 : 2)] &= ~(sqr::MASK << sqr::POSITION * ((O > 12) ? (O - 13) : ((O > 6) ? (O - 7) : (O - 1))));
+    reinterpret_cast<Registers*>(A)->SQR[(O > 12) ? 0 : ((O > 6) ? 1 : 2)] |= (C << sqr::POSITION * ((O > 12) ? (O - 13) : ((O > 6) ? (O - 7) : (O - 1))));
   }
 
   /**
@@ -327,28 +293,94 @@ namespace adc {
       cr1::discnum::States DISCNUM,
       cr1::jawden::States JAWDEN,
       cr1::awden::States AWDEN,
+#ifndef STM32F1XX
       cr1::res::States RES,
       cr1::ovrie::States OVRIE,
+#endif // STM32F1XX
       cr2::adon::States ADON,
       cr2::cont::States CONT,
       cr2::dma::States DMA,
+#ifndef STM32F1XX
       cr2::dds::States DDS,
       cr2::eocs::States EOCS,
+#endif // STM32F1XX
       cr2::align::States ALIGN,
       cr2::jextsel::States JEXTSEL,
+#ifndef STM32F1XX
       cr2::jexten::States JEXTEN,
+#else
+      cr2::jexttrig::States JEXTTRIG,
+#endif // STM32F1XX
       cr2::jswstart::States JSWSTART,
       cr2::extsel::States EXTSEL,
+#ifndef STM32F1XX
       cr2::exten::States EXTEN,
-      cr2::swstart::States SWSTART)
+#else
+      cr2::exttrig::States EXTTRIG,
+#endif // STM32F1XX
+      cr2::swstart::States SWSTART
+#ifdef STM32F1XX
+      ,
+      cr2::tsvrefe::States TSVREFE
+#endif // STM32F1XX
+      )
   {
-    reinterpret_cast<Registers*>(A)->CR1 =
-        AWDCH + EOCIE + AWDIE + JEOCIE + SCAN + AWDSGL + JAUTO + DISCEN +
-            JDISCEN + DISCNUM + JAWDEN + AWDEN + RES + OVRIE;
+#ifndef STM32F1XX
+    reinterpret_cast<Registers*>(A)->CR1 = AWDCH + EOCIE + AWDIE + JEOCIE + SCAN + AWDSGL + JAUTO + DISCEN + JDISCEN + DISCNUM + JAWDEN + AWDEN + RES + OVRIE;
+    reinterpret_cast<Registers*>(A)->CR2 = ADON + CONT + DMA + DDS + EOCS + ALIGN + JEXTSEL + JEXTEN + JSWSTART + EXTSEL + EXTEN + SWSTART;
+#else
+    reinterpret_cast<Registers*>(A)->CR1 = AWDCH + EOCIE + AWDIE + JEOCIE + SCAN + AWDSGL + JAUTO + DISCEN + JDISCEN + DISCNUM + JAWDEN + AWDEN;
+    reinterpret_cast<Registers*>(A)->CR2 = ADON + CONT + DMA + ALIGN + JEXTSEL + JSWSTART + EXTSEL + SWSTART + JEXTTRIG + EXTTRIG + TSVREFE;
+#endif // STM32F1XX
+  }
 
-    reinterpret_cast<Registers*>(A)->CR2 =
-        ADON + CONT + DMA + DDS + EOCS + ALIGN + JEXTSEL + JEXTEN + JSWSTART +
-            EXTSEL + EXTEN + SWSTART;
+
+  /**
+   * @brief Starts calibration reset.
+   */
+  template<Address A>
+  void Functions<A>::resetCalibration()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        A + cr2::OFFSET,
+        cr2::rstcal::POSITION
+    >()) = 1;
+  }
+
+  /**
+   * @brief Returns true if the calibration reset has ended.
+   */
+  template<Address A>
+  bool Functions<A>::isCalibrationReset()
+  {
+    return *(bool volatile*) (bitband::peripheral<
+        A + cr2::OFFSET,
+        cr2::rstcal::POSITION
+    >());
+  }
+
+  /**
+   * @brief Starts calibration.
+   */
+  template<Address A>
+  void Functions<A>::startCalibration()
+  {
+    *(u32 volatile*) (bitband::peripheral<
+        A + cr2::OFFSET,
+        cr2::cal::POSITION
+    >()) = 1;
+  }
+
+  /**
+   * @brief Returns true if the calibration has ended.
+   */
+  template<Address A>
+  bool Functions<A>::isCalibration()
+  {
+    return *(bool volatile*) (bitband::peripheral<
+        A + cr2::OFFSET,
+        cr2::cal::POSITION
+    >());
   }
 
 #ifndef STM32F1XX
@@ -370,8 +402,7 @@ namespace adc {
 
   void CommonFunctions::setPrescaler(ccr::adcpre::States ADCPRE)
   {
-    ADC_COMMON_REGS->CCR &= ccr::adcpre::MASK;
-    ADC_COMMON_REGS->CCR |= ADCPRE;
+    ADC_COMMON_REGS->CCR = (ADC_COMMON_REGS->CCR & ccr::adcpre::MASK) | ADCPRE;
   }
 #endif
 }  // namespace adc

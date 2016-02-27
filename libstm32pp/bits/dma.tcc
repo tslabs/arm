@@ -978,17 +978,23 @@ namespace dma {
     }
 
     /**
+     * @brief Returns true if memory 0 is the current target of the DMA.
+     */
+    template<dma::common::Address D, Address S>
+    bool Functions<D, S>::isMemory0TheCurrentTarget()
+    {
+      // FIXME DMA *(*bool) cast generates Hard Fault exception.
+      return 1 - *(u32 volatile*) (bitband::peripheral<D + S + cr::OFFSET, cr::ct::POSITION>());
+    }
+
+    /**
      * @brief Returns true if memory 1 is the current target of the DMA.
      */
     template<dma::common::Address D, Address S>
     bool Functions<D, S>::isMemory1TheCurrentTarget()
     {
       // FIXME DMA *(*bool) cast generates Hard Fault exception.
-
-      return *(u32 volatile*) (bitband::peripheral<
-          D + S + cr::OFFSET,
-          cr::ct::POSITION
-          >());
+      return *(u32 volatile*) (bitband::peripheral<D + S + cr::OFFSET, cr::ct::POSITION>());
     }
 
     /**

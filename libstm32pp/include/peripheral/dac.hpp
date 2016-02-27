@@ -43,6 +43,11 @@ namespace dac {
       static inline void disableClock();
       static inline void enablePeripheral();
       static inline void disablePeripheral();
+      static inline void configureBasic(
+          dac::cr::dac1::enable::States,
+          dac::cr::dac1::boff::States,
+          dac::cr::dac2::enable::States,
+          dac::cr::dac2::boff::States);
 
     private:
       Functions();

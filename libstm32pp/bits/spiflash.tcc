@@ -1,10 +1,7 @@
 
 #pragma once
 
-#ifndef STM32F1XX
-  #error Sorry, but only STM32F1XX yet implemented!
-#endif
-
+#ifdef STM32F1XX
 namespace spiflash
 {
   template <spi::Address S, gpio::Address SS_PORT, u8 SS_PIN>
@@ -16,7 +13,7 @@ namespace spiflash
     SPI::enableClock();
     SPI::configure(
       spi::cr1::cpha::FIRST_CLOCK_TRANSITION_IS_FIRST_DATA_CAPTURED_EDGE,
-      spi::cr1::cpol::CK_TO_1_WHEN_IDLE,
+      spi::cr1::cpol::CK_TO_0_WHEN_IDLE,
       spi::cr1::mstr::MASTER_CONFIGURATION,
       spi::cr1::br::BAUD_RATE_CONTROL_DIV_2,
       spi::cr1::lsbfirst::MSB_TRANSMITTED_FIRST,
@@ -65,9 +62,7 @@ namespace spiflash
   {
     ssLow();
     sendByte(cmd::DEV_ID);
-    sendByte(0);
-    sendByte(0);
-    sendByte(0);
+    sendDummy(3);
     u8 s = sendByte(0);
     ssHigh();
 
@@ -157,8 +152,25 @@ namespace spiflash
   }
 
   template <spi::Address S, gpio::Address SS_PORT, u8 SS_PIN>
-  void Functions <S, SS_PORT, SS_PIN>::waitWrite()
+  void Functions <S, SS_PORT, SS_PIN>::waitBusy()
   {
     while (readStatus() & status::BUSY);
   }
+  
+  template <spi::Address S, gpio::Address SS_PORT, u8 SS_PIN>
+  bool Functions <S, SS_PORT, SS_PIN>::isBusy()
+  {
+    return (readStatus() & status::BUSY);
+  }
+  
+  template <spi::Address S, gpio::Address SS_PORT, u8 SS_PIN>
+  void Functions <S, SS_PORT, SS_PIN>::sendDummy(int n)
+  {
+    while (n--)
+      sendByte(0);
+  }
 }  // namespace sccb
+#else
+  #error Only STM32F1XX yet implemented!
+#endif
+

@@ -40,39 +40,53 @@ namespace flash {
   class Functions {
     public:
 #ifndef VALUE_LINE
-      static inline void setLatency(flash::acr::latency::States);
+      static inline void setLatency(acr::latency::States);
 #endif // VALUE_LINE
 #ifdef STM32F1XX
 #ifndef VALUE_LINE
       static inline void enablePrefetch();
       static inline void disablePrefetch();
-
 #endif // !VALUE_LINE
       static inline void enableHalfCycleFlashAccess();
       static inline void disableHalfCycleFlashAccess();
 #ifdef VALUE_LINE
-      static inline void configure(flash::acr::hlfcya::States);
+      static inline void configure(acr::hlfcya::States);
 #else // VALUE_LINE
       static inline void configure(
-          flash::acr::latency::States,
-          flash::acr::hlfcya::States,
-          flash::acr::prftbe::States);
+        acr::latency::States,
+        acr::hlfcya::States,
+        acr::prftbe::States);
 #endif // VALUE_LINE
 #else // STM32F1XX
       static inline void enablePrefetch();
       static inline void disablePrefetch();
       static inline void enableDataCache();
       static inline void disableDataCache();
+      static inline void resetDataCache();
       static inline void enableInstructionCache();
       static inline void disableInstructionCache();
+      static inline void resetInstructionCache();
 
       static inline void configure(
-          flash::acr::latency::States,
-          flash::acr::prften::States,
-          flash::acr::dcen::States,
-          flash::acr::icen::States);
-
+        acr::latency::States,
+        acr::prften::States,
+        acr::dcen::States,
+        acr::icen::States);
 #endif // STM32F1XX
+
+      static inline bool isBusy();
+      static inline void waitBusy();
+
+      static inline void unlock();
+      static inline void lock();
+      static inline void eraseFlash();
+      static inline void startProgram();
+#ifdef STM32F1XX
+      static inline void erasePage(u32);
+#else // STM32F1XX
+      static inline void eraseSector(cr::snb::States);
+#endif // STM32F1XX
+
     private:
       Functions();
   };

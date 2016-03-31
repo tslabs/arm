@@ -8,8 +8,8 @@
 #pragma once
 
 #include <device_select.hpp>
-
 #include "../defs.hpp"
+#include <clock.hpp>
 #include "../../memorymap/scb.hpp"
 
 // Low-level access to the registers
@@ -23,6 +23,9 @@ namespace scb
     public:
       template<scb::irqn::E I, u8 P>
       static inline void setPriority();
+
+      static inline void generateReset();
+      static inline void setVectorTableOffset(u32);
 
     private:
       Functions();

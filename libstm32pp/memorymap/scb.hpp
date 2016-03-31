@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "common.hpp"
+
 namespace scb
 {
   enum
@@ -32,8 +34,8 @@ namespace scb
     {
       MASK = 0xFF
     };
-    
-    enum E 
+
+    enum E
     {
       MemManage  = 0,
       BusFault   = 1,
@@ -43,5 +45,5 @@ namespace scb
       PendSV     = 10,
       SysTick    = 11
     };
-  };
+  }
 }// namespace scb

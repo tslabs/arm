@@ -79,8 +79,12 @@ namespace flash {
 
       static inline void unlock();
       static inline void lock();
+      static inline void unlockOptionBytes();
+      static inline void lockOptionBytes();
       static inline void eraseFlash();
+      static inline void eraseOptionBytes();
       static inline void startProgram();
+      static inline void startProgramOptionBytes();
 #ifdef STM32F1XX
       static inline void erasePage(u32);
 #else // STM32F1XX

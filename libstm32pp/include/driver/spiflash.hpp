@@ -138,8 +138,10 @@ namespace spiflash
       static void sendDummy(int);
       static u32 detectSize();
       static void readBlock(u32, u8*, u32);
+      static bool verifyBlock(u32, u8*, u32);
       static void writeBlock(u32, u8*, u32);
       static void eraseSector(u32);
+      static bool checkBlank(u32, u32);
       static void eraseChip();
       static u8 readStatus();
       static void waitBusy();

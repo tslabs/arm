@@ -16,9 +16,9 @@ public:
   bool overflow;
   bool underflow;
 
-  void init(u8 *a, int s)
+  void init(void *a, int s)
   {
-    addr = a;
+    addr = (u8*)a;
     size = s;
     clear();
   }
@@ -80,22 +80,24 @@ public:
 
   // Puts a number of bytes into FIFO
   // Makes a check if there's enough place in FIFO
-  bool put(u8 *buf, int num)
+  bool put(void *a, int num)
   {
     if ((size - used()) < num) 
       return false;        // not enough free space
 
+    u8 *buf = (u8*)a;
     while (num--) put_byte_nocheck(*buf++);
     return true;
   }
 
   // Extracts a number of bytes from FIFO
   // Makes a check if there's enough data in FIFO
-  bool get(u8 *buf, int num)
+  bool get(void *a, int num)
   {
     if (used() < num) 
       return false;        // not enough data in FIFO
-
+    
+    u8 *buf = (u8*)a;
     while (num--) *buf++ = get_byte_nocheck();
     return true;
   }

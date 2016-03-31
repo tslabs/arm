@@ -92,9 +92,34 @@ namespace spiflash
     sendByte((u8)(addr >> 16));
     sendByte((u8)(addr >> 8));
     sendByte((u8)addr);
+
     while (len--)
       *buf++ = sendByte(0);
+
     ssHigh();
+  }
+
+  template <spi::Address S, gpio::Address SS_PORT, u8 SS_PIN>
+  bool Functions <S, SS_PORT, SS_PIN>::verifyBlock(u32 addr, u8 *buf, u32 len)
+  {
+    bool rc = false;
+
+    ssLow();
+    sendByte(cmd::READ);
+    sendByte((u8)(addr >> 16));
+    sendByte((u8)(addr >> 8));
+    sendByte((u8)addr);
+
+    while (len--)
+    {
+      if (sendByte(0) != *buf++)
+        goto exit;
+    }
+    rc = true;
+
+  exit:
+    ssHigh();
+    return rc;
   }
 
   template <spi::Address S, gpio::Address SS_PORT, u8 SS_PIN>
@@ -109,8 +134,10 @@ namespace spiflash
     sendByte((u8)(addr >> 16));
     sendByte((u8)(addr >> 8));
     sendByte((u8)addr);
+
     while (len--)
       sendByte(*buf++);
+
     ssHigh();
   }
 
@@ -142,6 +169,29 @@ namespace spiflash
   }
 
   template <spi::Address S, gpio::Address SS_PORT, u8 SS_PIN>
+  bool Functions <S, SS_PORT, SS_PIN>::checkBlank(u32 addr, u32 len)
+  {
+    bool rc = false;
+
+    ssLow();
+    sendByte(cmd::READ);
+    sendByte((u8)(addr >> 16));
+    sendByte((u8)(addr >> 8));
+    sendByte((u8)addr);
+
+    while (len--)
+    {
+      if (sendByte(0) != 0xFF)
+        goto exit;
+    }
+    rc = true;
+
+  exit:
+    ssHigh();
+    return rc;
+  }
+
+  template <spi::Address S, gpio::Address SS_PORT, u8 SS_PIN>
   u8 Functions <S, SS_PORT, SS_PIN>::readStatus()
   {
     ssLow();
@@ -156,13 +206,13 @@ namespace spiflash
   {
     while (readStatus() & status::BUSY);
   }
-  
+
   template <spi::Address S, gpio::Address SS_PORT, u8 SS_PIN>
   bool Functions <S, SS_PORT, SS_PIN>::isBusy()
   {
     return (readStatus() & status::BUSY);
   }
-  
+
   template <spi::Address S, gpio::Address SS_PORT, u8 SS_PIN>
   void Functions <S, SS_PORT, SS_PIN>::sendDummy(int n)
   {

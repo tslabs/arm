@@ -12,6 +12,7 @@
 #include <RTL.h>
 #include <rl_usb.h>
 #include <stm32f4xx.h>
+#include "swo.cpp"
 
 int main (void) {
 

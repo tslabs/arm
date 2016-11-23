@@ -12,11 +12,11 @@
 
 int main(void)
 {
-	border(1); 
-	
-	while(1)
-	{
-		msg_disp();
-		key_disp();
-	}
+  border(1); 
+  
+  while(1)
+  {
+    msg_disp();
+    key_disp();
+  }
 }

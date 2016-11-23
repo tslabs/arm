@@ -1,6 +1,2 @@
 syntax: glob
-*.dep
-*.uvgui.User
-AY-ARM/Firm/!doc/*
-AY-ARM/Firm/!draft/*
-AY-ARM/Firm/obj/*
+*.*

@@ -50,11 +50,12 @@ typedef uint64_t U64;
 #define hi8(a)    ((u8)(a >> 8))
 #define hx8(a)    ((u8)(a >> 16))
 
-#define sizeofarr(a)  (sizeof(a) / sizeof(a[0]))
+#define countof(a)  (sizeof(a) / sizeof(a[0]))
+#define typeof(a) decltype(a)
 
 #define null(a)   memset(&(a), 0, sizeof(a));
 
-#define _vol(a) (*(volatile decltype(a)*)&(a))
+#define _vol(a) (*(volatile typeof(a)*)&(a))
 
 #define _S(a)     #a
 #define _XS(a)    _S(a)
@@ -68,9 +69,3 @@ typedef uint64_t U64;
 
 // Read/Write permission
 #define __RW volatile
-
-enum BOOL
-{
-  FALSE = 0,
-  TRUE  = 1
-};

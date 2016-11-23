@@ -194,7 +194,7 @@ namespace tim {
   template<Address T>
   void Functions<T>::setMaxResolution()
   {
-    setPrescaler(1);
+    setPrescaler(0);
   }
 
   /**

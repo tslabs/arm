@@ -23,7 +23,8 @@
 
 #include "../include/peripheral/rcc.hpp"
 
-namespace afio {
+namespace afio
+{
   void Functions::enableClock()
   {
     RCC::enableClocks<rcc::apb2enr::AFIO>();
@@ -34,17 +35,30 @@ namespace afio {
     RCC::disableClocks<rcc::apb2enr::AFIO>();
   }
 
-  template <
-    exticr::States PORT,
-    u8 PIN
-  >
- void Functions::configureExti()
+  void Functions::configureSWJ(mapr::swjcfg::States SWJCFG)
   {
-    reinterpret_cast<Registers*>(ADDRESS)->EXTICR[PIN / 4] &=
-        exticr::MASK << (exticr::POSITION * (PIN % 4));
-
-    reinterpret_cast<Registers*>(ADDRESS)->EXTICR[PIN / 4] |=
-            PORT << (exticr::POSITION * (PIN % 4));
+    u32 s = AFIO_REGS->MAPR;
+    s &= ~(mapr::swjcfg::MASK << (mapr::swjcfg::POSITION));
+    s |= SWJCFG;
+    AFIO_REGS->MAPR = s;
   }
 
+  template<mapr::Bits... BITS>
+  void Functions::configureRemap()
+  {
+    u32 s = AFIO_REGS->MAPR;
+    s &= ~cSum<BITS...>::value;
+    // RCC_REGS->APB1RSTR |= 
+    // RCC_REGS->APB1RSTR &= ~cSum<APB1RSTR...>::value;
+    AFIO_REGS->MAPR = s;
+  }
+
+  template <exticr::States PORT, u8 PIN>
+  void Functions::configureExti()
+  {
+    u32 s = AFIO_REGS->EXTICR[PIN / 4];
+    s &= ~(exticr::MASK << (exticr::POSITION * (PIN % 4)));
+    s |= PORT << (exticr::POSITION * (PIN % 4));
+    AFIO_REGS->EXTICR[PIN / 4] = s;
+  }
 } // namespace afio

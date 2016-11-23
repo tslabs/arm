@@ -41,6 +41,18 @@ public:
     return size - free() - 1;
   }
 
+  int free_vol()
+  {
+    int i = _vol(rdptr) - _vol(wrptr);
+    if (i < 1) i += size;
+    return i - 1;
+  }
+
+  int used_vol()
+  {
+    return _vol(size) - free_vol() - 1;
+  }
+
   // Puts a byte into FIFO
   void put_byte_nocheck(u8 x)
   {

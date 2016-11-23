@@ -34,27 +34,13 @@ namespace gpio {
   void Pin<P, N>::enableClock()
   {
     switch (P) {
-      case GPIOA:
-      RCC::enableClocks<rcc::apb2enr::IOPA>();
-      break;
-      case GPIOB:
-      RCC::enableClocks<rcc::apb2enr::IOPB>();
-      break;
-      case GPIOC:
-      RCC::enableClocks<rcc::apb2enr::IOPC>();
-      break;
-      case GPIOD:
-      RCC::enableClocks<rcc::apb2enr::IOPD>();
-      break;
-      case GPIOE:
-      RCC::enableClocks<rcc::apb2enr::IOPE>();
-      break;
-      case GPIOF:
-      RCC::enableClocks<rcc::apb2enr::IOPF>();
-      break;
-      case GPIOG:
-      RCC::enableClocks<rcc::apb2enr::IOPG>();
-      break;
+      case GPIOA: RCC::enableClocks<rcc::apb2enr::IOPA>(); break;
+      case GPIOB: RCC::enableClocks<rcc::apb2enr::IOPB>(); break;
+      case GPIOC: RCC::enableClocks<rcc::apb2enr::IOPC>(); break;
+      case GPIOD: RCC::enableClocks<rcc::apb2enr::IOPD>(); break;
+      case GPIOE: RCC::enableClocks<rcc::apb2enr::IOPE>(); break;
+      case GPIOF: RCC::enableClocks<rcc::apb2enr::IOPF>(); break;
+      case GPIOG: RCC::enableClocks<rcc::apb2enr::IOPG>(); break;
     }
   }
 

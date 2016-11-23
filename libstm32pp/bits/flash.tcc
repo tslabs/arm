@@ -107,6 +107,23 @@ namespace flash
     FLASH_REGS->CR = cr::optpg::OPTION_BYTE_PROGRAMMING_ACTIVATED;
   }
 
+  /**
+   * @brief Unlocks Option Bytes.
+   */
+  void Functions::unlockOptionBytes()
+  {
+    FLASH_REGS->OPTKEYR = optkeyr::OPTKEY1;
+    FLASH_REGS->OPTKEYR = optkeyr::OPTKEY2;
+  }
+  
+  /**
+   * @brief Locks Option Bytes.
+   */
+  void Functions::lockOptionBytes()
+  {
+    *(u32 volatile*)(bitband::peripheral<ADDRESS + cr::OFFSET, cr::optwre::POSITION>()) = 0;
+  }
+  
 #else // !VALUE_LINE
 
   /**
@@ -273,22 +290,5 @@ namespace flash
   void Functions::lock()
   {
     *(u32 volatile*)(bitband::peripheral<ADDRESS + cr::OFFSET, cr::lock::POSITION>()) = 1;
-  }
-  
-  /**
-   * @brief Unlocks Option Bytes.
-   */
-  void Functions::unlockOptionBytes()
-  {
-    FLASH_REGS->OPTKEYR = optkeyr::OPTKEY1;
-    FLASH_REGS->OPTKEYR = optkeyr::OPTKEY2;
-  }
-  
-  /**
-   * @brief Locks Option Bytes.
-   */
-  void Functions::lockOptionBytes()
-  {
-    *(u32 volatile*)(bitband::peripheral<ADDRESS + cr::OFFSET, cr::optwre::POSITION>()) = 0;
   }
 }  // namespace flash

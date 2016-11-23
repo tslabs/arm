@@ -45,11 +45,12 @@ namespace afio {
     public:
       static inline void enableClock();
       static inline void disableClock();
+      static inline void configureSWJ(mapr::swjcfg::States);
 
-      template <
-        exticr::States PORT,
-        u8 PIN
-      >
+      template<mapr::Bits...>
+      static inline void configureRemap();
+      
+      template <exticr::States PORT, u8 PIN>
       static inline void configureExti();
 
     private:

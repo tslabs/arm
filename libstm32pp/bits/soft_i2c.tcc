@@ -23,9 +23,7 @@ namespace soft_i2c
     SDA::setHigh();
 
 #ifdef STM32F1XX
-    SCL::pullUp();
     SCL::setMode(gpio::cr::GP_OPEN_DRAIN_2MHZ);
-    SDA::pullUp();
     SDA::setMode(gpio::cr::GP_OPEN_DRAIN_2MHZ);
 #else
     SCL::setPullMode(gpio::pupdr::PULL_UP);
@@ -52,9 +50,8 @@ namespace soft_i2c
   {
     SDA::setHigh();
     TIMER::delay(DELAY);
-    SCL::setHigh();
+    SCL::setHigh(); waitSCL();
     TIMER::delay(DELAY);
-    waitSCL();
     SDA::setLow();
     TIMER::delay(DELAY);
     SCL::setLow();
@@ -66,9 +63,8 @@ namespace soft_i2c
   {
     SDA::setLow();
     TIMER::delay(DELAY);
-    SCL::setHigh();
+    SCL::setHigh(); waitSCL();
     TIMER::delay(DELAY);
-    waitSCL();
     SDA::setHigh();
   }
 
@@ -80,19 +76,17 @@ namespace soft_i2c
     for (u8 i = 0; i < 8; i++)
     {
       if (d & 0x80) SDA::setHigh(); else SDA::setLow();
-      TIMER::delay(DELAY);
-      SCL::setHigh();
       d <<= 1;
       TIMER::delay(DELAY);
-      waitSCL();
+      SCL::setHigh(); waitSCL();
+      TIMER::delay(DELAY);
       SCL::setLow();
     }
 
     SDA::setHigh();
     TIMER::delay(DELAY);
-    SCL::setHigh();
+    SCL::setHigh(); waitSCL();
     TIMER::delay(DELAY);
-    waitSCL();
     bool rc = !SDA::getInput();
     SCL::setLow();
 
@@ -110,9 +104,8 @@ namespace soft_i2c
     for (u8 i = 0; i < 8; i++)
     {
       TIMER::delay(DELAY);
-      SCL::setHigh();
+      SCL::setHigh(); waitSCL();
       TIMER::delay(DELAY);
-      waitSCL();
       d <<= 1; if (SDA::getInput()) d++;
       SCL::setLow();
     }
@@ -120,9 +113,8 @@ namespace soft_i2c
     // send I2C ACK/NACK condition
     if (ack) SDA::setLow(); else SDA::setHigh();
     TIMER::delay(DELAY);
-    SCL::setHigh();
+    SCL::setHigh(); waitSCL();
     TIMER::delay(DELAY);
-    waitSCL();
     SCL::setLow();
 
     return d;

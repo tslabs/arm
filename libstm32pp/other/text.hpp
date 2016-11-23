@@ -5,7 +5,7 @@ namespace text
   class Functions
   {
     public:
-      static void print_dec(u32 num);
+      static void print_dec(int num);
       static void print_dec(int num, int p, char filler);
       static void print_hex(u64 hex);
       static void print_hex(u64 num, int p, char filler);
@@ -21,8 +21,14 @@ namespace text
 
   /// - Number print functions ---
   template <void (*OUTPUT)(u8 d)>
-  void Functions <OUTPUT>::print_dec(u32 num)
+  void Functions <OUTPUT>::print_dec(int num)
   {
+    if (num < 0)
+    {
+      OUTPUT('-');
+      num = -num;
+    }
+    
     Functions<OUTPUT>::print_dec(num, 10, 0);
   }
 
@@ -133,6 +139,20 @@ namespace text
     return true;
   }
 
+  int parse_hex(u8 *ptr_in)
+  {
+    int sum = 0;
+
+    for (int a = 0; a < 10; a++)
+    {
+      u8 c;
+      if ((c = parse_hex_digit(ptr_in[a])) & 0x80) break;
+      sum = (sum << 4) + c;
+    }
+
+    return sum;
+  }
+
   bool parse_hex_string(u8 *ptr_in, u8 *ptr_out, int n)
   {
     u8 i, h;
@@ -168,5 +188,91 @@ namespace text
     }
 
     return true;
+  }
+
+  int parse_dec(u8 *ptr_in)
+  {
+    int sum = 0;
+
+    for (int a = 0; a < 8; a++)
+    {
+      u8 c;
+      if ((c = parse_dec_digit(ptr_in[a])) & 0x80) break;
+      sum = sum * 10 + c;
+    }
+
+    return sum;
+  }
+
+  /// - String functions ---
+  // compare 0-terminated string
+  bool compare_str(const void *s1, const void *s2)
+  {
+    u8 *p1 = (u8*)s1;
+    u8 *p2 = (u8*)s2;
+
+    for (int a = 0;; a++)
+    {
+      // 0-marker of string1 reached, comparison success
+      if (!p1[a])
+        return true;
+
+      // premature buffer end, comparison fail
+      if (!p2[a])
+        return false;
+
+      // symbol of string1 doesn't match symbol of string2, comparison fail
+      if (p1[a] != p2[a])
+        return false;
+    }
+  }
+
+  // compare fixed length strings
+  bool compare_str(const void *s1, const void *s2, int n)
+  {
+    u8 *p1 = (u8*)s1;
+    u8 *p2 = (u8*)s2;
+
+    for (int a = 0; a < n; a++)
+    {
+      // symbol of string doesn't match symbol in buffer, comparison fail
+      if (p1[a] != p2[a])
+        return false;
+    }
+
+    return true;
+  }
+
+  // determine string length (without terminating 0)
+  int str_len(const void *s1)
+  {
+    u8 *p1 = (u8*)s1;
+
+    for (int a = 0;; a++)
+    {
+      if (!p1[a])
+        return a;
+    }
+  }
+
+  // find 0-terminated string, returns index in string2, where string1 begins
+  int find_str(const void *s1, const void *s2, int n)
+  {
+    u8 *p1 = (u8*)s1;
+    u8 *p2 = (u8*)s2;
+
+    for (int a = 0; a < n; a++)
+    {
+      if (compare_str(p1, &p2[a]))
+        return a;
+    }
+
+    return -1;
+  }
+
+  // find 0-terminated string, returns index in string2, following string1
+  int find_str_e(const void *s1, const void *s2, int n)
+  {
+    return find_str(s1, s2, n) + str_len(s1);
   }
 }

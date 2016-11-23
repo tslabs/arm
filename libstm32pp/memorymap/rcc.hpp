@@ -23,7 +23,8 @@
 
 #include "common.hpp"
 
-namespace rcc {
+namespace rcc
+{
   struct Registers
   {
 #ifdef STM32F1XX
@@ -107,43 +108,57 @@ namespace rcc {
       u32 PLLI2SCFGR;// 0x84: PLLI2S configuration
 #endif // STM32F1XX
   };
-  enum {
+
+  enum
+  {
 #ifdef STM32F1XX
     ADDRESS = alias::AHB + 0x1000
 #else
-  ADDRESS = alias::AHB1 + 0x3800
+    ADDRESS = alias::AHB1 + 0x3800
 #endif
-};
+  };
 
-namespace cr {
-  enum {
+namespace cr
+{
+  enum
+  {
     OFFSET = 0x00
   };
 
-  namespace hsion {
-    enum {
+  namespace hsion
+  {
+    enum
+    {
       POSITION = 0,
       MASK = 1U << POSITION
     };
-    enum States {
+
+    enum States
+    {
       HSI_OSCILLATOR_OFF = 0U << POSITION,
       HSI_OSCILLATOR_ON = 1U << POSITION,
     };
   }  // namespace hsion
 
-  namespace hsirdy {
-    enum {
+  namespace hsirdy
+  {
+    enum
+    {
       POSITION = 1,
       MASK = 1U << POSITION
     };
-    enum States {
+
+    enum States
+    {
       HSI_OSCILLATOR_NOT_READY = 0U << POSITION,
       HSI_OSCILLATOR_READY = 1U << POSITION,
     };
   }  // namespace hsirdy
 
-  namespace hseon {
-    enum {
+  namespace hseon
+  {
+    enum
+    {
       POSITION = 16,
       MASK = 1U << POSITION
     };
@@ -737,54 +752,59 @@ ETH_MAC_RX = 1 << 16,
 };
 }  // namespace ahbenr
 #endif // STM32F1XX
-namespace apb2enr {
-enum {
+
+  namespace apb2enr
+  {
+    enum
+    {
 #ifdef STM32F1XX
-OFFSET = 0x18
+      OFFSET = 0x18
 #else // STM32F1XX
-OFFSET = 0x44
+      OFFSET = 0x44
 #endif // STM32F1XX
-};
-enum Bits {
+    };
+
+    enum Bits
+    {
 #ifdef STM32F1XX
-AFIO = 1 << 0,
-IOPA = 1 << 2,
-IOPB = 1 << 3,
-IOPC = 1 << 4,
-IOPD = 1 << 5,
-IOPE = 1 << 6,
-IOPF = 1 << 7,
-IOPG = 1 << 8,
-ADC1 = 1 << 9,
-ADC2 = 1 << 10,
-TIM1 = 1 << 11,
-SPI1 = 1 << 12,
-TIM8 = 1 << 13,
-USART1 = 1 << 14,
-ADC3 = 1 << 15,
-TIM15 = 1 << 16,
-TIM16 = 1 << 17,
-TIM17 = 1 << 18,
-TIM9 = 1 << 19,
-TIM10 = 1 << 20,
-TIM11 = 1 << 21,
+      AFIO = 1 << 0,
+      IOPA = 1 << 2,
+      IOPB = 1 << 3,
+      IOPC = 1 << 4,
+      IOPD = 1 << 5,
+      IOPE = 1 << 6,
+      IOPF = 1 << 7,
+      IOPG = 1 << 8,
+      ADC1 = 1 << 9,
+      ADC2 = 1 << 10,
+      TIM1 = 1 << 11,
+      SPI1 = 1 << 12,
+      TIM8 = 1 << 13,
+      USART1 = 1 << 14,
+      ADC3 = 1 << 15,
+      TIM15 = 1 << 16,
+      TIM16 = 1 << 17,
+      TIM17 = 1 << 18,
+      TIM9 = 1 << 19,
+      TIM10 = 1 << 20,
+      TIM11 = 1 << 21,
 #else // STM32F1XX
-TIM1 = 1 << 0,
-TIM8 = 1 << 1,
-USART1 = 1 << 4,
-USART6 = 1 << 5,
-ADC1 = 1 << 8,
-ADC2 = 1 << 9,
-ADC3 = 1 << 10,
-SDIO = 1 << 11,
-SPI1 = 1 << 12,
-SYSCFG = 1 << 14,
-TIM9 = 1 << 16,
-TIM10 = 1 << 17,
-TIM11 = 1 << 18,
+      TIM1 = 1 << 0,
+      TIM8 = 1 << 1,
+      USART1 = 1 << 4,
+      USART6 = 1 << 5,
+      ADC1 = 1 << 8,
+      ADC2 = 1 << 9,
+      ADC3 = 1 << 10,
+      SDIO = 1 << 11,
+      SPI1 = 1 << 12,
+      SYSCFG = 1 << 14,
+      TIM9 = 1 << 16,
+      TIM10 = 1 << 17,
+      TIM11 = 1 << 18,
 #endif // STM32F1XX
-};
-}
+    };
+  }
   // namespace apb2enr
 
 namespace apb1enr {

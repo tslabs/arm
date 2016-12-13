@@ -1,4 +1,11 @@
 
+// F/W UART Flasher
+//
+// AYX-32 project
+// (c) TS-Labs
+//
+// ..
+
 #include "stdafx.h"
 #include <commctrl.h>
 
@@ -218,13 +225,13 @@ int _tmain(int argc, _TCHAR* argv[])
 
   if (!wr_uart(fw_buf, fsize))
     goto err;
-  if (!wait_response(100))
+  if (!wait_response(5000))
     goto err;
 
   // flash
   printf("Flashing: ");
 
-  if (!wait_response(1000))
+  if (!wait_response(10000))
     goto err;
 
   return 0;

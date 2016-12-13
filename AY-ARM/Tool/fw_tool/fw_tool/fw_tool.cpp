@@ -4,14 +4,26 @@
 #pragma pack(1)
 typedef struct
 {
-  u8 hdr;       // Header version always 1
-  u8 hw;        // H/W version
-  u16 ver;      // F/W version
-  u16 sver;     //
+  u16 hdr;      // Header version always 1
+  u16 hw;       // H/W version
+  u16 fw;       // F/W version
   u16 offs;     // data offset
   u32 size;     // F/W size
   u16 crc[];    // CRC16 for chunks (one per 256, 768 bytes max)
 } FW_HDR;
+
+typedef struct
+{
+  void *start_addr;
+  u8 cprstring[32];
+  u8 bldstring[32];
+  struct
+  {
+    u16 hw;
+    u16 fw;
+    u16 cf;
+  } ver;
+} BOOT_HDR;
 #pragma pack()
 
 u8 fw_buf[97 * 1024];
@@ -43,9 +55,9 @@ u16 calc_crc16(u8 *ptr, int num)
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-  if (argc != 4)
+  if (argc != 2)
   {
-    printf("Usage: fw_tool.exe <firmware>.bin <f/w version> <f/w sub-version>\n");
+    printf("Usage: fw_tool.exe <firmware>.bin\n");
     return 1;
   }
 
@@ -68,22 +80,22 @@ int _tmain(int argc, _TCHAR* argv[])
   fseek(f_in, 0x8000, SEEK_SET);  // hardcoded value for address 0x08008000
   fsize -= 0x8000;
 
-  FW_HDR *hdr = (FW_HDR*)fw_buf;
-  hdr->hdr = 1;
-  hdr->hw = 1;
-  hdr->ver = _wtoi(argv[2]);
-  hdr->sver = _wtoi(argv[3]);
-  hdr->offs = ((fsize + 255) >> 8) * sizeof(u16) + sizeof(FW_HDR);
-  hdr->size = fsize;
-
-  if (fsize > (sizeof(fw_buf) - hdr->offs))
+  if (fsize > sizeof(fw_buf))
   {
     printf("Input file is too big!");
     return 4;
   }
 
+  FW_HDR *hdr = (FW_HDR*)fw_buf;
+  hdr->offs = (u16)(((fsize + 255) >> 8) * sizeof(u16) + sizeof(FW_HDR));
   fread(fw_buf + hdr->offs, 1, fsize, f_in);
   fclose(f_in);
+
+  BOOT_HDR *bthdr = (BOOT_HDR*)(fw_buf + hdr->offs);
+  hdr->hdr = 1;
+  hdr->hw = bthdr->ver.hw;
+  hdr->fw = bthdr->ver.fw;
+  hdr->size = fsize;
 
   u32 sz = fsize;
   u8 *ptr = fw_buf + hdr->offs;
@@ -98,7 +110,7 @@ int _tmain(int argc, _TCHAR* argv[])
   }
 
   char fo[32];
-  sprintf(fo, "ayx32_%d_%d.fw", hdr->ver, hdr->sver);
+  sprintf(fo, "ayx32_%d_%d.fw", hdr->hw, hdr->fw);
   FILE *f_out = fopen(fo, "wb");
   if (!f_out)
   {

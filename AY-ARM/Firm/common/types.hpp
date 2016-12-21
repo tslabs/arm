@@ -1,7 +1,7 @@
 
 // Common types definition
 //
-// (c) 2015, TS-Labs inc.
+// (c) TS-Labs
 //
 // Ποιος είπε πως οι άγγελοι στη γη δεν κατεβαίνουν
 

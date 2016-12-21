@@ -132,7 +132,7 @@
         <tDllPa></tDllPa>
         <tDlgDll></tDlgDll>
         <tDlgPa></tDlgPa>
-        <tIfile>.\Dbg_RAM.ini</tIfile>
+        <tIfile></tIfile>
         <pMon>STLink\ST-LINKIII-KEIL_SWO.dll</pMon>
       </DebugOpt>
       <TargetDriverDllRegistry>
@@ -144,7 +144,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGTARM</Key>
-          <Name>(1010=-429,25,-19,568,0)(1007=105,133,282,394,0)(1008=-1,-1,-1,-1,0)(1009=120,149,354,683,0)(1012=135,165,600,465,0)</Name>
+          <Name>(1010=-714,74,-304,617,0)(1007=105,133,282,394,0)(1008=-1,-1,-1,-1,0)(1009=-283,76,-49,610,0)(1012=135,165,600,465,0)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -154,7 +154,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>ST-LINKIII-KEIL_SWO</Key>
-          <Name>-U-O8398 -O8398 -S0 -C0 -A0 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO1010 -TC168000000 -TP21 -TDS8053 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO15 -FD20000000 -FC1000 -FN1 -FF0STM32F4xx_1024 -FS08000000 -FL0100000</Name>
+          <Name>-U55FF6E064967535541440687 -O8390 -S0 -C0 -A0 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO1010 -TC168000000 -TP21 -TDS8053 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO15 -FD20000000 -FC1000 -FN1 -FF0STM32F4xx_1024 -FS08000000 -FL0100000</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -189,7 +189,7 @@
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>0x20000000</ItemText>
+          <ItemText>0x08004000</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>
@@ -197,7 +197,7 @@
         <Mm>
           <WinNumber>2</WinNumber>
           <SubType>0</SubType>
-          <ItemText>0x2001CE28</ItemText>
+          <ItemText>0x08008000</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow2>
@@ -239,6 +239,10 @@
           <WinId>35905</WinId>
         </Entry>
         <Entry>
+          <Name>System Viewer\FLASH</Name>
+          <WinId>35895</WinId>
+        </Entry>
+        <Entry>
           <Name>System Viewer\GPIOA</Name>
           <WinId>35903</WinId>
         </Entry>
@@ -261,6 +265,18 @@
         <Entry>
           <Name>System Viewer\TIM3</Name>
           <WinId>35900</WinId>
+        </Entry>
+        <Entry>
+          <Name>System Viewer\TIM6</Name>
+          <WinId>35897</WinId>
+        </Entry>
+        <Entry>
+          <Name>System Viewer\TIM7</Name>
+          <WinId>35896</WinId>
+        </Entry>
+        <Entry>
+          <Name>System Viewer\USART1</Name>
+          <WinId>35898</WinId>
         </Entry>
       </SystemViewers>
     </TargetOption>

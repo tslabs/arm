@@ -2,7 +2,7 @@
 // Hardware
 //
 // AY-ARM project
-// (c)2015 TS-Labs
+// (c) TS-Labs
 //
 // Degoša lāpa būs mūsu saule
 
@@ -46,10 +46,16 @@ void initializePins()
   GPIOA::enableClock();
   GPIOB::enableClock();
 
+  TEST::setSpeed(gpio::ospeedr::_25MHZ);
+  TEST::setLow();
+  TEST::setMode(gpio::moder::OUTPUT);
+
   // AY Bus
 #ifdef AYBUS_USES_EXTI
   AY_BDIR::setMode(gpio::moder::INPUT);
+  AY_BDIR::setPullMode(gpio::pupdr::PULL_DOWN);
   AY_BC1::setMode(gpio::moder::INPUT);
+  AY_BC1::setPullMode(gpio::pupdr::PULL_DOWN);
 #else
   AY_BDIR::setAlternateFunction(gpio::afr::TIM3_5);
   AY_BDIR::setMode(gpio::moder::ALTERNATE);
@@ -59,11 +65,13 @@ void initializePins()
   AY_BC2::setMode(gpio::moder::INPUT);
   AY_A8::setMode(gpio::moder::INPUT);
   AY_A9::setMode(gpio::moder::INPUT);
-  
-  AY_CLK::setAlternateFunction(gpio::afr::TIM1_2);
-  AY_CLK::setMode(gpio::moder::ALTERNATE);
   AY_RST::setMode(gpio::moder::INPUT);
   AY_SEL::setMode(gpio::moder::INPUT);
+
+#ifndef AYCLK_INTERNAL
+  AY_CLK::setAlternateFunction(gpio::afr::TIM1_2);
+  AY_CLK::setMode(gpio::moder::ALTERNATE);
+#endif
 
   AY_D0::setSpeed(gpio::ospeedr::_25MHZ); // 25MHz speed is best choice - 2MHz gives too slow slew rate, 50MHz is too noisy
   AY_D1::setSpeed(gpio::ospeedr::_25MHZ);
@@ -87,14 +95,16 @@ void initializePins()
   U_RX::setAlternateFunction(gpio::afr::USART1_3);
   U_RX::setMode(gpio::moder::ALTERNATE);
   U_RX::setPullMode(gpio::pupdr::PULL_UP);
-  U_RX::setSpeed(gpio::ospeedr::_2MHZ);
+
   U_TX::setAlternateFunction(gpio::afr::USART1_3);
   U_TX::setMode(gpio::moder::ALTERNATE);
   U_TX::setSpeed(gpio::ospeedr::_2MHZ);
 
+#ifndef BOOT
   // DAC
   AU_L::setMode(gpio::moder::ANALOG);
   AU_R::setMode(gpio::moder::ANALOG);
+#endif
 }
 
 void initializeUART()
@@ -127,10 +137,15 @@ void initializeUART()
     usart::cr3::onebit::THREE_SAMPLE_BIT_METHOD);
 }
 
+#ifndef BOOT
 void initializeDAC()
 {
   DAC::enableClock();
-  DAC::enablePeripheral();
+  DAC::configureBasic(
+    dac::cr::dac1::enable::ENABLED,
+    dac::cr::dac1::boff::DISABLED,
+    dac::cr::dac2::enable::ENABLED,
+    dac::cr::dac2::boff::DISABLED);
 }
 
 void initializeAudioDMA()
@@ -161,11 +176,45 @@ void initializeAudioDMA()
     dma::stream::fcr::dmdis::DIRECT_MODE_DISABLED,
     dma::stream::fcr::feie::FIFO_ERROR_INTERRUPT_DISABLED);
   AU_DMA::setPeripheralAddress(&DAC_REGS->DHR12LD);   // dual left-aligned 12 bit
-  AU_DMA::setMemory0Address(dac_buf1);
-  AU_DMA::setMemory1Address(dac_buf2);
-  AU_DMA::setNumberOfTransactions(sizeof(dac_buf1) / sizeof(u32));
+  AU_DMA::setMemory0Address(dac_buf[0]);
+  AU_DMA::setMemory1Address(dac_buf[1]);
+  AU_DMA::setNumberOfTransactions(DAC_SAMPLES_COUNT);
   AU_DMA::enablePeripheral();
 }
+
+void initializeAYCLK()
+{
+#ifdef AYCLK_INTERNAL
+  // To do: add TIMx_CR1->ARPE->1: TIMx_ARR register is buffered - to avoid deranges while changing sampling rate
+  AU_TIM::enableClock();
+  AU_TIM::setMaxResolution();
+  AU_TIM::setAutoReload(AU_TIM::FREQUENCY * 8 / PSG_CLK - 1);   // 218.75kHz
+  AU_TIM::enableUpdateDma();
+
+  EVT_TIM::enableClock();
+  EVT_TIM::configureBasicCounter(
+    tim::cr1::cen::COUNTER_DISABLED,
+    tim::cr1::udis::UPDATE_EVENT_ENABLED,
+    tim::cr1::urs::UPDATE_REQUEST_SOURCE_OVERFLOW_UNDERFLOW,
+    tim::cr1::opm::DONT_STOP_COUNTER_AT_NEXT_UPDATE_EVENT,
+    tim::cr1::arpe::AUTO_RELOAD_UNBUFFERED);
+  EVT_TIM::setPrescaler(EVT_TIM::FREQUENCY * 8 / PSG_CLK - 1);
+  EVT_TIM::setAutoReload(65535);
+  EVT_TIM::generateUpdate();
+  EVT_TIM::clearUpdateFlag();
+#else
+  // TIM2::enableClock();
+  // TIM3::enableClock();
+  // REGn_SET_FLD(TIM, 2, SMCR, TS, 6);          // select TI2FP2 for input
+  // REGn_SET_FLD(TIM, 2, SMCR, SMS, 7);         // set external clock source
+  // REGn_SET_FLD(TIM, 2, CCMR1, IC2F, 2);       // set filter value for TI2
+  // REGn_SET_BIT(TIM, 2, DIER, UIE, 1);         // enable interrupts
+  // TIM2->ARR = 15;                             // set auto reload value to 1.75MHz / 16 = 109.375kHz
+  // TIM2->ARR = 7;                              // set auto reload value to 1.75MHz / 8 (for YM2149F)
+  // REGn_SET_BIT(TIM, 2, CR1, CEN, 1);          // enable counter
+#endif
+}
+#endif
 
 void initializeAYBUS()
 {
@@ -187,33 +236,14 @@ void initializeAYBUS()
 #endif
 }
 
-void initializeAYCLK()
-{
-#ifdef AYCLK_INTERNAL
-  // To do: add TIMx_CR1->ARPE->1: TIMx_ARR register is buffered - to avoid deranges while changing sampling rate
-  AU_TIM::enableClock();
-  AU_TIM::setMaxResolution();
-  AU_TIM::setAutoReload(AU_TIM::FREQUENCY * 16 / AU_FREQ);
-  AU_TIM::enableUpdateDma();
-#else
-  // TIM2::enableClock();
-  // TIM3::enableClock();
-  // REGn_SET_FLD(TIM, 2, SMCR, TS, 6);          // select TI2FP2 for input
-  // REGn_SET_FLD(TIM, 2, SMCR, SMS, 7);         // set external clock source
-  // REGn_SET_FLD(TIM, 2, CCMR1, IC2F, 2);       // set filter value for TI2
-  // REGn_SET_BIT(TIM, 2, DIER, UIE, 1);         // enable interrupts
-  // TIM2->ARR = 15;                             // set auto reload value to 1.75MHz / 16 = 109.375kHz
-  // TIM2->ARR = 7;                              // set auto reload value to 1.75MHz / 8 (for YM2149F)
-  // REGn_SET_BIT(TIM, 2, CR1, CEN, 1);          // enable counter
-#endif
-}
-
 void initializePeripherals()
 {
   initializePins();
   initializeUART();
+#ifndef BOOT
   initializeDAC();
   initializeAudioDMA();
   initializeAYCLK();
+#endif
   initializeAYBUS();
 }

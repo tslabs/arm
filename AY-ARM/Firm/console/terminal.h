@@ -1,4 +1,47 @@
 
+/// Prototypes
+void print(const char*, ...);
+void print_debug(const char*, ...);
+void send_uart_byte(u8);
+void send_uart(u8*, u8);
+void print_char(u8);
+void set_color(u8);
+void set_x(u8);
+void set_xy(u8, u8);
+void print_msg(u8);
+void process_UART_input(void);
+void process_UART_output(void);
+void cr();
+void tab();
+
+/// Enums
+/* UART input modes */
+enum UIM
+{
+  UARTIM_NUL = 0,
+  UARTIM_EDIT,    // console editor
+  UARTIM_KEY      // console key input
+};
+
+/* KB input modes */
+enum
+{
+    KB_OFF = 0,
+    KB_EDIT,
+    KB_KEY
+};
+
+// allow debug messages output
+enum DBG_MODE
+{
+  DBG_OFF,
+  DBG_ON
+};
+
+/// Types
+typedef text::Functions<print_char> CONSOLE;
+
+/// ANSI control codes
 #pragma once
 
 #define __BLK    0x01
@@ -53,7 +96,7 @@
 
 #define _TB       "\eH"
 
-/* ANSI control sequences */
+/// ANSI control sequences
 #define  _CLS     "\e[2J"
 #define  _RES     "\ec"
 #define  _F(a)    "\e[" _S(a) "C"

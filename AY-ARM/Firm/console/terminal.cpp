@@ -1,30 +1,5 @@
 
-#include "terminal.h"
-
-/* UART input modes */
-enum UIM
-{
-  UARTIM_NUL = 0,
-  UARTIM_EDIT,    // console editor
-  UARTIM_KEY      // console key input
-};
-
-/* KB input modes */
-enum
-{
-    KB_OFF = 0,
-    KB_EDIT,
-    KB_KEY
-};
-
-// allow debug messages output
-enum DBG_MODE
-{
-  DBG_OFF,
-  DBG_ON
-};
-
-// --- Vars ---
+/// - Vars ---
 UIM uart_input_mode;
 u8 kb_max;              // Max number of chars allowed for input
 u8 kb_cnt;              // number of chars typed
@@ -33,36 +8,18 @@ u8 uart_inbuf[256];     // buffer for keyboard input
 
 DBG_MODE dbg_mode;
 
-// --- Prototypes ---
-void print(const char*, ...);
-void print_debug(const char*, ...);
-void send_uart_byte(u8);
-void send_uart(u8*, u8);
-void set_color(u8);
-void set_x(u8);
-void set_xy(u8, u8);
-void print_msg(u8);
-void process_UART_input(void);
-void process_UART_output(void);
-void print_dec(int);
-void print_dec(int, int, char);
-void cr();
-void tab();
-
-// --- Low level ---
 void send_uart_byte(u8 data)
 {
   console_uart_out.put_byte(data);
 }
 
 // sends a fixed length string
-void send_uart(u8 *str, u8 n)
+void send_uart(u8 *str, int n)
 {
   while (n--)
     send_uart_byte(*str++);
 }
 
-// --- Low level ---
 void print_char(u8 data)
 {
   enum
@@ -130,7 +87,7 @@ void print_char(u8 data)
   }
 }
 
-// --- Terminal control functions ---
+/// - Terminal control functions ---
 void set_color(u8 col)
 {
   print(_A_COL);
@@ -141,29 +98,28 @@ void set_color(u8 col)
 void set_x(u8 x)
 {
   print(_A_CSI);
-  print_dec(x);
+  CONSOLE::print_dec(x);
   send_uart_byte('G');
 }
 
 void set_xy(u8 x, u8 y)
 {
   print(_A_CSI);
-  print_dec(y);
+  CONSOLE::print_dec(y);
   send_uart_byte(';');
-  print_dec(x);
+  CONSOLE::print_dec(x);
   send_uart_byte('H');
 }
 
-void clear(u8 n)
+void clear(int n)
 {
-  u8 i = n;
+  int i = n;
   while (i--) send_uart_byte(' ');
   while (n--) send_uart_byte('\b');
 }
 
-void print_line(u8 n)
+void print_line(int n)
 {
-  u8 i;
   while (n--) send_uart_byte('-');
 }
 
@@ -178,186 +134,57 @@ void cr()
   send_uart_byte('\n');
 }
 
-// --- Number print functions ---
-void print_hex_digit(u8 hex)
-{
-  send_uart_byte((hex > 9) ? (hex + 'A' - 10) : (hex + '0'));
-}
-
-void print_hex(u8 hex)
-{
-  print_hex_digit((hex & 0xF0) >> 4);
-  print_hex_digit(hex & 0x0F);
-}
-
-void print_hex(u16 hex)
-{
-  print_hex((u8)(hex >> 8));
-  print_hex((u8)hex);
-}
-
-void print_hex(u32 hex)
-{
-  print_hex((u16)(hex >> 16));
-  print_hex((u16)hex);
-}
-
-void print_hex_str(u8 *data, u8 n)
-{
-  while(n--)
-    print_hex(*data++);
-}
-
-void print_hex_str_s(u8 *data, u8 n)
-{
-  while(n--)
-  {
-    print_hex(*data++);
-    send_uart_byte(' ');
-  }
-}
-
-void print_dec(int num)
-{
-  bool pre = false;
-
-  for (int i = 1000000000; i; i /= 10)
-  {
-    if ((num >= i) || pre || (i == 1))
-    {
-      send_uart_byte((num / i) + '0');
-      num %= i;
-      pre = true;
-    }
-  }
-}
-
-void print_dec(int num, int p, char filler)
-{
-  bool pre = false;
-
-  for (int i = pow(10, p - 1); i; i /= 10)
-  {
-    if ((num >= i) || pre || (i == 1))
-    {
-      send_uart_byte((num / i) + '0');
-      num %= i;
-      pre = true;
-    }
-    else
-      send_uart_byte(filler);
-  }
-}
-
-// --- Number tab functions ---
+/// - Number tab functions ---
 // 16 bit tabulated DEC values in a column
 void print_tab_dec16(u16 val)
 {
   print(_CR _TAB);
-  print_dec(val, 5, ' ');
+  CONSOLE::print_dec(val, 5, ' ');
 }
 
 // Numbers zebra
-void print_num_zebra(u8 beg, u8 inc, u8 num, u8 x, u8 step)
+void print_num_zebra(u8 beg, u8 inc, int n, u8 x, u8 step)
 {
   u8 i = 0;
-  while (num--)
+  while (n--)
   {
     print_char((i++ & 1) ? __BLU : __BBLU);
     set_x(x);
-    print_hex_digit(beg);
+    CONSOLE::print_hex_digit(beg);
     beg += inc;
     x += step;
   }
 }
 
 // 16 bit tabulated DEC values in a row
-void print_row_dec(u8 num, u8 x, u8 step, u16 *arr)
+void print_row_dec(int n, u8 x, u8 step, u16 *arr)
 {
   print_char(__YLW);
 
-  u8 i = 0;
-  while (num--)
+  int i = 0;
+  while (n--)
   {
     set_x(x);
-    print_dec(arr[i++], 5, ' ');
+    CONSOLE::print_dec(arr[i++], 5, ' ');
     x += step;
   }
 }
 
 // 32 bit tabulated DEC values in a row
-void print_row_dec(u8 num, u8 x, u8 step, u32 *arr)
+void print_row_dec(int n, u8 x, u8 step, u32 *arr)
 {
   print_char(__YLW);
 
-  u8 i = 0;
-  while (num--)
+  int i = 0;
+  while (n--)
   {
     set_x(x);
-    print_dec(arr[i++], 7, ' ');
+    CONSOLE::print_dec(arr[i++], 7, ' ');
     x += step;
   }
 }
 
-// --- Number parse functions ---
-u8 parse_hex_digit(u8 h)
-{
-  if ((h >= '0') && (h <= '9'))
-    return h - '0';
-  else if ((h >= 'A') && (h <= 'F'))
-    return h - 'A' + 10;
-  else if ((h >= 'a') && (h <= 'f'))
-    return h - 'a' + 10;
-  else
-    return 0x80;
-}
-
-u8 parse_hex_string(volatile u8 *ptr_in, u8 *ptr_out, u8 n)
-{
-  u8 i, h;
-
-  while (n--)
-  {
-    if ((i = parse_hex_digit(*ptr_in++)) & 0x80) return FALSE;
-    h = i << 4;
-    if ((i = parse_hex_digit(*ptr_in++)) & 0x80) return FALSE;
-    *ptr_out++ = h | i;
-  }
-
-  return TRUE;
-}
-
-u8 parse_dec_digit(u8 h)
-{
-  if ((h >= '0') && (h <= '9'))
-    return h - '0';
-  else
-    return 0x80;
-}
-
-u8 parse_dec32(volatile u8 *ptr_in, u8 *ptr_out, u8 n, u8 m)
-{
-  u32 sum = 0;
-  u8 c;
-
-  while (n--)
-  {
-    if ((c = parse_dec_digit(*ptr_in++)) & 0x80)
-      return FALSE;
-
-    sum = sum * 10 + c;
-  }
-
-  while (m--)
-  {
-    *ptr_out++ = lo8(sum);
-    sum >>= 8;
-  }
-
-  return TRUE;
-}
-
-// --- Input ---
+/// Input
 void kb_disable()
 {
   uart_input_mode = UARTIM_NUL;
@@ -442,8 +269,7 @@ void uart_input(u8 data)
   }
 }
 
-// --- Print functions ---
-
+/// - Print functions ---
 // formatted print
 void vprint(const char *str, ...)
 {
@@ -454,12 +280,45 @@ void vprint(const char *str, ...)
     if (c == '%')
       switch (*str++)
       {
+        /* DEC number */
+        case 'd':
+          CONSOLE::print_dec((int)va_arg(args, int));
+        break;
+
+        /* HEX number */
+        case 'h':
+          CONSOLE::print_hex(va_arg(args, int));
+        break;
+
+        /* HEX8 number */
+        case 'x':
+          CONSOLE::print_hex(va_arg(args, int), 2, '0');
+        break;
+
+        /* HEX16 number */
+        case 'X':
+          CONSOLE::print_hex(va_arg(args, int), 4, '0');
+        break;
+
+        /* HEX32 number */
+        case 'y':
+          CONSOLE::print_hex(va_arg(args, int), 8, '0');
+        break;
+
+        /* fixed length hex string */
+        case 'H':
+        {
+          const char *str = va_arg(args, const char*);
+          int cnt = va_arg(args, int);
+          CONSOLE::print_hex_str_s((u8*)str, cnt);
+        }
+        break;
+
         /* null terminated string */
         case 's':
         {
-          u8 c;
           const char *str = va_arg(args, const char*);
-          while (c = *str++) print_char(c);
+          CONSOLE::print_str(str);
         }
         break;
 
@@ -468,37 +327,8 @@ void vprint(const char *str, ...)
         {
           const char *str = va_arg(args, const char*);
           int cnt = va_arg(args, int);
-          while (cnt--) print_char(*str++);
+          CONSOLE::print_str(str, cnt);
         }
-        break;
-
-        /* fixed length hex string */
-        case 'H':
-        {
-          const char *str = va_arg(args, const char*);
-          int cnt = va_arg(args, int);
-          print_hex_str_s((u8*)str, cnt);
-        }
-        break;
-
-        /* DEC number */
-        case 'd':
-          print_dec((int)va_arg(args, int));
-        break;
-
-        /* HEX8 number */
-        case 'x':
-          print_hex((u8)va_arg(args, int));
-        break;
-
-        /* HEX16 number */
-        case 'X':
-          print_hex((u16)va_arg(args, int));
-        break;
-
-        /* HEX32 number */
-        case 'Y':
-          print_hex((u32)va_arg(args, int));
         break;
 
         case '%':
@@ -526,6 +356,5 @@ void print_debug(const char *str, ...)
 
   va_list args;
   va_start(args, str);
-  print("\n");
   vprint(str, args);
 }

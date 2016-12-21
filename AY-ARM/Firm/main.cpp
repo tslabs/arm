@@ -1,19 +1,31 @@
 
-// AY-ARM main module
+// AYX-32 main module
 //
-// AY-ARM project
-// (c)2015 TS-Labs
+// AYX-32 project
+// (c) TS-Labs
 //
 // Demoscene is alive!
+
+// Hints:
+// - move audio buffer renderer over BG tasks (software IRQ)
+// - reduce 2x noise generator samplerate
+// - optimize amp tables
+// - make amp table load via 'data' registers (only initialized if table selected)
+// - make 'reset' flag on EXTI
+// - generate 'reset' event based on flag
+// - procedures for low period registers values
+// - procedures for 'mute' noise/enveloper generators
+// - re-factor meander procedures to use duty cycle
+// - buffer adders via saturated math
+// - correct processing of registers readback/chip selects
+// - NVRAM setup for ABC map, chip model
+// - optional disable of PSG/extra features (until reset)
 
 /// - Header includes ---
 #include <stdarg.h>
 #include <limits.h>
-#include "exception.cpp"
-#include "startup.cpp"
 #include "string.h"
 #include "clock.hpp"
-#include "interrupt.hpp"
 #include "core/stk.hpp"
 #include "core/scb.hpp"
 #include "peripheral/gpio.hpp"
@@ -28,14 +40,28 @@
 #include "../other/fifo.hpp"
 #include "types.hpp"
 #include "main.hpp"
+#include "../other/text.hpp"
 
-// #include "ay.h"
-// #include "hw.h"
-// #include "isr.h"
-// #include "ws.h"
-// #include "ay-arm.h"
-// #include "bus.h"
-// #include "interrupts.h"
+namespace interrupts
+{
+#include "common/interrupts.hpp"
+}
+
+namespace bus
+{
+#include "bus/registers.hpp"
+#include "bus/command.hpp"
+}
+
+namespace snd
+{
+#include "sound/psg.hpp"
+#include "sound/ws.hpp"
+#include "sound/sound.hpp"
+}
+
+__attribute__((used, section(".boot")))
+#include "obj/boot.h"
 
 /// - Variables ---
 u8 console_uart_inbuf[UART_CONSOLE_INBUF];
@@ -43,32 +69,81 @@ u8 console_uart_outbuf[UART_CONSOLE_OUTBUF];
 FIFO console_uart_in;
 FIFO console_uart_out;
 
-u32 dac_buf1[512] __attribute__((section(".sram2")));
-u32 dac_buf2[512] __attribute__((section(".sram2")));
+volatile bool req_snd_buf;
+
+u32 dac_buf[2][DAC_SAMPLES_COUNT] __attribute__((section(".sram2")));
+
+extern char __StackTop;
+
+extern "C" __attribute__((used, naked))
+void resetHandler();
+
+__attribute__ ((used, section(".irq_vect")))
+const BOOT_HDR boot_hdr = {(void*)resetHandler, CPR_STRING, BLD_STRING, HW_VER, FW_VER, CF_VER};
+const BOOT_HDR* boot_hdrp = &boot_hdr;
 
 /// - Code includes ---
+namespace console
+{
+#include "console/terminal.h"
+#include "console/terminal.cpp"
+#include "console/interrupts.cpp"
 #include "console/console.cpp"
+}
+
 #include "common/hw.cpp"
+#include "common/func.cpp"
+
+namespace bus
+{
+#include "bus/registers.cpp"
+#include "bus/command.cpp"
+#include "bus/vectors_wa.cpp"
+#include "bus/vectors_wr.cpp"
+#include "bus/vectors_rr.cpp"
+#include "bus/vectors_cm.cpp"
+}
+
+namespace snd
+{
+#include "sound/config.cpp"
 #include "sound/sound.cpp"
+#include "sound/events.cpp"
+}
+
+#include "common/rt_init.cpp"
+
+namespace interrupts
+{
 #include "common/interrupts.cpp"
+}
 
 /// - Functions ---
+namespace clk
+{
+  void hseFailureHandler()
+  {
+    while (true);
+  }
+}
+
 void initializeRuntime()
 {
-  console_uart_in.init(console_uart_inbuf, UART_CONSOLE_INBUF);
-  console_uart_out.init(console_uart_outbuf, UART_CONSOLE_OUTBUF);
+  rt_init();
   console::initialize();
-  // ay::AY_Init();
-  // WS_Init();
+  bus::initialize();
+  snd::initialize();
+
+  time_ms = 0;
 }
 
 /// - Main ---
-int main()
+void resetHandler()
 {
-  clk::initialize();
   initializeRuntime();
   initializePeripherals();
-  initializeInterrupts();
+  interrupts::initialize();
+  EVT_TIM::startCounter();
   AU_TIM::startCounter();
 
   // main cycle, events processing
@@ -84,6 +159,22 @@ int main()
 
     // Console menus
     if (!console_uart_out.used())
-      console::disp();
+      console::menu();
+
+    // Sound
+    if (req_snd_buf)
+    {
+      req_snd_buf = false;
+      // TEST::setHigh();
+      snd::render_snd_buffer();
+      // TEST::setLow();
+    }
+
+    // Background task
+    if (is_bg_task)
+    {
+      bg_task();
+      clear_bg_task();
+    }
   }
 }

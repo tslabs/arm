@@ -1,7 +1,7 @@
 
-int pow(int b, int p)
+u64 pow(int b, int p)
 {
-  int r = 1;
+  u64 r = 1;
   while (p--)
     r *= b;
   return r;

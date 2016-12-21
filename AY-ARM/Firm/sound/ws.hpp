@@ -2,7 +2,7 @@
 // Wave sythesis definitions
 //
 // AY-ARM project
-// (c)2015 TS-Labs
+// (c) TS-Labs
 //
 // I wtedy wreszcie sam też włączę się do akcji
 

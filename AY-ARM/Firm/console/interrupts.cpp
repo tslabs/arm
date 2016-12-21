@@ -1,5 +1,12 @@
+﻿
+// Console interrupts
+//
+// AY-ARM project
+// (c) TS-Labs
+//
+// 당신 정말 좋아 나 몰라
 
-bool is_sending;        // indicates that UART output is in progress
+volatile bool is_sending;        // indicates that UART output is in progress
 
 void processRecv()
 {

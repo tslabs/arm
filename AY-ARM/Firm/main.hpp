@@ -1,10 +1,13 @@
 ﻿
-// AY-ARM main module header (Captain, you?)
+// AYX-32 main module header (Capt, you?)
 //
-// AY-ARM project
-// (c)2015 TS-Labs
+// AYX-32 project
+// (c) TS-Labs
 //
 // Verivalan taika on aina suojanamme
+
+/// - Types ---
+typedef void (*TASK)();
 
 #pragma once
 
@@ -32,11 +35,16 @@ typedef PA5  AU_R;
 typedef PA9  U_TX;
 typedef PA10 U_RX;
 
+typedef PB3  TEST;
+
+#ifndef BOOT
 // Audio
 typedef TIM6 AU_TIM;
+typedef TIM7 EVT_TIM;
 typedef DMA1_STREAM1 AU_DMA;
 #define AU_DMA_IRQ DMA1_Stream1
 #define AU_DMA_CH CHANNEL_7
+#endif
 
 // UART
 typedef USART1 UART_CONSOLE;
@@ -59,6 +67,21 @@ typedef USART1 UART_CONSOLE;
 #else
 #endif
 
+#pragma pack(1)
+typedef struct
+{
+  void *start_addr;
+  u8 cprstring[32];
+  u8 bldstring[32];
+  struct
+  {
+    u16 hw;
+    u16 fw;
+    u16 cf;
+  } ver;
+} BOOT_HDR;
+#pragma pack()
+
 enum
 {
   // priority for interrupts
@@ -73,33 +96,46 @@ enum
   // buffers size
   UART_CONSOLE_INBUF  = 256,
   UART_CONSOLE_OUTBUF = 1024,
-  
+  AY_BUS_EVENTS_SIZE  = 2048,
+  DAC_FIFO_SIZE       = 4096,
+  DAC_SAMPLES_COUNT   = 500,
+
   // system
-  SYSTICK_PERIOD = 100000,  // us
+  SYSTICK_PERIOD = 1000,  // us
 
   // audio
-  AU_FREQ  = 1750000,   // Hz
+  PSG_CLK  = 1750000,   // Hz
   WS_FREQ  = 44100,     // Hz
 
   // PSG parameters
-  AY_CHIPS_MAX  = 16,     // Max number of virtual PSG chips
-  AY_CHIPS_DEF  = 2,      // Default number of virtual PSG chips
-  TURBO_AY_MASK = 0xF8,   // Range for Turbo AY decoding (0xF8 - 0xF8..FF)
-  
+  PSG_CHIPS_MAX  = 4,     // Max number of virtual PSG chips
+  PSG_CHIPS_DEF  = 2,     // Default number of virtual PSG chips
+
   // WS parameters
   WS_CH_MAX = 64,         // Max number of WS channels
   WS_CH_DEF = 32,         // Default number of WS channels
-  
-  // magic constants
-  NUM_VER   = 1,          // Version
-  NUM_SVER  = 0,          // Sub-Version
-  DEV_BYTE0 = 0x55,       // Device Byte0
-  DEV_BYTE1 = 0xAA,       // Device Byte1
-  MAGIC_FWM = 0x552A773C, // 'FW Mode' magic
-  MAGIC_FFW = 0x7841AA55, // 'Flash Firmware' magic
+
+  // Flash
+  CONF_ADDR     = 0x08004000, // Config address
+  CONF_SIZE     = 0x4000,     // Config size
+  CONF_PAD_SIZE = 128,        // Config pad size
+  MAIN_ADDR     = 0x08008000, // Main code address
+  DEV_SIG       = 0xAA55,     // Device signature
+  HW_VER        = 1,          // Hardware version
+  FW_VER        = 1,          // Firmware version
+  FWHDR_VER     = 1,          // Firmware header version
+  CF_VER        = 1,          // Config Pad version
 };
 
-#define __SW(a, b) case a: b; break;
+#define CPR_STRING "AYX-32, (c)TSL"
+#define BLD_STRING __DATE__ ", " __TIME__
 
-#define CHIP_STRING "AY-ARM Sound Chip, v.1.00"
-#define CPR_STRING "(c)2015 TS-Labs"
+/// - Variables ---
+volatile u32 time_ms;
+volatile TASK bg_task;      // background task, processed in main()
+volatile bool is_bg_task;
+u32 core_freq = clk::SYSTEM;
+
+/// - Functions ---
+void clear_bg_task();
+void no_task() {}

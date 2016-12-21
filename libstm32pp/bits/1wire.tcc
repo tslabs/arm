@@ -47,9 +47,9 @@ namespace onewire
 
     for (u8 i = 0; i < 8; i++)
     {
-      DATA::setLow(); TIMER::delay(1);
-      DATA::setHigh(); TIMER::delay(1);
       byte >>= 1;
+      DATA::setLow(); TIMER::delay(2);
+      DATA::setHigh(); TIMER::delay(10);
       byte |= DATA::getInput() ? 0x80 : 0;
       TIMER::delay(D_RW_EPI);
     }
@@ -62,10 +62,10 @@ namespace onewire
   {
     for (u8 i = 0; i < 8; i++)
     {
-      DATA::setLow(); TIMER::delay(1);
+      DATA::setLow(); TIMER::delay(2);
       if (byte & 1) DATA::setHigh();
       TIMER::delay(D_RW_EPI);
-      DATA::setHigh(); TIMER::delay(2);
+      DATA::setHigh(); TIMER::delay(10);
       byte >>= 1;
     }
   }

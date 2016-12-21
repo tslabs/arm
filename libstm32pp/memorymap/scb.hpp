@@ -46,4 +46,20 @@ namespace scb
       SysTick    = 11
     };
   }
+  
+  namespace airc
+  {
+    enum
+    {
+      MASK = 0x07
+    };
+    
+    enum BITS
+    {
+      VECTRESET = 1 << 0,
+      VECTCLRACTIVE = 1 << 1,
+      SYSRESETREQ = 1 << 2
+    };
+  }
+  
 }// namespace scb

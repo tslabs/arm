@@ -587,18 +587,18 @@ namespace flash
 
       enum States
       {
-        SECTOR_0 = 0 << POSITION,
-        SECTOR_1 = 1 << POSITION,
-        SECTOR_2 = 2 << POSITION,
-        SECTOR_3 = 3 << POSITION,
-        SECTOR_4 = 4 << POSITION,
-        SECTOR_5 = 5 << POSITION,
-        SECTOR_6 = 6 << POSITION,
-        SECTOR_7 = 7 << POSITION,
-        SECTOR_8 = 8 << POSITION,
-        SECTOR_9 = 9 << POSITION,
-        SECTOR_10 = 10 << POSITION,
-        SECTOR_11 = 11 << POSITION
+        SECTOR_0 = 0 << POSITION,     // 0x08000000, 16k
+        SECTOR_1 = 1 << POSITION,     // 0x08004000, 16k
+        SECTOR_2 = 2 << POSITION,     // 0x08008000, 16k
+        SECTOR_3 = 3 << POSITION,     // 0x0800C000, 16k
+        SECTOR_4 = 4 << POSITION,     // 0x08010000, 64k
+        SECTOR_5 = 5 << POSITION,     // 0x08020000, 128k
+        SECTOR_6 = 6 << POSITION,     // 0x08040000, 128k
+        SECTOR_7 = 7 << POSITION,     // 0x08060000, 128k
+        SECTOR_8 = 8 << POSITION,     // 0x08080000, 128k
+        SECTOR_9 = 9 << POSITION,     // 0x080A0000, 128k
+        SECTOR_10 = 10 << POSITION,   // 0x080C0000, 128k
+        SECTOR_11 = 11 << POSITION    // 0x080E0000, 128k
       };
     }
 

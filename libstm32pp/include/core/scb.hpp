@@ -24,7 +24,7 @@ namespace scb
       template<scb::irqn::E I, u8 P>
       static inline void setPriority();
 
-      static inline void generateReset();
+      static inline void generateReset(u8);
       static inline void setVectorTableOffset(u32);
 
     private:

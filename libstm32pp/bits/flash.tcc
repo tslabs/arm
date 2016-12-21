@@ -253,9 +253,9 @@ namespace flash
   /**
    * @brief Program Flash.
    */
-  void Functions::startProgram()
+  void Functions::startProgram(cr::psize::States PS)
   {
-    FLASH_REGS->CR = cr::psize::PROGRAM_X32 + cr::pg::FLASH_PROGRAMMING_ACTIVATED;
+    FLASH_REGS->CR = PS + cr::pg::FLASH_PROGRAMMING_ACTIVATED;
   }
 #endif // STM32F1XX
 

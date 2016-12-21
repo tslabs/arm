@@ -66,6 +66,7 @@ namespace soft_i2c
     SCL::setHigh(); waitSCL();
     TIMER::delay(DELAY);
     SDA::setHigh();
+    TIMER::delay(DELAY);
   }
 
   // send byte

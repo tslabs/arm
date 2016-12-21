@@ -16,9 +16,9 @@ namespace scb
 
   // execute a system reset
   // refer to: Cortex-M3 Technical Reference Manual_(DDI0337E_cortex_m3_r1p1_trm).pdf, p.166
-  void Functions::generateReset()
+  void Functions::generateReset(u8 b)
   {
-    SCB_REGS->AIRCR = (0x5FA << 16) | 2 | 1;
+    SCB_REGS->AIRCR = (0x5FA << 16) | (b & airc::MASK);
   }
 
   // Vector Table Offset must be aligned to 128 bytes

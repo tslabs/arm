@@ -6,20 +6,15 @@
 //
 // Demoscene is alive!
 
-// Hints:
-// - move audio buffer renderer over BG tasks (software IRQ)
-// - reduce 2x noise generator samplerate
-// - optimize amp tables
+// To do:
+// - use DMA for DAC buf zeroing
 // - make amp table load via 'data' registers (only initialized if table selected)
-// - make 'reset' flag on EXTI
-// - generate 'reset' event based on flag
-// - procedures for low period registers values
-// - procedures for 'mute' noise/enveloper generators
-// - re-factor meander procedures to use duty cycle
+// - procedures for muted tone/noise/enveloper generators - only calculate generators, but do not write to memory
+// - meander procedures to use duty cycle
 // - buffer adders via saturated math
 // - correct processing of registers readback/chip selects
-// - NVRAM setup for ABC map, chip model
 // - optional disable of PSG/extra features (until reset)
+// - move audio buffer renderer over BG tasks (software IRQ)
 
 /// - Header includes ---
 #include <stdarg.h>
@@ -50,6 +45,7 @@ namespace interrupts
 namespace bus
 {
 #include "bus/registers.hpp"
+#include "bus/bus.hpp"
 #include "bus/command.hpp"
 }
 
@@ -83,14 +79,6 @@ const BOOT_HDR boot_hdr = {(void*)resetHandler, CPR_STRING, BLD_STRING, HW_VER, 
 const BOOT_HDR* boot_hdrp = &boot_hdr;
 
 /// - Code includes ---
-namespace console
-{
-#include "console/terminal.h"
-#include "console/terminal.cpp"
-#include "console/interrupts.cpp"
-#include "console/console.cpp"
-}
-
 #include "common/hw.cpp"
 #include "common/func.cpp"
 
@@ -109,6 +97,14 @@ namespace snd
 #include "sound/config.cpp"
 #include "sound/sound.cpp"
 #include "sound/events.cpp"
+}
+
+namespace console
+{
+#include "console/terminal.h"
+#include "console/terminal.cpp"
+#include "console/interrupts.cpp"
+#include "console/console.cpp"
 }
 
 #include "common/rt_init.cpp"
@@ -165,9 +161,9 @@ void resetHandler()
     if (req_snd_buf)
     {
       req_snd_buf = false;
-      // TEST::setHigh();
+      TEST::setHigh();
       snd::render_snd_buffer();
-      // TEST::setLow();
+      TEST::setLow();
     }
 
     // Background task

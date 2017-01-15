@@ -11,10 +11,10 @@ typedef void (*TASK)();
 
 #pragma once
 
-typedef PA1  AY_CLK;    // served by TIM2
+typedef PA1  AY_CLK;    // can be served by TIM2
 typedef PA2  AY_RST;
-typedef PB0  AY_BDIR;   // served by TIM3
-typedef PB1  AY_BC1;    // served by TIM3
+typedef PB0  AY_BDIR;   // can be served by TIM3
+typedef PB1  AY_BC1;    // can be served by TIM3
 typedef PB4  AY_BC2;
 typedef PB6  AY_A8;
 typedef PB7  AY_A9;
@@ -67,6 +67,11 @@ typedef USART1 UART_CONSOLE;
 #else
 #endif
 
+typedef EXTI2 RST;
+#define RST_IRQ EXTI2
+#define RST_PORT syscfg::exticr::PA
+#define RST_PIN 2
+
 #pragma pack(1)
 typedef struct
 {
@@ -85,17 +90,18 @@ typedef struct
 enum
 {
   // priority for interrupts
-  BDIR_PRIORITY         = 1,
-  BC1_PRIORITY          = 2,
-  AU_DMA_PRIORITY       = 3,
-  SYSTICK_PRIORITY      = 4,
-  UART_CONSOLE_PRIORITY = 5,
+  RST_PRIORITY          = 1,
+  BDIR_PRIORITY         = 2,
+  BC1_PRIORITY          = 3,
+  AU_DMA_PRIORITY       = 4,
+  SYSTICK_PRIORITY      = 5,
+  UART_CONSOLE_PRIORITY = 6,
 
   UART_CONSOLE_BAUD_RATE  = 115200,
 
   // buffers size
   UART_CONSOLE_INBUF  = 256,
-  UART_CONSOLE_OUTBUF = 1024,
+  UART_CONSOLE_OUTBUF = 4096,
   AY_BUS_EVENTS_SIZE  = 2048,
   DAC_FIFO_SIZE       = 4096,
   DAC_SAMPLES_COUNT   = 500,

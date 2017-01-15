@@ -7,9 +7,7 @@
 // Das boot!
 
 // Hints:
-// + check CRC of main section at start
 // + mutexes for flasher UART vs. Z80
-// flasher to SRAM
 
 #define BOOT
 
@@ -38,6 +36,7 @@ namespace interrupts
 namespace bus
 {
 #include "bus/registers.hpp"
+#include "bus/bus.hpp"
 #include "bus/command.hpp"
 }
 

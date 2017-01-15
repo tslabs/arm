@@ -13,10 +13,19 @@ void initialize()
 {
   load_config();
 
-  psg_chip_num = PSG_CHIPS_DEF;
-  wschan_num = WS_CH_DEF;
+  // +++ PSGCCTRL
+  
+  // PSGBCTRL
+  psg_chip_num = lim_chip[config.busctr.psgmul];
+  selected_psg_chip = 0;
 
-  current_psg_chip = 0;
+  // PSGACTRL
+  amptab_ptr[0] = (u16*)amp_tab_addr[config.ampctr.ampsel0];
+  amptab_ptr[1] = (u16*)amp_tab_addr[config.ampctr.ampsel1];
+  amptab_ptr[2] = (u16*)amp_tab_addr[config.ampctr.ampsel2];
+  amptab_ptr[3] = (u16*)amp_tab_addr[config.ampctr.ampsel3];
+
+  wschan_num = WS_CH_DEF;
 
   buf_time = 0;
   is_evt = false;
@@ -60,10 +69,25 @@ void init_generators()
 
 void init_vtab(u8 chip, u8 chan, u8 ear, u8 vol)
 {
-  for (u8 i = 0; i < 16; i++)
+  u16 *ptr = amptab_ptr[chip];
+  
+  switch (ear)
   {
-    u32 v = amptab_[i] * vol;
-    vtab[chip][chan][i][ear] = v >> 8;
+    case 0:
+      for (u8 i = 0; i < SIZE_OF_AMPTAB; i++)
+      {
+        u32 v = ptr[i] * vol;
+        vtab[chip][chan][i].l = v >> 8;
+      }
+    break;
+    
+    default:
+      for (u8 i = 0; i < SIZE_OF_AMPTAB; i++)
+      {
+        u32 v = ptr[i] * vol;
+        vtab[chip][chan][i].r = v >> 8;
+      }
+    break;
   }
 }
 
@@ -82,7 +106,7 @@ void init_envelope(ENV_GEN &gen, u8 type)
     case 9:
     case 10:
     case 11:
-      gen.amp = 255;
+      gen.amp = 31;
       gen.phase = EF_FALL;
     break;
 
@@ -99,8 +123,7 @@ void init_envelope(ENV_GEN &gen, u8 type)
     break;
 
     default:
-      gen.period = 0;
-      gen.periodl = 1;
+      gen.period = 1;
       gen.type = 0;
       gen.amp = 0;
       gen.phase = EF_STILL;
@@ -110,58 +133,121 @@ void init_envelope(ENV_GEN &gen, u8 type)
 /// Waveform renderers
 void render_tone(TONE_GEN &gen)
 {
-  u16 n = 0;
+  u16 p = gen.period;
+  u16 c = gen.cnt;
+  bool b = gen.bit;
+  u8 *ptr = tone_buf;
+  u32 n = snum;
 
-  while (n < snum)
+  switch (p)
   {
-    tone_buf[n++] = gen.bit;
+    case 0:
+    case 1:
+      while (n--)
+      {
+        *ptr++ = b;
+        b = !b;
+      }
 
-    if (++gen.cnt >= gen.period)
-    {
       gen.cnt = 0;
-      gen.bit = !gen.bit;
-    }
+      gen.bit = b;
+    break;
+
+    default:
+      while (n--)
+      {
+        *ptr++ = b;
+
+        if (++c >= p)
+        {
+          c = 0;
+          b = !b;
+        }
+      }
+
+      gen.cnt = c;
+      gen.bit = b;
+    break;
   }
 }
 
 void render_noise(NOISE_GEN &gen)
 {
-  u16 n = 0;
+  static u8 parity = 0;
 
-  while (n < snum)
+  u16 p = gen.period;
+  u16 c = gen.cnt;
+  u32 s = gen.seed;
+  u8 b = gen.bit;
+  u16 *ptr = (u16*)noise_buf;
+  u32 n = (snum + 1) / 2;
+
+  // odd pair
+  if (parity & 1)
   {
-    noise_buf[n++] = gen.bit;
-
-    if (++gen.cnt >= gen.period)
+    while (n--)
     {
-      gen.cnt = 0;
-      gen.seed = ((gen.seed << 1) | 1) ^ (((gen.seed >> 16) ^ (gen.seed >> 13)) & 1);
+      u8 a = b;
+
+      if (++c >= p)
+      {
+        c = 0;
+        s = ((s << 1) | 1) ^ (((s >> 16) ^ (s >> 13)) & 1);
+        b = (s & (1 << 16)) != 0;
+      }
+
+      *ptr++ = (b << 8) | a;
     }
   }
+  // even pair
+  else
+  {
+    while (n--)
+    {
+      *ptr++ = (b << 8) | b;
+
+      if (++c >= p)
+      {
+        c = 0;
+        s = ((s << 1) | 1) ^ (((s >> 16) ^ (s >> 13)) & 1);
+        b = (s & (1 << 16)) != 0;
+      }
+    }
+  }
+
+  gen.cnt = c;
+  gen.seed = s;
+  parity += snum;
 }
 
 void render_envelope(ENV_GEN &gen)
 {
-  u16 n = 0;
+  u16 p = gen.period;
+  u16 c = gen.cnt;
+  ENV_PHASE ph = gen.phase;
+  u8 a = gen.amp;
+  u8 *ptr = env_buf;
+  u32 n = snum;
 
-  while (n < snum)
+  while (n)
   {
-    switch (gen.phase)
+    switch (ph)
     {
       case EF_FALL:
-        while (n < snum)
+        while (n)
         {
-          env_buf[n++] = gen.amp;
+          n--;
+          *ptr++ = a;
 
-          if (++gen.cnt >= gen.period)
+          if (++c >= p)
           {
-            gen.cnt = 0;
+            c = 0;
 
-            if (gen.amp > 0)
-              gen.amp--;
+            if (a > 0)
+              a--;
             else
             {
-              switch(gen.type)
+              switch (gen.type)
               {
                 // F,D
                 case 0:
@@ -169,46 +255,47 @@ void render_envelope(ENV_GEN &gen)
                 case 2:
                 case 3:
                 case 9:
-                  gen.phase = EF_STILL;
+                  ph = EF_STILL;
                 break;
 
                 // (F)
                 case 8:
-                  gen.amp = 255;
+                  a = 31;
                 break;
 
                 // (F,R)
                 case 10:
                 case 14:
-                  gen.phase = EF_RISE;
+                  ph = EF_RISE;
                 break;
 
                 // F,U
                 case 11:
-                  gen.amp = 255;
-                  gen.phase = EF_STILL;
+                  a = 31;
+                  ph = EF_STILL;
                 break;
               }
-              break;
+              goto reiterate;
             }
           }
         }
       break;
 
       case EF_RISE:
-        while (n < snum)
+        while (n)
         {
-          env_buf[n++] = gen.amp;
+          n--;
+          *ptr++ = a;
 
-          if (++gen.cnt >= gen.period)
+          if (++c >= p)
           {
-            gen.cnt = 0;
+            c = 0;
 
-            if (gen.amp < 255)
-              gen.amp++;
+            if (a < 31)
+              a++;
             else
             {
-              switch(gen.type)
+              switch (gen.type)
               {
                 // R,D
                 case 4:
@@ -216,120 +303,134 @@ void render_envelope(ENV_GEN &gen)
                 case 6:
                 case 7:
                 case 15:
-                  gen.amp = 0;
-                  gen.phase = EF_STILL;
+                  a = 0;
+                  ph = EF_STILL;
                 break;
 
                 // (F,R)
                 case 10:
                 case 14:
-                  gen.phase = EF_FALL;
+                  ph = EF_FALL;
                 break;
 
                 // (R)
                 case 12:
-                  gen.amp = 0;
+                  a = 0;
                 break;
 
                 case 13:
-                  gen.phase = EF_STILL;
+                  ph = EF_STILL;
                 break;
               }
-              break;
+              goto reiterate;
             }
           }
         }
       break;
 
-      case EF_STILL:
-        while (n < snum)
-          env_buf[n++] = gen.amp;
+      default:
+        while (n)
+        {
+          n--;
+          *ptr++ = a;
+        }
       break;
     }
+  reiterate: ;
   }
+
+  gen.cnt = c;
+  gen.phase = ph;
+  gen.amp = a;
 }
 
 /// Waveform mixer
 void mix_channel(u8 chip, u8 chn, u8 opts)
 {
-  u8 amp = chan[chip][chn].amp;
-  SAMP s;
-  s.l = vtab[chip][chn][amp][0];
-  s.r = vtab[chip][chn][amp][1];
-  u32 *addr = &sndbuf[offs];
+  u32 s = vtab[chip][chn][chan[chip][chn].amp].w;
+  u32 *ptr = &sndbuf[offs];
   u8 *taddr = tone_buf;
   u8 *naddr = noise_buf;
+  u8 *eaddr = env_buf;
+  SAMP *v = vtab[chip][chn];
+  u32 n = snum;
 
   switch (opts)
   {
     // DC
     case 0:
-    case 4:
-      for (u16 n = 0; n < snum; n++)
-        *addr++ += s.w;
+      while (n--)
+      {
+        *ptr += s;
+        ptr++;
+      }
     break;
 
     // tone
     case 1:
-    case 5:
-      for (u16 n = 0; n < snum; n++)
-        *addr++ += *taddr++ ? s.w : 0;
+      while (n--) 
+      {
+        if (*taddr++) *ptr += s;
+        ptr++;
+      }
     break;
 
     // noise
     case 2:
-    case 6:
-      for (u16 n = 0; n < snum; n++)
-        *addr++ += *naddr++ ? s.w : 0;
+      while (n--)
+      {
+        if (*naddr++) *ptr += s;
+        ptr++;
+      }
     break;
 
     // noise + tone
     case 3:
-    case 7:
-      for (u16 n = 0; n < snum; n++)
-        *addr++ += (*taddr++ && *naddr++) ? s.w : 0;
+      while (n--)
+      {
+        if (*taddr++ && *naddr++) *ptr += s;
+        ptr++;
+      }
     break;
-/*
-    // envelope + dc
+
+    // DC + env
     case 4:
-      for (u16 n = 0; n < snum; n++)
+      while (n--)
       {
-        s.l = vtab[chip][chn][env_buf[n] >> 4][0];
-        s.r = vtab[chip][chn][env_buf[n] >> 4][1];
-        sndbuf[offs + n] += s.w;
+        *ptr += v[*eaddr++].w;
+        ptr++;
       }
     break;
 
-    // envelope + tone
+    // tone + env
     case 5:
-      for (u16 n = 0; n < snum; n++)
+      while (n--)
       {
-        s.l = vtab[chip][chn][env_buf[n] >> 4][0];
-        s.r = vtab[chip][chn][env_buf[n] >> 4][1];
-        sndbuf[offs + n] += tone_buf[n] ? s.w : 0;
+        if (*taddr++) *ptr += v[*eaddr].w;
+        ptr++;
+        eaddr++;
       }
     break;
 
-    // envelope + noise
+    // noise + env
     case 6:
-      for (u16 n = 0; n < snum; n++)
+      while (n--)
       {
-        s.l = vtab[chip][chn][env_buf[n] >> 4][0];
-        s.r = vtab[chip][chn][env_buf[n] >> 4][1];
-        sndbuf[offs + n] += noise_buf[n] ? s.w : 0;
+        if (*naddr++) *ptr += v[*eaddr].w;
+        ptr++;
+        eaddr++;
       }
     break;
 
-    // envelope + noise + tone
+    // noise + tone + env
     case 7:
-      for (u16 n = 0; n < snum; n++)
+      while (n--)
       {
-        s.l = vtab[chip][chn][env_buf[n] >> 4][0];
-        s.r = vtab[chip][chn][env_buf[n] >> 4][1];
-        sndbuf[offs + n] += (tone_buf[n] && noise_buf[n]) ? s.w : 0;
+        if (*taddr++ && *naddr++) *ptr += v[*eaddr].w;
+        ptr++;
+        eaddr++;
       }
     break;
-    */
   }
 }
 
@@ -337,13 +438,35 @@ void render_generators()
 {
   for (int a = 0; a < psg_chip_num; a++)
   {
-    render_noise(noise[a]);
-    // render_envelope(env[a]);
-    render_tone(tone[a][0]);
+    if (chan[a][0].is_noise || chan[a][1].is_noise || chan[a][2].is_noise)
+      render_noise(noise[a]);
+    else
+      render_noise(noise[a]); // +++ 'mute' generator
+      
+    if (chan[a][0].is_env || chan[a][1].is_env || chan[a][2].is_env)
+      render_envelope(env[a]);
+    else
+      render_envelope(env[a]); // +++ 'mute' generator
+      
+    if (chan[a][0].is_tone)
+      render_tone(tone[a][0]);
+    else
+      render_tone(tone[a][0]); // +++ 'mute' generator
+      
     mix_channel(a, 0, (chan[a][0].is_env << 2) | (chan[a][0].is_noise << 1) | chan[a][0].is_tone);
-    render_tone(tone[a][1]);
+    
+    if (chan[a][1].is_tone)
+      render_tone(tone[a][1]);
+    else
+      render_tone(tone[a][1]); // +++ 'mute' generator
+    
     mix_channel(a, 1, (chan[a][1].is_env << 2) | (chan[a][1].is_noise << 1) | chan[a][1].is_tone);
-    render_tone(tone[a][2]);
+    
+    if (chan[a][2].is_tone)
+      render_tone(tone[a][2]);
+    else
+      render_tone(tone[a][2]); // +++ 'mute' generator
+    
     mix_channel(a, 2, (chan[a][2].is_env << 2) | (chan[a][2].is_noise << 1) | chan[a][2].is_tone);
   }
 
@@ -395,7 +518,7 @@ void render_snd_buffer()
         render_generators();
       }
     }
-    // no event: render to the end of buffer
+    // no event: render to the end of the buffer
     else
     {
       snum = DAC_SAMPLES_COUNT - offs;

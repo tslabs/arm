@@ -23,6 +23,7 @@ void setIrqTab()
   irq_vect_ram.SysTick = SysTick;
   irq_vect_ram.EXTI0 = BDIR;
   irq_vect_ram.EXTI1 = BC1;
+  irq_vect_ram.EXTI2 = RST;
   irq_vect_ram.USART1 = UART_CONSOLE;
 #ifndef BOOT
   irq_vect_ram.DMA1_Stream1 = AU_DMA;
@@ -51,6 +52,7 @@ void initialize()
   SCB::setPriority<scb::irqn::SysTick, SYSTICK_PRIORITY>();
   NVIC::setPriority<nvic::irqn::BDIR_IRQ, BDIR_PRIORITY>();
   NVIC::setPriority<nvic::irqn::BC1_IRQ, BC1_PRIORITY>();
+  NVIC::setPriority<nvic::irqn::RST_IRQ, RST_PRIORITY>();
   NVIC::setPriority<nvic::irqn::UART_CONSOLE_IRQ, UART_CONSOLE_PRIORITY>();
 #ifndef BOOT
   NVIC::setPriority<nvic::irqn::AU_DMA_IRQ, AU_DMA_PRIORITY>();
@@ -66,6 +68,7 @@ void initialize()
 #ifndef BOOT
   NVIC::enableIrq<nvic::irqn::AU_DMA_IRQ>();
 #endif
+  NVIC::enableIrq<nvic::irqn::RST_IRQ>();
   NVIC::enableIrq<nvic::irqn::BDIR_IRQ>();
   NVIC::enableIrq<nvic::irqn::BC1_IRQ>();
 }
@@ -107,13 +110,13 @@ void BDIR_ram()
       GPIOB::setOutput(1, bus::status.b);
     break;
   }
-  
+
   BDIR::clearPendingFlag();
   NVIC::clearPendingIrq<nvic::irqn::BDIR_IRQ>();
   BC1::clearPendingFlag();
   NVIC::clearPendingIrq<nvic::irqn::BC1_IRQ>();
 }
-  
+
 // in #FFFD
 void BC1()
 {
@@ -171,6 +174,22 @@ void BC1_epi_ram()
   NVIC::clearPendingIrq<nvic::irqn::BC1_IRQ>();
 }
 
+void RST()
+{
+  // anti-chatter protection
+  u32 delay = 12;  // about 900ns (13clk/cycle)
+  while (delay--)
+    if (AY_RST::isHigh())
+      goto exit;
+
+  SCB::generateReset(scb::airc::SYSRESETREQ);
+  while (1);
+
+exit:
+  RST::clearPendingFlag();
+  NVIC::clearPendingIrq<nvic::irqn::RST_IRQ>();
+}
+
 void UART_CONSOLE()
 {
 #ifdef BOOT
@@ -187,6 +206,7 @@ void AU_DMA()
   snd::buf_time += DAC_SAMPLES_COUNT;
   snd::curr_buf = AU_DMA::isMemory0TheCurrentTarget();
   req_snd_buf = true;
+  // NVIC::triggerIrq<nvic::irqn::PVD>(); // set SndBuf renderer here
 }
 #endif
 

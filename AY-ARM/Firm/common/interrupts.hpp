@@ -137,6 +137,7 @@ void BC1() __attribute__ ((naked));
 void BC1_ram() __attribute__ ((naked, section(".ram_text")));
 void BC1_epi();
 void BC1_epi_ram() __attribute__ ((noinline, section(".ram_text")));
+void RST() __attribute__ ((section(".ram_text")));
 void UART_CONSOLE();
 #ifndef BOOT
 void AU_DMA() __attribute__ ((section(".ram_text")));

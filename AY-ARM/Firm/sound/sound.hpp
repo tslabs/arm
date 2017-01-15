@@ -9,6 +9,11 @@
 #pragma once
 
 /// Enums
+enum
+{
+  SIZE_OF_AMPTAB = 32
+};
+
 enum WFORM
 {
   WF_SQUARE = 0
@@ -104,9 +109,8 @@ typedef struct
   {
     struct
     {
-      u8 pad :4;
-      u8 periodl :8;
-      u8 periodh :4;
+      u16 periodl :8;
+      u16 periodh :4;
     };
     u16 period;
   };
@@ -171,23 +175,20 @@ typedef union
 typedef struct
 {
   u16 ver;
-  u16 amptab[32];
+  u16 amptab[SIZE_OF_AMPTAB];
   PSGCCTRL clkctr;
   PSGBCTRL busctr;
   PSGACTRL ampctr;
 } CONFIG;
 #pragma pack()
 
-/// Constants
-// Limit of chips (see PSG_MUL_MODE)
-const u8 lim_chip[8] = {2, 1, 2, 3, 4, 1, 1, 0};
-
 /// Variables
 PSG_CHAN chan[PSG_CHIPS_MAX][3];
 TONE_GEN tone[PSG_CHIPS_MAX][3];
 NOISE_GEN noise[PSG_CHIPS_MAX];
 ENV_GEN env[PSG_CHIPS_MAX];
-u16 vtab[PSG_CHIPS_MAX][3][16][2];
+SAMP vtab[PSG_CHIPS_MAX][3][SIZE_OF_AMPTAB];
+u16 *amptab_ptr[PSG_CHIPS_MAX];
 
 u8 tone_buf[DAC_SAMPLES_COUNT];
 u8 noise_buf[DAC_SAMPLES_COUNT];
@@ -199,7 +200,7 @@ u8 dac_fifo_buf[DAC_FIFO_SIZE];
 FIFO dac_fifo;
 
 u8 psg_chip_num;      // current number of PSG chips
-u8 current_psg_chip;  // selected PSG chip
+u8 selected_psg_chip; // currently selected PSG chip
 u8 wschan_num;        // current number of WS channels
 
 u16 buf_time; // the timestamp of 1st sample in current buffer
@@ -212,6 +213,11 @@ CONFIG config;
 
 BUS_EVT evt;  // next event to process
 bool is_evt;  // next event validity flag
+
+/// Constants
+// Limit of chips (see PSG_MUL_MODE)
+const u8 lim_chip[8] = {2, 1, 2, 3, 4, 1, 1, 0};
+const u16 *amp_tab_addr[4] = {amptab_ay, amptab_ym, amptab_us, config.amptab};
 
 /// Functions
 void put_event(u8, u8);

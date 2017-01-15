@@ -65,8 +65,9 @@ void initializePins()
   AY_BC2::setMode(gpio::moder::INPUT);
   AY_A8::setMode(gpio::moder::INPUT);
   AY_A9::setMode(gpio::moder::INPUT);
-  AY_RST::setMode(gpio::moder::INPUT);
   AY_SEL::setMode(gpio::moder::INPUT);
+  AY_RST::setMode(gpio::moder::INPUT);
+  AY_RST::setPullMode(gpio::pupdr::PULL_UP);
 
 #ifndef AYCLK_INTERNAL
   AY_CLK::setAlternateFunction(gpio::afr::TIM1_2);
@@ -143,9 +144,9 @@ void initializeDAC()
   DAC::enableClock();
   DAC::configureBasic(
     dac::cr::dac1::enable::ENABLED,
-    dac::cr::dac1::boff::DISABLED,
+    dac::cr::dac1::boff::ENABLED,
     dac::cr::dac2::enable::ENABLED,
-    dac::cr::dac2::boff::DISABLED);
+    dac::cr::dac2::boff::ENABLED);
 }
 
 void initializeAudioDMA()
@@ -234,6 +235,8 @@ void initializeAYBUS()
   // TIM3_REGS->DIER  = tim::dier::cc3ie::ENABLED        // enable interrupts
                    // | tim::dier::cc4ie::ENABLED;
 #endif
+  SYSCFG::selectExtiPin<RST_PIN, RST_PORT>();
+  RST::enableHardwareInterruptByFallingEdge();
 }
 
 void initializePeripherals()

@@ -32,18 +32,18 @@ namespace nvic
 
   struct Registers
   {
-      __RW u32 ISER[3];   // 0x000: Set enable
-      u32 _RESERVED0[29];
-      __RW u32 ICER[3];   // 0x080: Clear enable
-      u32 RSERVED1[29];
-      __RW u32 ISPR[3];   // 0x100: Set pending
-      u32 _RESERVED2[29];
-      __RW u32 ICPR[3];   // 0x180: Clear pending
-      u32 _RESERVED3[29];
-      __R u32 IABR[3];    // 0x200: Active bit
-      u32 _RESERVED4[61];
-      __RW u32 IPR[21];   // 0x300: Priority
-      u32 _RESERVED5[683];
+      __RW u32 ISER[8];   // 0x000: Set enable
+      u32 _RESERVED0[24];
+      __RW u32 ICER[8];   // 0x080: Clear enable
+      u32 RSERVED1[24];
+      __RW u32 ISPR[8];   // 0x100: Set pending
+      u32 _RESERVED2[24];
+      __RW u32 ICPR[8];   // 0x180: Clear pending
+      u32 _RESERVED3[24];
+      __R u32 IABR[8];    // 0x200: Active bit
+      u32 _RESERVED4[56];
+      __RW u32 IPR[60];   // 0x300: Priority
+      u32 _RESERVED5[644];
       __W u32 STIR;       // 0xE00: Software trigger
   };
 

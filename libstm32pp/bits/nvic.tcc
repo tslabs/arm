@@ -42,6 +42,15 @@ namespace nvic
   }
 
   /**
+   * @brief Sets a pending interrupt request.
+   */
+  template<irqn::E I>
+  void Functions::setPendingIrq(void)
+  {
+    NVIC_REGS->ISPR[I >> 5] = 1 << (I % 32);
+  }
+
+  /**
    * @brief Clears a pending interrupt request.
    */
   template<irqn::E I>
@@ -63,5 +72,14 @@ namespace nvic
     s &= ~(irqn::MASK << (8 * (I % 4)));
     s |= P << ((8 * (I % 4)) + 4);
     NVIC_REGS->IPR[I >> 2] = s;
+  }
+
+  /**
+   * @brief Triggers an interrupt request.
+   */
+  template<irqn::E I>
+  void Functions::triggerIrq()
+  {
+    NVIC_REGS->STIR = I;
   }
 }  // namespace nvic

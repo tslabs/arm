@@ -39,25 +39,23 @@
 namespace nvic {
   class Functions {
     public:
-      template<
-          nvic::irqn::E I
-      >
+      template<nvic::irqn::E I>
       static inline void enableIrq();
-      
-      template<
-          nvic::irqn::E I
-      >
+
+      template<nvic::irqn::E I>
       static inline void disableIrq();
 
-      template<
-          nvic::irqn::E I
-      >
+      template<nvic::irqn::E I>
+      static inline void setPendingIrq();
+
+      template<nvic::irqn::E I>
       static inline void clearPendingIrq();
 
-      template<
-          nvic::irqn::E I, u8 P
-      >
+      template<nvic::irqn::E I, u8 P>
       static inline void setPriority();
+
+      template<nvic::irqn::E I>
+      static inline void triggerIrq();
 
     private:
       Functions();

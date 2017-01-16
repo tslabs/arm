@@ -58,6 +58,9 @@ void write_address(u8 addr)
 #endif
 }
 
+// Empty
+void wa_(){}
+
 #ifndef BOOT
 // Select AY chip using bit0 (0 - chip1, 1 - chip0) - NedoPC Turbo-AY scheme
 void wa_ts()
@@ -152,9 +155,6 @@ void wa_data()
   w_ptr.init(wd_ptr.addr, wd_ptr.max);
 }
 
-// Empty
-void wa_(){}
-
 // Write AY Register
 void write_reg(u8 val)
 {
@@ -165,6 +165,9 @@ void write_reg(u8 val)
     write_reg_vec[regnum - R_DEV_SIG](val);
 #endif
 }
+
+// Empty
+void wr_(u8 val){}
 
 #ifndef BOOT
 // AY/YM registers
@@ -204,7 +207,7 @@ void wr_dac_data(u8 val)
 #endif
 
 // Data
-void wr_data(u8 val)
+void wr_arr_t(u8 val)
 {
   w_ptr.write_t(val, nx_task);
 }
@@ -221,9 +224,6 @@ void wr_cmd(u8 val)
   command(val);
 }
 
-// Empty
-void wr_(u8 val){}
-
 // Read AY register
 u8 read_reg()
 {
@@ -236,6 +236,9 @@ u8 read_reg()
     return 0xFF;
 #endif
 }
+
+// Empty
+u8 rr_() { return 0xFF; }
 
 #ifndef BOOT
 // AY/YM registers
@@ -268,6 +271,3 @@ u8 rr_arr()
 {
   return r_ptr.read();
 }
-
-// Empty
-u8 rr_() { return 0xFF; }

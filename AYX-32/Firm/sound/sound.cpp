@@ -14,7 +14,7 @@ void initialize()
   load_config();
 
   // +++ PSGCCTRL
-  
+
   // PSGBCTRL
   psg_chip_num = lim_chip[config.busctr.psgmul];
   selected_psg_chip = 0;
@@ -70,7 +70,7 @@ void init_generators()
 void init_vtab(u8 chip, u8 chan, u8 ear, u8 vol)
 {
   u16 *ptr = amptab_ptr[chip];
-  
+
   switch (ear)
   {
     case 0:
@@ -80,7 +80,7 @@ void init_vtab(u8 chip, u8 chan, u8 ear, u8 vol)
         vtab[chip][chan][i].l = v >> 8;
       }
     break;
-    
+
     default:
       for (u8 i = 0; i < SIZE_OF_AMPTAB; i++)
       {
@@ -368,7 +368,7 @@ void mix_channel(u8 chip, u8 chn, u8 opts)
 
     // tone
     case 1:
-      while (n--) 
+      while (n--)
       {
         if (*taddr++) *ptr += s;
         ptr++;
@@ -442,31 +442,31 @@ void render_generators()
       render_noise(noise[a]);
     else
       render_noise(noise[a]); // +++ 'mute' generator
-      
+
     if (chan[a][0].is_env || chan[a][1].is_env || chan[a][2].is_env)
       render_envelope(env[a]);
     else
       render_envelope(env[a]); // +++ 'mute' generator
-      
+
     if (chan[a][0].is_tone)
       render_tone(tone[a][0]);
     else
       render_tone(tone[a][0]); // +++ 'mute' generator
-      
+
     mix_channel(a, 0, (chan[a][0].is_env << 2) | (chan[a][0].is_noise << 1) | chan[a][0].is_tone);
-    
+
     if (chan[a][1].is_tone)
       render_tone(tone[a][1]);
     else
       render_tone(tone[a][1]); // +++ 'mute' generator
-    
+
     mix_channel(a, 1, (chan[a][1].is_env << 2) | (chan[a][1].is_noise << 1) | chan[a][1].is_tone);
-    
+
     if (chan[a][2].is_tone)
       render_tone(tone[a][2]);
     else
       render_tone(tone[a][2]); // +++ 'mute' generator
-    
+
     mix_channel(a, 2, (chan[a][2].is_env << 2) | (chan[a][2].is_noise << 1) | chan[a][2].is_tone);
   }
 
@@ -480,7 +480,8 @@ void render_snd_buffer()
   sndbuf = dac_buf[curr_buf];
   offs = 0;
 
-  memset(sndbuf, 0, sizeof(dac_buf[0]));  // +++ use DMA instead
+  memset(sndbuf, 4, sizeof(dac_buf[0]));  // 0x0404 - to shift up 'zero' DAC level
+  // +++ use DMA instead
 
   while (offs < DAC_SAMPLES_COUNT)
   {

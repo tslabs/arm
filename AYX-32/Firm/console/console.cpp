@@ -235,7 +235,7 @@ void m_psgstat()
       set_xy((i * 16) + 11, 14); print(_BWHT "Vol C:");
       set_xy((i * 16) + 11, 15); print(_BWHT "Mix A:");
       set_xy((i * 16) + 11, 16); print(_BWHT "Mix B:");
-      set_xy((i * 16) + 11, 17); print(_BWHT "Mix B:");
+      set_xy((i * 16) + 11, 17); print(_BWHT "Mix C:");
       set_xy((i * 16) + 11, 18); print(_BWHT "Tone A:");
       set_xy((i * 16) + 11, 19); print(_BWHT "Tone B:");
       set_xy((i * 16) + 11, 20); print(_BWHT "Tone C:");

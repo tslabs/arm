@@ -56,7 +56,9 @@ enum AMP_TAB
   ATAB_CS = 3,
 };
 
-/// Typedefs
+/// Types
+typedef void (*E_VEC)();
+
 typedef struct
 {
   u16 time;
@@ -226,3 +228,5 @@ void init_generators();
 void init_envelope(ENV_GEN&, u8);
 void init_vtab(u8, u8, u8, u8);
 bool save_cfg();
+
+extern const E_VEC event_vec[];

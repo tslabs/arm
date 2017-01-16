@@ -7,7 +7,6 @@
 // ..
 
 /// Function vector arrays
-// Write address
 const V_VEC write_addr_vec[] =
 {
 #ifndef BOOT

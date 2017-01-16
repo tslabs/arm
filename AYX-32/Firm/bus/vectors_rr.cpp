@@ -7,7 +7,6 @@
 // ..
 
 /// Function vector arrays
-// Read reg
 const R_VEC read_reg_vec[] =
 {
 #ifndef BOOT
@@ -27,21 +26,21 @@ const R_VEC read_reg_vec[] =
   rr_psg, // 0x0D
   rr_psg, // 0x0E
   rr_psg, // 0x0F
-  rr_, // 0x10
-  rr_, // 0x11
-  rr_, // 0x12
+  rr_rb, // 0x10
+  rr_rb, // 0x11
+  rr_rb, // 0x12
   rr_, // 0x13
   rr_, // 0x14
   rr_, // 0x15
   rr_, // 0x16
   rr_, // 0x17
   rr_, // 0x18
-  rr_, // 0x19
-  rr_, // 0x1A
-  rr_, // 0x1B
-  rr_, // 0x1C
-  rr_, // 0x1D
-  rr_, // 0x1E
+  rr_rb, // 0x19
+  rr_rb, // 0x1A
+  rr_rb, // 0x1B
+  rr_rb, // 0x1C
+  rr_rb, // 0x1D
+  rr_rb, // 0x1E
   rr_, // 0x1F
   rr_, // 0x20
   rr_, // 0x21
@@ -78,7 +77,7 @@ const R_VEC read_reg_vec[] =
   rr_rb, // 0x40
   rr_rb, // 0x41
   rr_rb, // 0x42
-  rr_, // 0x43
+  rr_arr, // 0x43
   rr_arr, // 0x44
   rr_arr, // 0x45
   rr_, // 0x46
@@ -219,12 +218,12 @@ const R_VEC read_reg_vec[] =
   rr_, // 0xCD
   rr_, // 0xCE
   rr_, // 0xCF
-  rr_, // 0xD0
+  rr_rb, // 0xD0
   rr_rb, // 0xD1
   rr_rb, // 0xD2
   rr_rb, // 0xD3
-  rr_, // 0xD4
-  rr_, // 0xD5
+  rr_rb, // 0xD4
+  rr_rb, // 0xD5
   rr_arr, // 0xD6
   rr_, // 0xD7
   rr_, // 0xD8

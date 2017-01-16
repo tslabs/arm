@@ -7,7 +7,6 @@
 // ..
 
 /// Function vector arrays
-// Write reg
 const W_VEC write_reg_vec[] =
 {
 #ifndef BOOT
@@ -27,21 +26,21 @@ const W_VEC write_reg_vec[] =
   wr_psg4,  // 0x0D
   wr_psg8,  // 0x0E
   wr_psg8,  // 0x0F
-  wr_, // 0x10
-  wr_, // 0x11
-  wr_, // 0x12
+  wr_rbe, // 0x10
+  wr_rbe, // 0x11
+  wr_rbe, // 0x12
   wr_, // 0x13
   wr_, // 0x14
   wr_, // 0x15
   wr_, // 0x16
   wr_, // 0x17
   wr_, // 0x18
-  wr_, // 0x19
-  wr_, // 0x1A
-  wr_, // 0x1B
-  wr_, // 0x1C
-  wr_, // 0x1D
-  wr_, // 0x1E
+  wr_rbe, // 0x19
+  wr_rbe, // 0x1A
+  wr_rbe, // 0x1B
+  wr_rbe, // 0x1C
+  wr_rbe, // 0x1D
+  wr_rbe, // 0x1E
   wr_, // 0x1F
   wr_, // 0x20
   wr_, // 0x21
@@ -219,12 +218,12 @@ const W_VEC write_reg_vec[] =
   wr_, // 0xCD
   wr_, // 0xCE
   wr_, // 0xCF
-  wr_, // 0xD0
+  wr_rbe, // 0xD0
   wr_rbe, // 0xD1
   wr_rbe, // 0xD2
   wr_rbe, // 0xD3
-  wr_, // 0xD4
-  wr_, // 0xD5
+  wr_rbe, // 0xD4
+  wr_rbe, // 0xD5
   wr_arr, // 0xD6
   wr_, // 0xD7
   wr_, // 0xD8
@@ -240,7 +239,7 @@ const W_VEC write_reg_vec[] =
   wr_cmd, // 0xE1
   wr_, // 0xE2
   wr_arr, // 0xE3
-  wr_data, // 0xE4
+  wr_arr_t, // 0xE4
   wr_, // 0xE5
   wr_, // 0xE6
   wr_, // 0xE7

@@ -72,6 +72,7 @@ void initializePins()
 #ifndef AYCLK_INTERNAL
   AY_CLK::setAlternateFunction(gpio::afr::TIM1_2);
   AY_CLK::setMode(gpio::moder::ALTERNATE);
+  AY_CLK::setPullMode(gpio::pupdr::PULL_DOWN);
 #endif
 
   AY_D0::setSpeed(gpio::ospeedr::_25MHZ); // 25MHz speed is best choice - 2MHz gives too slow slew rate, 50MHz is too noisy
@@ -101,11 +102,9 @@ void initializePins()
   U_TX::setMode(gpio::moder::ALTERNATE);
   U_TX::setSpeed(gpio::ospeedr::_2MHZ);
 
-#ifndef BOOT
   // DAC
   AU_L::setMode(gpio::moder::ANALOG);
   AU_R::setMode(gpio::moder::ANALOG);
-#endif
 }
 
 void initializeUART()

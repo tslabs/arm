@@ -97,6 +97,7 @@ namespace snd
 #include "sound/config.cpp"
 #include "sound/sound.cpp"
 #include "sound/events.cpp"
+#include "sound/vectors_ev.cpp"
 }
 
 namespace console

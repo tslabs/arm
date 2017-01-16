@@ -6,7 +6,7 @@
 //
 // বসে আছি একা কাঁচা রোদ বিকেলে উদাস
 
-// store AY BUS event
+// Store AY BUS event
 void put_event(u8 reg, u8 val)
 {
   BUS_EVT evt;
@@ -16,183 +16,138 @@ void put_event(u8 reg, u8 val)
   ay_bus_events.put((u8*)&evt, sizeof(evt));
 }
 
-// process event and change state according to it
+// Process event
 void process_event()
 {
   // console::print("Event %x %x\n", evt.reg, evt.val);
   is_evt = false;
+  event_vec[evt.reg]();
+}
 
-  switch (evt.reg)  // 00-3F
+// Empty
+void ev_() {};
+
+// AY register 0 - channel A tone period LSB
+void ev_ay0(){  tone[selected_psg_chip][0].periodl = evt.val;
+  if (!tone[selected_psg_chip][0].period)
+    tone[selected_psg_chip][0].period++;
+}
+// AY register 1 - channel A tone period MSBvoid ev_ay1(){
+  tone[selected_psg_chip][0].periodh = evt.val;
+  if (!tone[selected_psg_chip][0].period)
+    tone[selected_psg_chip][0].period++;
+}
+// AY register 2 - channel B tone period LSBvoid ev_ay2(){
+  tone[selected_psg_chip][1].periodl = evt.val;
+  if (!tone[selected_psg_chip][1].period)
+    tone[selected_psg_chip][1].period++;
+}
+// AY register 3 - channel B tone period MSBvoid ev_ay3(){
+  tone[selected_psg_chip][1].periodh = evt.val;
+  if (!tone[selected_psg_chip][1].period)
+    tone[selected_psg_chip][1].period++;
+}
+// AY register 4 - channel C tone period LSBvoid ev_ay4(){
+  tone[selected_psg_chip][2].periodl = evt.val;
+  if (!tone[selected_psg_chip][2].period)
+    tone[selected_psg_chip][2].period++;
+}
+// AY register 5 - channel C tone period MSBvoid ev_ay5(){
+  tone[selected_psg_chip][2].periodh = evt.val;
+  if (!tone[selected_psg_chip][2].period)
+    tone[selected_psg_chip][2].period++;
+}
+// AY register 6 - noise periodvoid ev_ay6(){
+  noise[selected_psg_chip].period = evt.val & 31;
+  if (!noise[selected_psg_chip].period)
+    noise[selected_psg_chip].period++;
+}
+// AY register 7 - channel mixervoid ev_ay7(){
+  chan[selected_psg_chip][0].is_tone  = (evt.val &  1) ? false : true;
+  chan[selected_psg_chip][1].is_tone  = (evt.val &  2) ? false : true;
+  chan[selected_psg_chip][2].is_tone  = (evt.val &  4) ? false : true;
+  chan[selected_psg_chip][0].is_noise = (evt.val &  8) ? false : true;
+  chan[selected_psg_chip][1].is_noise = (evt.val & 16) ? false : true;
+  chan[selected_psg_chip][2].is_noise = (evt.val & 32) ? false : true;
+}
+// AY register 8 - channel A volumevoid ev_ay8(){
+  if (evt.val & 16)
+    chan[selected_psg_chip][0].is_env = true;
+  else
   {
-    // AY register 0 - channel A tone period LSB
-    case bus::R_PSG_TP_AL:
-      tone[selected_psg_chip][0].periodl = evt.val;
-      if (!tone[selected_psg_chip][0].period)
-        tone[selected_psg_chip][0].period++;
-    break;
-
-    // AY register 1 - channel A tone period MSB
-    case bus::R_PSG_TP_AH:
-      tone[selected_psg_chip][0].periodh = evt.val;
-      if (!tone[selected_psg_chip][0].period)
-        tone[selected_psg_chip][0].period++;
-    break;
-
-    // AY register 2 - channel B tone period LSB
-    case bus::R_PSG_TP_BL:
-      tone[selected_psg_chip][1].periodl = evt.val;
-      if (!tone[selected_psg_chip][1].period)
-        tone[selected_psg_chip][1].period++;
-    break;
-
-    // AY register 3 - channel B tone period MSB
-    case bus::R_PSG_TP_BH:
-      tone[selected_psg_chip][1].periodh = evt.val;
-      if (!tone[selected_psg_chip][1].period)
-        tone[selected_psg_chip][1].period++;
-    break;
-
-    // AY register 4 - channel C tone period LSB
-    case bus::R_PSG_TP_CL:
-      tone[selected_psg_chip][2].periodl = evt.val;
-      if (!tone[selected_psg_chip][2].period)
-        tone[selected_psg_chip][2].period++;
-    break;
-
-    // AY register 5 - channel C tone period MSB
-    case bus::R_PSG_TP_CH:
-      tone[selected_psg_chip][2].periodh = evt.val;
-      if (!tone[selected_psg_chip][2].period)
-        tone[selected_psg_chip][2].period++;
-    break;
-
-    // AY register 6 - noise period
-    case bus::R_PSG_NP:
-      noise[selected_psg_chip].period = evt.val & 31;
-      if (!noise[selected_psg_chip].period)
-        noise[selected_psg_chip].period++;
-    break;
-
-    // AY register 7 - channel mixer
-    case bus::R_PSG_MX:
-      chan[selected_psg_chip][0].is_tone  = (evt.val &  1) ? false : true;
-      chan[selected_psg_chip][1].is_tone  = (evt.val &  2) ? false : true;
-      chan[selected_psg_chip][2].is_tone  = (evt.val &  4) ? false : true;
-      chan[selected_psg_chip][0].is_noise = (evt.val &  8) ? false : true;
-      chan[selected_psg_chip][1].is_noise = (evt.val & 16) ? false : true;
-      chan[selected_psg_chip][2].is_noise = (evt.val & 32) ? false : true;
-    break;
-
-    // AY register 8 - channel A volume
-    case bus::R_PSG_V_A:
-      if (evt.val & 16)
-        chan[selected_psg_chip][0].is_env = true;
-      else
-      {
-        chan[selected_psg_chip][0].is_env = false;
-        chan[selected_psg_chip][0].amp = (evt.val & 15) << 1;
-      }
-    break;
-
-    // AY register 9 - channel B volume
-    case bus::R_PSG_V_B:
-      if (evt.val & 16)
-        chan[selected_psg_chip][1].is_env = true;
-      else
-      {
-        chan[selected_psg_chip][1].is_env = false;
-        chan[selected_psg_chip][1].amp = (evt.val & 15) << 1;
-      }
-    break;
-
-    // AY register 10 - channel C volume
-    case bus::R_PSG_V_C:
-      if (evt.val & 16)
-        chan[selected_psg_chip][2].is_env = true;
-      else
-      {
-        chan[selected_psg_chip][2].is_env = false;
-        chan[selected_psg_chip][2].amp = (evt.val & 15) << 1;
-      }
-    break;
-
-    // AY register 11 - envelope generator period LSB
-    case bus::R_PSG_EPL:
-      env[selected_psg_chip].periodl = evt.val;
-
-      if (!env[selected_psg_chip].period)
-        env[selected_psg_chip].period = 1;
-    break;
-
-    // AY register 12 - envelope generator period MSB
-    case bus::R_PSG_EPH:
-      env[selected_psg_chip].periodh = evt.val;
-
-      if (!env[selected_psg_chip].period)
-        env[selected_psg_chip].period = 1;
-    break;
-
-    // AY register 13 - envelope type
-    case bus::R_PSG_EC:
-      init_envelope(env[selected_psg_chip], evt.val & 15);
-    break;
-
-    // Channel A Volume Left
-    case bus::R_PSG_VOL_AL:
-      init_vtab(selected_psg_chip, 0, 0, evt.val);
-    break;
-
-    // Channel A Volume Right
-    case bus::R_PSG_VOL_AR:
-      init_vtab(selected_psg_chip, 0, 1, evt.val);
-    break;
-
-    // Channel B Volume Left
-    case bus::R_PSG_VOL_BL:
-      init_vtab(selected_psg_chip, 1, 0, evt.val);
-    break;
-
-    // Channel B Volume Right
-    case bus::R_PSG_VOL_BR:
-      init_vtab(selected_psg_chip, 1, 1, evt.val);
-    break;
-
-    // Channel C Volume Left
-    case bus::R_PSG_VOL_CL:
-      init_vtab(selected_psg_chip, 2, 0, evt.val);
-    break;
-
-    // Channel C Volume Right
-    case bus::R_PSG_VOL_CR:
-      init_vtab(selected_psg_chip, 2, 1, evt.val);
-    break;
-
-    // AY Chip Select
-    case bus::R_PSG_SEL:
-      selected_psg_chip = (evt.val < psg_chip_num) ? evt.val : (psg_chip_num - 1);
-    break;
-
-    // Clock config
-    case bus::R_PSG_CCTRL:
-      config.clkctr.b = evt.val;
-      // +++
-    break;
-
-    // Bus config
-    case bus::R_PSG_BCTRL:
-      config.busctr.b = evt.val;
-      psg_chip_num = lim_chip[config.busctr.psgmul];
-      selected_psg_chip = 0;
-    break;
-
-    // Amplitude table config
-    case bus::R_PSG_ACTRL:
-      config.ampctr.b = evt.val;
-      // +++
-    break;
+    chan[selected_psg_chip][0].is_env = false;
+    chan[selected_psg_chip][0].amp = (evt.val & 15) << 1;
   }
-
-  switch (evt.reg)  // 40-7F
+}
+// AY register 9 - channel B volumevoid ev_ay9(){
+  if (evt.val & 16)
+    chan[selected_psg_chip][1].is_env = true;
+  else
   {
+    chan[selected_psg_chip][1].is_env = false;
+    chan[selected_psg_chip][1].amp = (evt.val & 15) << 1;
   }
+}
+// AY register 10 - channel C volumevoid ev_ay10(){
+  if (evt.val & 16)
+    chan[selected_psg_chip][2].is_env = true;
+  else
+  {
+    chan[selected_psg_chip][2].is_env = false;
+    chan[selected_psg_chip][2].amp = (evt.val & 15) << 1;
+  }
+}
+// AY register 11 - envelope generator period LSBvoid ev_ay11(){
+  env[selected_psg_chip].periodl = evt.val;
+
+  if (!env[selected_psg_chip].period)
+    env[selected_psg_chip].period = 1;
+}
+// AY register 12 - envelope generator period MSBvoid ev_ay12(){
+  env[selected_psg_chip].periodh = evt.val;
+
+  if (!env[selected_psg_chip].period)
+    env[selected_psg_chip].period = 1;
+}
+// AY register 13 - envelope typevoid ev_ay13()
+{  init_envelope(env[selected_psg_chip], evt.val & 15);
+}
+// Channel A Volume Leftvoid ev_volal(){  init_vtab(selected_psg_chip, 0, 0, evt.val);}// Channel A Volume Right
+void ev_volar(){  init_vtab(selected_psg_chip, 0, 1, evt.val);
+}// Channel B Volume Leftvoid ev_volbl()
+{  init_vtab(selected_psg_chip, 1, 0, evt.val);}
+// Channel B Volume Rightvoid ev_volbr(){
+  init_vtab(selected_psg_chip, 1, 1, evt.val);
+}
+
+// Channel C Volume Left
+void ev_volcl()
+{
+  init_vtab(selected_psg_chip, 2, 0, evt.val);
+}
+
+// Channel C Volume Right
+void ev_volcr()
+{
+  init_vtab(selected_psg_chip, 2, 1, evt.val);
+}
+
+
+// PSG Chip Select
+void ev_psgsel()
+{
+  selected_psg_chip = (evt.val < psg_chip_num) ? evt.val : (psg_chip_num - 1);
+}
+
+// Clock configvoid ev_cctrl(){  config.clkctr.b = evt.val;  // +++}
+// Bus configvoid ev_bctrl(){  config.busctr.b = evt.val;
+  psg_chip_num = lim_chip[config.busctr.psgmul];
+  selected_psg_chip = 0;
+}
+
+// Amplitude table config
+void ev_actrl()
+{
+  config.ampctr.b = evt.val;
+  // +++
 }

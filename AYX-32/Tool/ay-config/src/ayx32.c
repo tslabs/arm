@@ -122,17 +122,15 @@ void wr_data_chunk(u8 *v) __naked
   __endasm;
 }
 
-void wr_data_arr(u8 *ptr, u16 size)
+void wr_arr(u8 *ptr, u16 size)
 {
-  wr_addr(R_DATA);
-
   while (size >= CHUNK_SIZE)
   {
     wr_data_chunk(ptr);
     ptr += CHUNK_SIZE;
     size -= CHUNK_SIZE;
   }
-  
+
   while (size--)
     wr_reg(*ptr++);
 }

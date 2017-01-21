@@ -5,6 +5,8 @@
 #include "../res/font6x8.h"
 const
 #include "../res/fw.h"
+const
+#include "../res/wav.h"
 #include "screen.c"
 #include "ayx32.c"
 #include "kbd.c"
@@ -17,6 +19,7 @@ void t_none() {}
 void crt_init()
 {
   menu = M_MAIN;
+  mix = 0;
 }
 
 void main()

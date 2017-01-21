@@ -14,6 +14,7 @@ typedef void (*TASK)();
 #define true 1
 #define max(a,b)  (((a) > (b)) ? (a) : (b))
 #define min(a,b)  (((a) < (b)) ? (a) : (b))
+#define countof(a)  (sizeof(a) / sizeof(a[0]))
 
 // structs
 typedef struct
@@ -77,10 +78,31 @@ PSGACTRL atb_sel;
 PSGBCTRL bus_sel;
 PSGCCTRL clk_sel;
 u16 c_amp[32];
+u8 mix;
 
 // AYX-32 regs
 enum REG
 {
+  // AY extended
+  R_PSG_VOL_AL  = 0x10,
+  R_PSG_VOL_AR  = 0x11,
+  R_PSG_VOL_BL  = 0x12,
+  R_PSG_VOL_BR  = 0x13,
+  R_PSG_VOL_CL  = 0x14,
+  R_PSG_VOL_CR  = 0x15,
+  R_PSG_TDC_A   = 0x16,
+  R_PSG_TDC_B   = 0x17,
+  R_PSG_TDC_C   = 0x18,
+
+  // DAC
+  R_DACCTRL     = 0x40,
+  R_DACVOLL     = 0x41,
+  R_DACVOLR     = 0x42,
+  R_DACSMPR     = 0x43,
+  R_DACFREE     = 0x44,
+  R_DACUSED     = 0x45,
+  R_DACDATA     = 0x46,
+
   // Device Control
   R_PSG_SEL     = 0xD0,
   R_PSG_CCTRL   = 0xD1,
@@ -218,13 +240,11 @@ enum
   M_INFO,
   M_SET,
   M_SET_A,
-  M_SET_A0,
-  M_SET_A1,
-  M_SET_A2,
-  M_SET_A3,
   M_SET_B,
   M_SET_C,
+  M_SET_M,
   M_AMP,
+  M_DAC,
   M_RES,
   M_BOOT,
   M_SAVE,
@@ -249,18 +269,32 @@ char *const atab_sel_txt[] =
 {
   "AY",
   "YM",
-  "YM (Unreal Speccy)",
-  "Custom"
+  "US",
+  "CS"
 };
 
 char *const bus_sel_txt[] =
 {
-  "Turbo-Sound",
+  "2 chips (TS)",
   "1 chip",
-  "2 chips (PSGSEL)",
-  "3 chips (PSGSEL)",
-  "4 chips (PSGSEL)",
+  "2 chips",
+  "3 chips",
+  "4 chips",
   "",
   "",
   "Disable PSG"
+};
+
+char *const mix_sel_txt[] =
+{
+  "Full stereo",
+  "Half stereo",
+  "Mono",
+};
+
+const u8 const mix_sel_val[countof(mix_sel_txt)][6] = 
+{
+  {64, 0, 32, 32, 0, 64},
+  {48, 16, 32, 32, 16, 48},
+  {32, 32, 32, 32, 32, 32}
 };

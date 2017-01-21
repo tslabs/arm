@@ -6,13 +6,12 @@ void menu_disp()
     case M_MAIN: msg_main(); break;
     case M_INFO: msg_info(); break;
     case M_SET: msg_set(); break;
-    case M_SET_A0: msg_set_a0(); break;
-    case M_SET_A1: msg_set_a1(); break;
-    case M_SET_A2: msg_set_a2(); break;
-    case M_SET_A3: msg_set_a3(); break;
+    case M_SET_A: msg_set_a(); break;
     case M_SET_B: msg_set_b(); break;
     case M_SET_C: msg_set_c(); break;
+    case M_SET_M: msg_set_m(); break;
     case M_AMP: msg_amp(); break;
+    case M_DAC: msg_dac(); break;
     case M_RES: msg_res(); break;
     case M_BOOT: msg_boot(); break;
     case M_SAVE: msg_save(); break;
@@ -40,6 +39,7 @@ bool key_disp()
         case K_1: menu = M_INFO; rc = true; break;
         case K_2: menu = M_SET; rc = true; break;
         case K_3: menu = M_AMP; rc = true; break;
+        case K_4: menu = M_DAC; rc = true; break;
         case K_U: menu = M_FUPD; rc = true; break;
         case K_R: menu = M_RES; rc = true; break;
         case K_B: menu = M_BOOT; rc = true; break;
@@ -51,21 +51,17 @@ bool key_disp()
       {
         case K_1: menu = M_SET_C; rc = true; break;
         case K_2: menu = M_SET_B; rc = true; break;
-        case K_3: menu = M_SET_A0; rc = true; break;
-        case K_4: menu = M_SET_A1; rc = true; break;
-        case K_5: menu = M_SET_A2; rc = true; break;
-        case K_6: menu = M_SET_A3; rc = true; break;
+        case K_3: menu = M_SET_M; rc = true; break;
+        case K_4: menu = M_SET_A; rc = true; break;
         case K_EN: menu = M_MAIN; rc = true; break;
         case K_S: menu = M_SAVE; rc = true; break;
       }
     break;
     
-    case M_SET_A0:
-    case M_SET_A1:
-    case M_SET_A2:
-    case M_SET_A3:
+    case M_SET_A:
     case M_SET_B:
     case M_SET_C:
+    case M_SET_M:
       menu = M_SET; rc = true;
     break;
     

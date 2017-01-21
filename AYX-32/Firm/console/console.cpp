@@ -211,42 +211,12 @@ void m_sysinf()
   d = f / 24;
   print(_CR _CR _F(11) _BWHT "Uptime: " _BGRN "%dd %dh %dm %ds %dms", d, h, m, s, ms);
 
+  print(_CR _CR _F(11) _BWHT "PSG clock:  " _BGRN "%dHz", PSG_CLK);
+  print(_CR _F(11) _BWHT "Audio freq: " _BGRN "%dHz", AU_FREQ);
+  print(_CR _F(11) _BWHT "Event freq: " _BGRN "%dHz", EVT_FREQ);
+  
   menu_next = m_main;
   menu = m_enter;
-}
-
-void m_psgstat()
-{
-  print_header("PSG debug");
-  print_enter(30);
-
-  print(_XY(1,4));
-  print_num_zebra(0, 1, 16, 22, 3);
-
-  for (int i = 0; i < PSG_CHIPS_MAX; i++)
-  {
-    bool is_act = i < snd::psg_chip_num;
-    set_xy((i * 16) + 11, 11); print(_BWHT "PSG %d: %s", i, is_act ? (_BGRN "Active") : (_BBLK "Idle"));
-
-    if (is_act)
-    {
-      set_xy((i * 16) + 11, 12); print(_BWHT "Vol A:");
-      set_xy((i * 16) + 11, 13); print(_BWHT "Vol B:");
-      set_xy((i * 16) + 11, 14); print(_BWHT "Vol C:");
-      set_xy((i * 16) + 11, 15); print(_BWHT "Mix A:");
-      set_xy((i * 16) + 11, 16); print(_BWHT "Mix B:");
-      set_xy((i * 16) + 11, 17); print(_BWHT "Mix C:");
-      set_xy((i * 16) + 11, 18); print(_BWHT "Tone A:");
-      set_xy((i * 16) + 11, 19); print(_BWHT "Tone B:");
-      set_xy((i * 16) + 11, 20); print(_BWHT "Tone C:");
-      set_xy((i * 16) + 11, 21); print(_BWHT "Noise:");
-      set_xy((i * 16) + 11, 22); print(_BWHT "EnvT:");
-      set_xy((i * 16) + 11, 23); print(_BWHT "EnvP:");
-    }
-  }
-
-  kb_enable(-1);
-  menu = m_psgstat1;
 }
 
 void print_vol(u8 c, u8 i)
@@ -290,6 +260,42 @@ void print_envp(u8 c)
   print(_BYLW "%d   ", a & 4095);
 }
 
+void m_psgstat()
+{
+  print_header("PSG debug");
+  print_enter(30);
+
+  print(_XY(1,4));
+  print_num_zebra(0, 1, 16, 22, 3);
+
+  for (int i = 0; i < PSG_CHIPS_MAX; i++)
+  {
+    bool is_act = i < snd::psg_chip_num;
+    set_xy((i * 16) + 11, 11); print(_BWHT "PSG %d: %s", i, is_act ? (_BGRN "Active") : (_BBLK "Idle"));
+
+    if (is_act)
+    {
+      set_xy((i * 16) + 11, 12); print(_BWHT "Vol A:");
+      set_xy((i * 16) + 11, 13); print(_BWHT "Vol B:");
+      set_xy((i * 16) + 11, 14); print(_BWHT "Vol C:");
+      set_xy((i * 16) + 11, 15); print(_BWHT "Mix A:");
+      set_xy((i * 16) + 11, 16); print(_BWHT "Mix B:");
+      set_xy((i * 16) + 11, 17); print(_BWHT "Mix C:");
+      set_xy((i * 16) + 11, 18); print(_BWHT "Tone A:");
+      set_xy((i * 16) + 11, 19); print(_BWHT "Tone B:");
+      set_xy((i * 16) + 11, 20); print(_BWHT "Tone C:");
+      set_xy((i * 16) + 11, 21); print(_BWHT "Noise:");
+      set_xy((i * 16) + 11, 22); print(_BWHT "EnvT:");
+      set_xy((i * 16) + 11, 23); print(_BWHT "EnvP:");
+    }
+  }
+
+  print(_XY(10,26) _BWHT "CPU Load:");
+  
+  kb_enable(-1);
+  menu = m_psgstat1;
+}
+
 void m_psgstat1()
 {
   print(_XY(1,4));
@@ -319,6 +325,8 @@ void m_psgstat1()
     }
   }
 
+  print(_XY(20,26) _BYLW "%d%%  ", cpu_load);
+  
   if (kb_done)
   {
     switch(uart_inbuf[0])

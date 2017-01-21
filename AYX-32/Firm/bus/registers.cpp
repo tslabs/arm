@@ -17,7 +17,7 @@ u8 param[8];    // command parameters
 u8 resp[8];     // command response
 
 #ifndef BOOT
-u8 psg_readback[PSG_CHIPS_MAX][16]; // readback copy of PSG registers
+u8 psg_readback[PSG_CHIPS_MAX][32]; // readback copy of PSG registers
 u8 psg_readback_sel;                // selected PSG chip for readback
 u8 readback[256];                   // readback copy of misc registers
 #endif
@@ -44,6 +44,22 @@ void initialize()
   wd_ptr.nul();
   nx_task = no_task;
   clear_bg_task();
+  
+#ifndef BOOT
+  readback[R_PSG_CCTRL] = snd::config.clkctr.b;
+  readback[R_PSG_BCTRL] = snd::config.busctr.b;
+  readback[R_PSG_ACTRL] = snd::config.ampctr.b;
+
+  for (int i = 0; i < PSG_CHIPS_MAX; i++)
+  {
+    psg_readback[i][R_PSG_VOL_AL] = snd::config.psgvol[i][0][0];
+    psg_readback[i][R_PSG_VOL_AR] = snd::config.psgvol[i][0][1];
+    psg_readback[i][R_PSG_VOL_BL] = snd::config.psgvol[i][1][0];
+    psg_readback[i][R_PSG_VOL_BR] = snd::config.psgvol[i][1][1];
+    psg_readback[i][R_PSG_VOL_CL] = snd::config.psgvol[i][2][0];
+    psg_readback[i][R_PSG_VOL_CR] = snd::config.psgvol[i][2][1];
+  }
+#endif
 }
 
 // Write AY register address
@@ -170,39 +186,101 @@ void write_reg(u8 val)
 void wr_(u8 val){}
 
 #ifndef BOOT
-// AY/YM registers
-// 8 bit
-void wr_psg8(u8 val)
+// readback copy
+void wr_rb(u8 val)
 {
-  psg_readback[psg_readback_sel][regnum] = val;
-  snd::put_event(regnum, val);
-}
-
-// 5 bit
-void wr_psg5(u8 val)
-{
-  psg_readback[psg_readback_sel][regnum] = val & 0x1F;
-  snd::put_event(regnum, val);
-}
-
-// 4 bit
-void wr_psg4(u8 val)
-{
-  psg_readback[psg_readback_sel][regnum] = val & 0x0F;
-  snd::put_event(regnum, val);
+  readback[regnum] = val;
 }
 
 // readback copy + event
 void wr_rbe(u8 val)
 {
-  readback[regnum] = val;
   snd::put_event(regnum, val);
+  readback[regnum] = val;
+}
+
+// 8 bit
+void wr_psg8(u8 val)
+{
+  psg_readback[psg_readback_sel][regnum] = val;
+}
+
+// 8 bit + event
+void wr_psg8e(u8 val)
+{
+  snd::put_event(regnum, val);
+  psg_readback[psg_readback_sel][regnum] = val;
+}
+
+// 5 bit + event
+void wr_psg5e(u8 val)
+{
+  snd::put_event(regnum, val);
+  psg_readback[psg_readback_sel][regnum] = val & 0x1F;
+}
+
+// 4 bit + event
+void wr_psg4e(u8 val)
+{
+  snd::put_event(regnum, val);
+  psg_readback[psg_readback_sel][regnum] = val & 0x0F;
 }
 
 // DAC
 void wr_dac_data(u8 val)
 {
   snd::dac_fifo.put_byte(val);
+}
+
+// Channel A Volume Left
+void wr_volal(u8 val)
+{
+  wr_psg8e(val);
+  snd::config.psgvol[psg_readback_sel][0][0] = val;
+}
+
+// Channel A Volume Right
+void wr_volar(u8 val)
+{
+  wr_psg8e(val);
+  snd::config.psgvol[psg_readback_sel][0][1] = val;
+}
+
+// Channel B Volume Left
+void wr_volbl(u8 val)
+{
+  wr_psg8e(val);
+  snd::config.psgvol[psg_readback_sel][1][0] = val;
+}
+
+// Channel B Volume Right
+void wr_volbr(u8 val)
+{
+  wr_psg8e(val);
+  snd::config.psgvol[psg_readback_sel][1][1] = val;
+}
+
+// Channel C Volume Left
+void wr_volcl(u8 val)
+{
+  wr_psg8e(val);
+  snd::config.psgvol[psg_readback_sel][2][0] = val;
+}
+
+// Channel C Volume Right
+void wr_volcr(u8 val)
+{
+  wr_psg8e(val);
+  snd::config.psgvol[psg_readback_sel][2][1] = val;
+}
+
+// PSG select
+void wr_psgsel(u8 val)
+{
+  if (val >= PSG_CHIPS_MAX) val = PSG_CHIPS_MAX - 1;
+
+  wr_rbe(val);
+  psg_readback_sel = val;
 }
 #endif
 
@@ -264,6 +342,16 @@ u8 rr_status()
 u8 rr_error()
 {
   return error;
+}
+
+// CPU load
+u8 rr_cpuld()
+{
+#ifndef BOOT
+  return cpu_load;
+#else
+  return 0xFF;
+#endif
 }
 
 // Array

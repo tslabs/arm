@@ -93,6 +93,15 @@ void initializePins()
   AY_D6::setMode(gpio::moder::INPUT);
   AY_D7::setMode(gpio::moder::INPUT);
 
+  AY_IOA0::setMode(gpio::moder::INPUT);
+  AY_IOA1::setMode(gpio::moder::INPUT);
+  AY_IOA2::setMode(gpio::moder::INPUT);
+  AY_IOA3::setMode(gpio::moder::INPUT);
+  AY_IOA4::setMode(gpio::moder::INPUT);
+  AY_IOA5::setMode(gpio::moder::INPUT);
+  AY_IOA6::setMode(gpio::moder::INPUT);
+  AY_IOA7::setMode(gpio::moder::INPUT);
+
   // Console UART
   U_RX::setAlternateFunction(gpio::afr::USART1_3);
   U_RX::setMode(gpio::moder::ALTERNATE);

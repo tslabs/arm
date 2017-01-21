@@ -93,15 +93,8 @@ typedef struct
 {
   u16 cnt;
   u8 period;
-  union
-  {
-    struct
-    {
-      u16 pad;
-      bool bit :1;
-    };
-    u32 seed;
-  };
+  u32 seed;
+  u8 parity;
 } NOISE_GEN;
 
 typedef struct
@@ -123,11 +116,7 @@ typedef struct
 
 typedef union
 {
-  struct
-  {
-    u16 l;
-    u16 r;
-  };
+  u16 h[2];
   u32 w;
 } SAMP;
 
@@ -181,6 +170,7 @@ typedef struct
   PSGCCTRL clkctr;
   PSGBCTRL busctr;
   PSGACTRL ampctr;
+  u8 psgvol[PSG_CHIPS_MAX][3][2];
 } CONFIG;
 #pragma pack()
 
@@ -191,6 +181,7 @@ NOISE_GEN noise[PSG_CHIPS_MAX];
 ENV_GEN env[PSG_CHIPS_MAX];
 SAMP vtab[PSG_CHIPS_MAX][3][SIZE_OF_AMPTAB];
 u16 *amptab_ptr[PSG_CHIPS_MAX];
+u8 psgvol[PSG_CHIPS_MAX][3][2];
 
 u8 tone_buf[DAC_SAMPLES_COUNT];
 u8 noise_buf[DAC_SAMPLES_COUNT];

@@ -31,6 +31,7 @@ void initialize()
   is_evt = false;
   req_snd_buf = false;
   init_generators();
+  bus::readback[bus::R_PUSH_UP] = DAC_PUSHUP_DEF;
   memset(dac_buf, 0, sizeof(dac_buf));
   ay_bus_events.init(ay_bus_events_buf, sizeof(ay_bus_events_buf));
   dac_fifo.init(dac_fifo_buf, sizeof(dac_fifo_buf));
@@ -38,7 +39,7 @@ void initialize()
 
 void init_generators()
 {
-  for (int a = 0; a < psg_chip_num; a++)
+  for (int a = 0; a < PSG_CHIPS_MAX; a++)
   {
     for (int b = 0; b < 3; b++)
     {
@@ -54,40 +55,27 @@ void init_generators()
 
     noise[a].cnt = 0;
     noise[a].period = 1;
-    noise[a].seed = 0;
+    noise[a].seed = 1;
+    noise[a].parity = 0;
 
     init_envelope(env[a], 16);
 
-    init_vtab(a, 0, 0, 64);
-    init_vtab(a, 0, 1, 0);
-    init_vtab(a, 1, 0, 32);
-    init_vtab(a, 1, 1, 32);
-    init_vtab(a, 2, 0, 0);
-    init_vtab(a, 2, 1, 64);
+    memset(psgvol[a], 0, sizeof(psgvol[0]));
+    init_vtab(a, 0, 0, config.psgvol[a][0][0]);
+    init_vtab(a, 0, 1, config.psgvol[a][0][1]);
+    init_vtab(a, 1, 0, config.psgvol[a][1][0]);
+    init_vtab(a, 1, 1, config.psgvol[a][1][1]);
+    init_vtab(a, 2, 0, config.psgvol[a][2][0]);
+    init_vtab(a, 2, 1, config.psgvol[a][2][1]);
   }
 }
 
 void init_vtab(u8 chip, u8 chan, u8 ear, u8 vol)
 {
-  u16 *ptr = amptab_ptr[chip];
-
-  switch (ear)
+  for (u8 i = 0; i < SIZE_OF_AMPTAB; i++)
   {
-    case 0:
-      for (u8 i = 0; i < SIZE_OF_AMPTAB; i++)
-      {
-        u32 v = ptr[i] * vol;
-        vtab[chip][chan][i].l = v >> 8;
-      }
-    break;
-
-    default:
-      for (u8 i = 0; i < SIZE_OF_AMPTAB; i++)
-      {
-        u32 v = ptr[i] * vol;
-        vtab[chip][chan][i].r = v >> 8;
-      }
-    break;
+    u32 v = amptab_ptr[chip][i] * vol;
+    vtab[chip][chan][i].h[ear] = v >> 8;
   }
 }
 
@@ -173,17 +161,15 @@ void render_tone(TONE_GEN &gen)
 
 void render_noise(NOISE_GEN &gen)
 {
-  static u8 parity = 0;
-
   u16 p = gen.period;
   u16 c = gen.cnt;
   u32 s = gen.seed;
-  u8 b = gen.bit;
+  u8 b = s & 1;
   u16 *ptr = (u16*)noise_buf;
   u32 n = (snum + 1) / 2;
 
   // odd pair
-  if (parity & 1)
+  if (gen.parity & 1)
   {
     while (n--)
     {
@@ -192,8 +178,8 @@ void render_noise(NOISE_GEN &gen)
       if (++c >= p)
       {
         c = 0;
-        s = ((s << 1) | 1) ^ (((s >> 16) ^ (s >> 13)) & 1);
-        b = (s & (1 << 16)) != 0;
+        s = (s >> 1) ^ (b ? 0x14000 : 0);
+        b = s & 1;
       }
 
       *ptr++ = (b << 8) | a;
@@ -209,15 +195,15 @@ void render_noise(NOISE_GEN &gen)
       if (++c >= p)
       {
         c = 0;
-        s = ((s << 1) | 1) ^ (((s >> 16) ^ (s >> 13)) & 1);
-        b = (s & (1 << 16)) != 0;
+        s = (s >> 1) ^ (b ? 0x14000 : 0);
+        b = s & 1;
       }
     }
   }
 
   gen.cnt = c;
   gen.seed = s;
-  parity += snum;
+  gen.parity += snum;
 }
 
 void render_envelope(ENV_GEN &gen)
@@ -438,39 +424,41 @@ void render_generators()
 {
   for (int a = 0; a < psg_chip_num; a++)
   {
-    if (chan[a][0].is_noise || chan[a][1].is_noise || chan[a][2].is_noise)
-      render_noise(noise[a]);
-    else
-      render_noise(noise[a]); // +++ 'mute' generator
-
-    if (chan[a][0].is_env || chan[a][1].is_env || chan[a][2].is_env)
-      render_envelope(env[a]);
-    else
-      render_envelope(env[a]); // +++ 'mute' generator
-
-    if (chan[a][0].is_tone)
-      render_tone(tone[a][0]);
-    else
-      render_tone(tone[a][0]); // +++ 'mute' generator
-
+    render_noise(noise[a]);
+    render_envelope(env[a]);
+    render_tone(tone[a][0]);
     mix_channel(a, 0, (chan[a][0].is_env << 2) | (chan[a][0].is_noise << 1) | chan[a][0].is_tone);
-
-    if (chan[a][1].is_tone)
-      render_tone(tone[a][1]);
-    else
-      render_tone(tone[a][1]); // +++ 'mute' generator
-
+    render_tone(tone[a][1]);
     mix_channel(a, 1, (chan[a][1].is_env << 2) | (chan[a][1].is_noise << 1) | chan[a][1].is_tone);
-
-    if (chan[a][2].is_tone)
-      render_tone(tone[a][2]);
-    else
-      render_tone(tone[a][2]); // +++ 'mute' generator
-
+    render_tone(tone[a][2]);
     mix_channel(a, 2, (chan[a][2].is_env << 2) | (chan[a][2].is_noise << 1) | chan[a][2].is_tone);
   }
 
   offs += snum;
+}
+
+void mix_dac()
+{
+  u32 used = dac_fifo.used();
+  
+  if (used < 1)    // !!! regard format
+    return;
+    
+  u8 vl = bus::readback[bus::R_DACVOLL];
+  u8 vr = bus::readback[bus::R_DACVOLR];
+  u32 *ptr = sndbuf;
+  u32 n = min(used, DAC_SAMPLES_COUNT / 5);  // !!! regard samplerate
+  
+  while (n--)
+  {
+    u8 d = dac_fifo.get_byte();
+    u32 s = d * vl + ((d * vr) << 16);
+    *ptr++ = s;
+    *ptr++ = s;
+    *ptr++ = s;
+    *ptr++ = s;
+    *ptr++ = s;
+  }
 }
 
 // render sound buffer, called after each audio DMA end interrupt
@@ -480,8 +468,8 @@ void render_snd_buffer()
   sndbuf = dac_buf[curr_buf];
   offs = 0;
 
-  memset(sndbuf, 4, sizeof(dac_buf[0]));  // 0x0404 - to shift up 'zero' DAC level
   // +++ use DMA instead
+  memset(sndbuf, bus::readback[bus::R_PUSH_UP], sizeof(dac_buf[0]));
 
   while (offs < DAC_SAMPLES_COUNT)
   {
@@ -526,4 +514,6 @@ void render_snd_buffer()
       render_generators();
     }
   }
+  
+  mix_dac();
 };

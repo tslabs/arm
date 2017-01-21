@@ -112,11 +112,27 @@ void ev_ay0(){  tone[selected_psg_chip][0].periodl = evt.val;
 // AY register 13 - envelope typevoid ev_ay13()
 {  init_envelope(env[selected_psg_chip], evt.val & 15);
 }
-// Channel A Volume Leftvoid ev_volal(){  init_vtab(selected_psg_chip, 0, 0, evt.val);}// Channel A Volume Right
-void ev_volar(){  init_vtab(selected_psg_chip, 0, 1, evt.val);
-}// Channel B Volume Leftvoid ev_volbl()
-{  init_vtab(selected_psg_chip, 1, 0, evt.val);}
-// Channel B Volume Rightvoid ev_volbr(){
+// Channel A Volume Left
+void ev_volal()
+{
+  init_vtab(selected_psg_chip, 0, 0, evt.val);
+}
+
+// Channel A Volume Right
+void ev_volar()
+{
+  init_vtab(selected_psg_chip, 0, 1, evt.val);
+}
+
+// Channel B Volume Left
+void ev_volbl()
+{
+  init_vtab(selected_psg_chip, 1, 0, evt.val);
+}
+
+// Channel B Volume Right
+void ev_volbr()
+{
   init_vtab(selected_psg_chip, 1, 1, evt.val);
 }
 
@@ -132,11 +148,10 @@ void ev_volcr()
   init_vtab(selected_psg_chip, 2, 1, evt.val);
 }
 
-
 // PSG Chip Select
 void ev_psgsel()
 {
-  selected_psg_chip = (evt.val < psg_chip_num) ? evt.val : (psg_chip_num - 1);
+  selected_psg_chip = (evt.val < PSG_CHIPS_MAX) ? evt.val : (PSG_CHIPS_MAX - 1);
 }
 
 // Clock configvoid ev_cctrl(){  config.clkctr.b = evt.val;  // +++}

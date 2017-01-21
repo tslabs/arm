@@ -10,37 +10,37 @@
 const W_VEC write_reg_vec[] =
 {
 #ifndef BOOT
-  wr_psg8,  // 0x00
-  wr_psg4,  // 0x01
-  wr_psg8,  // 0x02
-  wr_psg4,  // 0x03
-  wr_psg8,  // 0x04
-  wr_psg4,  // 0x05
-  wr_psg5,  // 0x06
-  wr_psg8,  // 0x07
-  wr_psg5,  // 0x08
-  wr_psg5,  // 0x09
-  wr_psg5,  // 0x0A
-  wr_psg8,  // 0x0B
-  wr_psg8,  // 0x0C
-  wr_psg4,  // 0x0D
+  wr_psg8e,  // 0x00
+  wr_psg4e,  // 0x01
+  wr_psg8e,  // 0x02
+  wr_psg4e,  // 0x03
+  wr_psg8e,  // 0x04
+  wr_psg4e,  // 0x05
+  wr_psg5e,  // 0x06
+  wr_psg8e,  // 0x07
+  wr_psg5e,  // 0x08
+  wr_psg5e,  // 0x09
+  wr_psg5e,  // 0x0A
+  wr_psg8e,  // 0x0B
+  wr_psg8e,  // 0x0C
+  wr_psg4e,  // 0x0D
   wr_psg8,  // 0x0E
   wr_psg8,  // 0x0F
-  wr_rbe, // 0x10
-  wr_rbe, // 0x11
-  wr_rbe, // 0x12
-  wr_, // 0x13
-  wr_, // 0x14
-  wr_, // 0x15
-  wr_, // 0x16
-  wr_, // 0x17
-  wr_, // 0x18
-  wr_rbe, // 0x19
-  wr_rbe, // 0x1A
-  wr_rbe, // 0x1B
-  wr_rbe, // 0x1C
-  wr_rbe, // 0x1D
-  wr_rbe, // 0x1E
+  wr_volal, // 0x10
+  wr_volar, // 0x11
+  wr_volbl, // 0x12
+  wr_volbr, // 0x13
+  wr_volcl, // 0x14
+  wr_volcr, // 0x15
+  wr_psg8e, // 0x16
+  wr_psg8e, // 0x17
+  wr_psg8e, // 0x18
+  wr_, // 0x19
+  wr_, // 0x1A
+  wr_, // 0x1B
+  wr_, // 0x1C
+  wr_, // 0x1D
+  wr_, // 0x1E
   wr_, // 0x1F
   wr_, // 0x20
   wr_, // 0x21
@@ -74,9 +74,9 @@ const W_VEC write_reg_vec[] =
   wr_, // 0x3D
   wr_, // 0x3E
   wr_, // 0x3F
-  wr_rbe, // 0x40
-  wr_rbe, // 0x41
-  wr_rbe, // 0x42
+  wr_rb, // 0x40
+  wr_rb, // 0x41
+  wr_rb, // 0x42
   wr_, // 0x43
   wr_, // 0x44
   wr_, // 0x45
@@ -218,14 +218,14 @@ const W_VEC write_reg_vec[] =
   wr_, // 0xCD
   wr_, // 0xCE
   wr_, // 0xCF
-  wr_rbe, // 0xD0
+  wr_psgsel, // 0xD0
   wr_rbe, // 0xD1
   wr_rbe, // 0xD2
   wr_rbe, // 0xD3
   wr_rbe, // 0xD4
   wr_rbe, // 0xD5
   wr_arr, // 0xD6
-  wr_, // 0xD7
+  wr_rb, // 0xD7
   wr_, // 0xD8
   wr_, // 0xD9
   wr_, // 0xDA

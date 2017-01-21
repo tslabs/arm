@@ -6,10 +6,10 @@
 //
 // Verivalan taika on aina suojanamme
 
+#pragma once
+
 /// - Types ---
 typedef void (*TASK)();
-
-#pragma once
 
 typedef PA1  AY_CLK;    // can be served by TIM2
 typedef PA2  AY_RST;
@@ -28,6 +28,15 @@ typedef PB12 AY_D4;
 typedef PB13 AY_D5;
 typedef PB14 AY_D6;
 typedef PB15 AY_D7;
+
+typedef PC0 AY_IOA0;
+typedef PC1 AY_IOA1;
+typedef PC2 AY_IOA2;
+typedef PC3 AY_IOA3;
+typedef PC4 AY_IOA4;
+typedef PC5 AY_IOA5;
+typedef PC6 AY_IOA6;
+typedef PC7 AY_IOA7;
 
 typedef PA4  AU_L;
 typedef PA5  AU_R;
@@ -103,7 +112,7 @@ enum
   UART_CONSOLE_INBUF  = 256,
   UART_CONSOLE_OUTBUF = 4096,
   AY_BUS_EVENTS_SIZE  = 2048,
-  DAC_FIFO_SIZE       = 4096,
+  DAC_FIFO_SIZE       = 16385,
   DAC_SAMPLES_COUNT   = 500,
 
   // system
@@ -115,7 +124,13 @@ enum
 
   // PSG parameters
   PSG_CHIPS_MAX  = 4,     // Max number of virtual PSG chips
-  PSG_CHIPS_DEF  = 2,     // Default number of virtual PSG chips
+  PSG_VOL_AL_DEF = 32,    // PSG channel default volumes
+  PSG_VOL_AR_DEF = 32,    //
+  PSG_VOL_BL_DEF = 32,    //
+  PSG_VOL_BR_DEF = 32,    //
+  PSG_VOL_CL_DEF = 32,    //
+  PSG_VOL_CR_DEF = 32,    //
+  DAC_PUSHUP_DEF = 4,     // DAC push up
 
   // WS parameters
   WS_CH_MAX = 64,         // Max number of WS channels
@@ -128,19 +143,36 @@ enum
   MAIN_ADDR     = 0x08008000, // Main code address
   DEV_SIG       = 0xAA55,     // Device signature
   HW_VER        = 1,          // Hardware version
-  FW_VER        = 1,          // Firmware version
+  FW_VER        = 2,          // Firmware version
   FWHDR_VER     = 1,          // Firmware header version
-  CF_VER        = 1,          // Config Pad version
+  CF_VER        = 2,          // Config Pad version
 };
+
+#ifndef BOOT
+enum
+{
+  AU_FREQ = PSG_CLK / 8,    // 218.75kHz
+  EVT_FREQ = PSG_CLK / 8,   // 218.75kHz
+};
+#endif
 
 #define CPR_STRING "AYX-32, (c)TSL"
 #define BLD_STRING __DATE__ ", " __TIME__
 
 /// - Variables ---
 volatile u32 time_ms;
+volatile u32 time_s;
+
+#ifndef BOOT
+volatile u8 cpu_load;
+volatile u32 cpu_load_cnt;
+volatile bool rq_cpu_load_cnt_res;
+#endif
+
 volatile TASK bg_task;      // background task, processed in main()
 volatile bool is_bg_task;
 u32 core_freq = clk::SYSTEM;
+
 
 /// - Functions ---
 void clear_bg_task();

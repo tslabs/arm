@@ -26,21 +26,21 @@ const R_VEC read_reg_vec[] =
   rr_psg, // 0x0D
   rr_psg, // 0x0E
   rr_psg, // 0x0F
-  rr_rb, // 0x10
-  rr_rb, // 0x11
-  rr_rb, // 0x12
-  rr_, // 0x13
-  rr_, // 0x14
-  rr_, // 0x15
-  rr_, // 0x16
-  rr_, // 0x17
-  rr_, // 0x18
-  rr_rb, // 0x19
-  rr_rb, // 0x1A
-  rr_rb, // 0x1B
-  rr_rb, // 0x1C
-  rr_rb, // 0x1D
-  rr_rb, // 0x1E
+  rr_psg, // 0x10
+  rr_psg, // 0x11
+  rr_psg, // 0x12
+  rr_psg, // 0x13
+  rr_psg, // 0x14
+  rr_psg, // 0x15
+  rr_psg, // 0x16
+  rr_psg, // 0x17
+  rr_psg, // 0x18
+  rr_, // 0x19
+  rr_, // 0x1A
+  rr_, // 0x1B
+  rr_, // 0x1C
+  rr_, // 0x1D
+  rr_, // 0x1E
   rr_, // 0x1F
   rr_, // 0x20
   rr_, // 0x21
@@ -225,7 +225,7 @@ const R_VEC read_reg_vec[] =
   rr_rb, // 0xD4
   rr_rb, // 0xD5
   rr_arr, // 0xD6
-  rr_, // 0xD7
+  rr_rb, // 0xD7
   rr_, // 0xD8
   rr_, // 0xD9
   rr_, // 0xDA
@@ -245,7 +245,7 @@ const R_VEC read_reg_vec[] =
   rr_, // 0xE7
   rr_, // 0xE8
   rr_, // 0xE9
-  rr_, // 0xEA
+  rr_cpuld, // 0xEA
   rr_arr, // 0xEB
   rr_arr, // 0xEC
   rr_arr, // 0xED

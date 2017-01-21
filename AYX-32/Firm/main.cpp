@@ -7,9 +7,8 @@
 // Demoscene is alive!
 
 // To do:
+// - add IOA to PC[7:0] (rr_(), wr_(), mode programming on MUX)
 // - use DMA for DAC buf zeroing
-// - make amp table load via 'data' registers (only initialized if table selected)
-// - procedures for muted tone/noise/enveloper generators - only calculate generators, but do not write to memory
 // - meander procedures to use duty cycle
 // - buffer adders via saturated math
 // - correct processing of registers readback/chip selects
@@ -128,10 +127,16 @@ void initializeRuntime()
 {
   rt_init();
   console::initialize();
-  bus::initialize();
   snd::initialize();
+  bus::initialize();
 
   time_ms = 0;
+  time_s = 0;
+#ifndef BOOT
+  cpu_load = 0;
+  cpu_load_cnt = 0;
+  rq_cpu_load_cnt_res = false;
+#endif
 }
 
 /// - Main ---
@@ -162,9 +167,7 @@ void resetHandler()
     if (req_snd_buf)
     {
       req_snd_buf = false;
-      TEST::setHigh();
       snd::render_snd_buffer();
-      TEST::setLow();
     }
 
     // Background task
@@ -173,5 +176,19 @@ void resetHandler()
       bg_task();
       clear_bg_task();
     }
+
+    // CPU load measurement
+    TEST::setHigh();
+    u16 t = EVT_TIM::getCounter();
+    asm ("wfi \n");
+    t = EVT_TIM::getCounter() - t;
+    TEST::setLow();
+    if (rq_cpu_load_cnt_res)
+    {
+      rq_cpu_load_cnt_res = false;
+      cpu_load_cnt = t;
+    }
+    else
+      cpu_load_cnt += t;
   }
 }

@@ -213,6 +213,16 @@ void AU_DMA()
 void SysTick()
 {
   time_ms++;
+  
+  u32 t = time_ms / (1000000UL / SYSTICK_PERIOD);
+  if (t != time_s)
+  {
+    time_s = t;
+#ifndef BOOT
+    cpu_load = 100 - (cpu_load_cnt * 100) / EVT_FREQ;
+    rq_cpu_load_cnt_res = true;
+#endif
+  }
 }
 
 void ISR_Bad()

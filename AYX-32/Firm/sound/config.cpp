@@ -34,19 +34,26 @@ bool load_config()
   // load valid config
   if (is_valid)
     memcpy(&config, cfg_addr, sizeof(config));
+
   // load defaults
   else
   {
     config.ver = CF_VER;
+    memcpy(config.amptab, amptab_ym, sizeof(config.amptab));
     config.clkctr.b = 0;
     config.busctr.b = 0;
     config.ampctr.b = 0;
-    memcpy(config.amptab, amptab_ym, sizeof(config.amptab));
+
+    for (int i = 0; i < PSG_CHIPS_MAX; i++)
+    {
+      config.psgvol[i][0][0] = PSG_VOL_AL_DEF;
+      config.psgvol[i][0][1] = PSG_VOL_AR_DEF;
+      config.psgvol[i][1][0] = PSG_VOL_BL_DEF;
+      config.psgvol[i][1][1] = PSG_VOL_BR_DEF;
+      config.psgvol[i][2][0] = PSG_VOL_CL_DEF;
+      config.psgvol[i][2][1] = PSG_VOL_CR_DEF;
+    }
   }
-  
-  bus::readback[bus::R_PSG_CCTRL] = config.clkctr.b;
-  bus::readback[bus::R_PSG_BCTRL] = config.busctr.b;
-  bus::readback[bus::R_PSG_ACTRL] = config.ampctr.b;
 }
 
 bool save_cfg()

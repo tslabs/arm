@@ -1,6 +1,6 @@
 @echo off
 
-set path=%path%;res;d:\Download\21\bin\
+set path=%path%;res;c:\Tools\PROG\SDCC\bin\
 
 if not exist obj md obj
 del /q /s obj >nul

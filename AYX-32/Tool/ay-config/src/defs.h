@@ -78,7 +78,6 @@ PSGACTRL atb_sel;
 PSGBCTRL bus_sel;
 PSGCCTRL clk_sel;
 u16 c_amp[32];
-u8 mix;
 
 // AYX-32 regs
 enum REG
@@ -95,13 +94,13 @@ enum REG
   R_PSG_TDC_C   = 0x18,
 
   // DAC
-  R_DACCTRL     = 0x40,
-  R_DACVOLL     = 0x41,
-  R_DACVOLR     = 0x42,
-  R_DACSMPR     = 0x43,
-  R_DACFREE     = 0x44,
-  R_DACUSED     = 0x45,
-  R_DACDATA     = 0x46,
+  R_DAC_CTRL    = 0x40,
+  R_DAC_VOL_L   = 0x41,
+  R_DAC_VOL_R   = 0x42,
+  R_DAC_SMPR    = 0x43,
+  R_DAC_FREE    = 0x44,
+  R_DAC_USED    = 0x45,
+  R_DAC_DATA    = 0x46,
 
   // Device Control
   R_PSG_SEL     = 0xD0,
@@ -239,11 +238,18 @@ enum
   M_MAIN,
   M_INFO,
   M_SET,
-  M_SET_A,
   M_SET_B,
   M_SET_C,
-  M_SET_M,
+  M_MIX,
+  M_MIX_1,
+  M_MIX_2,
+  M_MIX_3,
   M_AMP,
+  M_AMP_1,
+  M_AMP_2,
+  M_AMP_3,
+  M_AMP_4,
+  M_CUST_AMP,
   M_DAC,
   M_RES,
   M_BOOT,
@@ -267,10 +273,10 @@ char *const clk_sel_txt[] =
 
 char *const atab_sel_txt[] =
 {
-  "AY",
-  "YM",
-  "US",
-  "CS"
+  "AY-3-8912",
+  "YM-2149F",
+  "Unreal Speccy",
+  "Custom"
 };
 
 char *const bus_sel_txt[] =
@@ -285,14 +291,7 @@ char *const bus_sel_txt[] =
   "Disable PSG"
 };
 
-char *const mix_sel_txt[] =
-{
-  "Full stereo",
-  "Half stereo",
-  "Mono",
-};
-
-const u8 const mix_sel_val[countof(mix_sel_txt)][6] = 
+const u8 const mix_sel_val[][6] = 
 {
   {64, 0, 32, 32, 0, 64},
   {48, 16, 32, 32, 16, 48},

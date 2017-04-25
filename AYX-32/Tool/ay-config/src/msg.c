@@ -6,80 +6,17 @@ void msg_main()
   defx = 30; xy(defx, 5);
   color(C_BUTN); printf("1. "); color(C_NORM); printf("Device info\n\n");
   color(C_BUTN); printf("2. "); color(C_NORM); printf("Settings\n\n");
-  color(C_BUTN); printf("3. "); color(C_NORM); printf("Custom amplitude table\n\n");
-  color(C_BUTN); printf("4. "); color(C_NORM); printf("Test DAC\n\n\n\n");
+  color(C_BUTN); printf("3. "); color(C_NORM); printf("Test DAC\n\n\n\n");
   color(C_BUTN); printf("U. "); color(C_NORM); printf("Upload Firmware\n\n");
   color(C_BUTN); printf("R. "); color(C_NORM); printf("Restart device\n\n");
   color(C_BUTN); printf("B. "); color(C_NORM); printf("Restart device in Boot");
 }
 
-void msg_info1()
-{
-  u32 f = rd_reg32(R_UPTIME);
-  u16 ms;
-  u8 s, m, h, d;
-  ms = f % 1000;
-  f /= 1000;
-  s = f % 60;
-  f /= 60;
-  m = f % 60;
-  f /= 60;
-  h = f % 24;
-  d = f / 24;
-
-  xy(0, 21); color(C_NORM); printf("Uptime: ");
-  color(C_DATA); printf("%ud %uh %um %us %ums     ", d, h, m, s, ms);
-}
-
+/// -- Common --
 void msg_mode()
 {
   color(C_NORM); printf("Mode: ");
   color(C_DATA); printf("%s\n\n", (rd_reg8(R_STATUS) & S_BOOT) ? "Boot" : "Work");
-}
-
-void msg_info()
-{
-  u32 f;
-  u16 f1;
-  u8 s[32];
-  DEV_VER ver;
-
-  cls();
-  xy(90,1); color(C_HEAD); printf("Device Info");
-
-  f1 = rd_reg16(R_DEV_SIG);
-  xy(0, 4); color(C_NORM); printf("Device signature: ");
-  color(C_DATA); printf("%P\n\n", f1);
-
-  if (f1 != M_DEVSIG)
-  {
-    color(C_ERR); printf("ERROR: chip not found!");
-    return;
-  }
-
-  f = rd_reg32(R_CORE_FRQ) / 1000;
-  color(C_NORM); printf("Core frequency: ");
-  color(C_DATA); printf("%d.%03dMHz\n\n", f / 1000, f % 1000);
-
-  msg_mode();
-
-  rd_reg_arr(R_VER, (u8*)&ver, sizeof(ver));
-  color(C_NORM); printf("Hardware version: ");
-  color(C_DATA); printf("%u\n", ver.hw);
-  color(C_NORM); printf("Firmware version: ");
-  color(C_DATA); printf("%u\n", ver.fw);
-  color(C_NORM); printf("Config version: ");
-  color(C_DATA); printf("%u\n\n", ver.cf);
-
-  rd_reg_str(R_CPR_STR, s, sizeof(s));
-  color(C_NORM); printf("Info:  ");
-  color(C_DATA); printf("%s\n", s);
-
-  rd_reg_str(R_BLD_STR, s, sizeof(s));
-  color(C_NORM); printf("Build: ");
-  color(C_DATA); printf("%s", s);
-
-  task = msg_info1;
 }
 
 void msg_res()
@@ -231,10 +168,73 @@ void msg_fupd1()
   }
 }
 
+/// -- Info --
+void msg_info1()
+{
+  u32 f = rd_reg32(R_UPTIME);
+  u16 ms;
+  u8 s, m, h, d;
+  ms = f % 1000;
+  f /= 1000;
+  s = f % 60;
+  f /= 60;
+  m = f % 60;
+  f /= 60;
+  h = f % 24;
+  d = f / 24;
+
+  xy(0, 21); color(C_NORM); printf("Uptime: ");
+  color(C_DATA); printf("%ud %uh %um %us %ums     ", d, h, m, s, ms);
+}
+
+void msg_info()
+{
+  u32 f;
+  u16 f1;
+  u8 s[32];
+  DEV_VER ver;
+
+  cls();
+  xy(90,1); color(C_HEAD); printf("Device Info");
+
+  f1 = rd_reg16(R_DEV_SIG);
+  xy(0, 4); color(C_NORM); printf("Device signature: ");
+  color(C_DATA); printf("%P\n\n", f1);
+
+  if (f1 != M_DEVSIG)
+  {
+    color(C_ERR); printf("ERROR: chip not found!");
+    return;
+  }
+
+  f = rd_reg32(R_CORE_FRQ) / 1000;
+  color(C_NORM); printf("Core frequency: ");
+  color(C_DATA); printf("%d.%03dMHz\n\n", f / 1000, f % 1000);
+
+  msg_mode();
+
+  rd_reg_arr(R_VER, (u8*)&ver, sizeof(ver));
+  color(C_NORM); printf("Hardware version: ");
+  color(C_DATA); printf("%u\n", ver.hw);
+  color(C_NORM); printf("Firmware version: ");
+  color(C_DATA); printf("%u\n", ver.fw);
+  color(C_NORM); printf("Config version: ");
+  color(C_DATA); printf("%u\n\n", ver.cf);
+
+  rd_reg_str(R_CPR_STR, s, sizeof(s));
+  color(C_NORM); printf("Info:  ");
+  color(C_DATA); printf("%s\n", s);
+
+  rd_reg_str(R_BLD_STR, s, sizeof(s));
+  color(C_NORM); printf("Build: ");
+  color(C_DATA); printf("%s", s);
+
+  task = msg_info1;
+}
+
+/// -- Settings --
 void msg_set()
 {
-  u8 i;
-
   atb_sel.b = rd_reg8(R_PSG_ACTRL);
   bus_sel.b = rd_reg8(R_PSG_BCTRL);
   clk_sel.b = rd_reg8(R_PSG_CCTRL);
@@ -245,68 +245,69 @@ void msg_set()
 
   color(C_BUTN); printf("1. "); color(C_NORM); printf("Clock: "); color(C_SEL); printf("%s\n\n", clk_sel_txt[clk_sel.clksel]);
   color(C_BUTN); printf("2. "); color(C_NORM); printf("Multiple PSG mode: "); color(C_SEL); printf("%s\n\n", bus_sel_txt[bus_sel.psgmul]);
-  color(C_BUTN); printf("3. "); color(C_NORM); printf("Set Channel Mixer to: %s\n\n", mix_sel_txt[mix]);
-  color(C_BUTN); printf("4. "); color(C_NORM); printf("Change Amplitude Table\n\n");
-
-  for (i = 0; i < 4; i++)
-  {
-    u8 x = i * 54 + 28;
-    xy(x, 12); color(C_NORM); printf("PSG %d:", i);
-    color(C_SEL);
-    xy(x, 13); printf("%s", atab_sel_txt[(atb_sel.b >> (i * 2)) & 3]);
-    wr_reg8(R_PSG_SEL, i);
-    xy(x, 14); printf("%d/%d  ", rd_reg8(R_PSG_VOL_AL), rd_reg8(R_PSG_VOL_AR));
-    xy(x, 15); printf("%d/%d  ", rd_reg8(R_PSG_VOL_BL), rd_reg8(R_PSG_VOL_BR));
-    xy(x, 16); printf("%d/%d  ", rd_reg8(R_PSG_VOL_CL), rd_reg8(R_PSG_VOL_CR));
-  }
+  color(C_BUTN); printf("3. "); color(C_NORM); printf("Set Channel Mixer\n\n");
+  color(C_BUTN); printf("4. "); color(C_NORM); printf("Set Amplitude Table\n\n");
+  color(C_BUTN); printf("5. "); color(C_NORM); printf("Custom Amplitude Table\n\n");
 
   xy(defx, 20);
   color(C_BUTN); printf("S. "); color(C_NORM); printf("Save settings\n\n");
   color(C_BUTN); printf("Enter. "); color(C_NORM); printf("Exit to main menu");
 }
 
-void msg_set_a()
-{
-  atb_sel.ampsel0++;
-  atb_sel.ampsel1++;
-  atb_sel.ampsel2++;
-  atb_sel.ampsel3++;
-  wr_reg8(R_PSG_ACTRL, atb_sel.b);
-}
-
-void msg_set_b()
-{
-  bus_sel.psgmul++;
-  if ((bus_sel.psgmul == 5) || (bus_sel.psgmul == 6)) bus_sel.psgmul = 7;
-  wr_reg8(R_PSG_BCTRL, bus_sel.b);
-}
-
-void msg_set_c()
-{
-  clk_sel.clksel++;
-  wr_reg8(R_PSG_CCTRL, clk_sel.b);
-}
-
-void msg_set_m()
+void msg_mix()
 {
   u8 i;
 
+  cls();
+  xy(90,1); color(C_HEAD); printf("Mixer Settings");
+  defx = 16; xy(defx, 4);
+
+  color(C_BUTN); printf("1. "); color(C_NORM); printf("Full stereo\n\n");
+  color(C_BUTN); printf("2. "); color(C_NORM); printf("Half stereo\n\n");
+  color(C_BUTN); printf("3. "); color(C_NORM); printf("Mono\n\n\n");
+  color(C_NORM); printf("Current settings:");
+
   for (i = 0; i < 4; i++)
   {
+    u8 x = i * 54 + 28;
+    xy(x, 13); color(C_NORM); printf("PSG %d:", i);
+    color(C_SEL);
     wr_reg8(R_PSG_SEL, i);
-    wr_reg8(R_PSG_VOL_AL, mix_sel_val[mix][0]);
-    wr_reg8(R_PSG_VOL_AR, mix_sel_val[mix][1]);
-    wr_reg8(R_PSG_VOL_BL, mix_sel_val[mix][2]);
-    wr_reg8(R_PSG_VOL_BR, mix_sel_val[mix][3]);
-    wr_reg8(R_PSG_VOL_CL, mix_sel_val[mix][4]);
-    wr_reg8(R_PSG_VOL_CR, mix_sel_val[mix][5]);
+    xy(x, 14); printf("%d/%d  ", rd_reg8(R_PSG_VOL_AL), rd_reg8(R_PSG_VOL_AR));
+    xy(x, 15); printf("%d/%d  ", rd_reg8(R_PSG_VOL_BL), rd_reg8(R_PSG_VOL_BR));
+    xy(x, 16); printf("%d/%d  ", rd_reg8(R_PSG_VOL_CL), rd_reg8(R_PSG_VOL_CR));
   }
 
-  mix++;
-  if (mix == countof(mix_sel_txt)) mix = 0;
+  xy(defx, 22);
+  color(C_BUTN); printf("Enter. "); color(C_NORM); printf("Back");
 }
 
 void msg_amp()
+{
+  u8 i;
+  atb_sel.b = rd_reg8(R_PSG_ACTRL);
+
+  cls();
+  xy(90,1); color(C_HEAD); printf("AmpTab Settings");
+  defx = 16; xy(defx, 4);
+
+  color(C_BUTN); printf("1. "); color(C_NORM); printf("%s\n\n", atab_sel_txt[0]);
+  color(C_BUTN); printf("2. "); color(C_NORM); printf("%s\n\n", atab_sel_txt[1]);
+  color(C_BUTN); printf("3. "); color(C_NORM); printf("%s\n\n", atab_sel_txt[2]);
+  color(C_BUTN); printf("4. "); color(C_NORM); printf("%s\n\n\n", atab_sel_txt[3]);
+  color(C_NORM); printf("Current settings:");
+
+  for (i = 0; i < 4; i++)
+  {
+    xy(defx, i + 15); color(C_NORM); printf("PSG %d: ", i);
+    color(C_SEL); printf("%s", atab_sel_txt[(atb_sel.b >> (i * 2)) & 3]);
+  }
+
+  xy(defx, 22);
+  color(C_BUTN); printf("Enter. "); color(C_NORM); printf("Back");
+}
+
+void msg_cust_amp()
 {
   u8 i, j, k;
 
@@ -325,38 +326,72 @@ void msg_amp()
       color(C_DATA);
       printf("%P", c_amp[i++]);
     }
+
+  xy(16, 22);
+  color(C_BUTN); printf("Enter. "); color(C_NORM); printf("Back");
 }
 
-void play_wav(u8 *w, u16 s)
+void msg_set_b()
 {
-  u16 f;
-
-  while (s)
-  {
-    f = rd_reg16(R_DACFREE);
-
-    // xy(0, 3);
-    // color(C_NORM); printf("Free: %d, Used: %d      \n", f, rd_reg16(R_DACUSED));
-
-    f = min(f, s);
-    if (f > 0)
-    {
-      wr_addr(R_DACDATA);
-      wr_arr(w, f);
-      w += f;
-      s -= f;
-    }
-  }
+  bus_sel.psgmul++;
+  if ((bus_sel.psgmul == 5) || (bus_sel.psgmul == 6)) bus_sel.psgmul = 7;
+  wr_reg8(R_PSG_BCTRL, bus_sel.b);
 }
 
+void msg_set_c()
+{
+  clk_sel.clksel++;
+  wr_reg8(R_PSG_CCTRL, clk_sel.b);
+}
+
+void msg_mix_1()
+{
+  set_mix(0);
+}
+
+void msg_mix_2()
+{
+  set_mix(1);
+}
+
+void msg_mix_3()
+{
+  set_mix(2);
+}
+
+void msg_amp_1()
+{
+  atb_sel.ampsel0 = atb_sel.ampsel1 = atb_sel.ampsel2 = atb_sel.ampsel3 = 0;
+  wr_reg8(R_PSG_ACTRL, atb_sel.b);
+}
+
+void msg_amp_2()
+{
+  atb_sel.ampsel0 = atb_sel.ampsel1 = atb_sel.ampsel2 = atb_sel.ampsel3 = 1;
+  wr_reg8(R_PSG_ACTRL, atb_sel.b);
+}
+
+void msg_amp_3()
+{
+  atb_sel.ampsel0 = atb_sel.ampsel1 = atb_sel.ampsel2 = atb_sel.ampsel3 = 2;
+  wr_reg8(R_PSG_ACTRL, atb_sel.b);
+}
+
+void msg_amp_4()
+{
+  atb_sel.ampsel0 = atb_sel.ampsel1 = atb_sel.ampsel2 = atb_sel.ampsel3 = 3;
+  wr_reg8(R_PSG_ACTRL, atb_sel.b);
+}
+
+/// -- DAC --
 void msg_dac1()
 {
   static u8 v = 0;
   static bool d = false;
   u8 n = 10;
 
-  wr_reg8(R_DACVOLL, 128 - v);
-  wr_reg8(R_DACVOLR, v);
+  wr_reg8(R_DAC_VOL_L, 128 - v);
+  wr_reg8(R_DAC_VOL_R, v);
 
   while (n--)
     play_wav((u8*)wav, sizeof(wav));

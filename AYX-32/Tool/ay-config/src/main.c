@@ -19,7 +19,6 @@ void t_none() {}
 void crt_init()
 {
   menu = M_MAIN;
-  mix = 0;
 }
 
 void main()

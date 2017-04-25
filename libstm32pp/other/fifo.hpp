@@ -53,13 +53,21 @@ public:
     return _vol(size) - free_vol() - 1;
   }
 
+  // Puts a word into FIFO
+  void put_word_nocheck(u32 x)
+  {
+    *(u32*)(addr + wrptr) = x;
+    wrptr += 4;
+    if (wrptr >= size) wrptr -= size;
+  }
+
   // Puts a byte into FIFO
   void put_byte_nocheck(u8 x)
   {
     *(addr + wrptr) = x;
     wrptr = (wrptr == (size - 1)) ? 0 : (wrptr + 1);
   }
-  
+
   void put_byte(u8 x)
   {
     if (free())
@@ -75,7 +83,7 @@ public:
     rdptr = (rdptr == (size - 1)) ? 0 : (rdptr + 1);
     return c;
   }
-  
+
   u8 get_byte()
   {
     if (used())
@@ -94,7 +102,7 @@ public:
   // Makes a check if there's enough place in FIFO
   bool put(void *a, int num)
   {
-    if ((size - used()) < num) 
+    if ((size - used()) < num)
       return false;        // not enough free space
 
     u8 *buf = (u8*)a;
@@ -106,9 +114,9 @@ public:
   // Makes a check if there's enough data in FIFO
   bool get(void *a, int num)
   {
-    if (used() < num) 
+    if (used() < num)
       return false;        // not enough data in FIFO
-    
+
     u8 *buf = (u8*)a;
     while (num--) *buf++ = get_byte_nocheck();
     return true;

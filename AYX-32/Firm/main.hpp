@@ -111,9 +111,13 @@ enum
   // buffers size
   UART_CONSOLE_INBUF  = 256,
   UART_CONSOLE_OUTBUF = 4096,
-  AY_BUS_EVENTS_SIZE  = 2048,
-  DAC_FIFO_SIZE       = 16385,
+  PSG_BUS_EVENTS_SIZE = 2048,   // must be a multiple of 4
+  WS_CMDLIST_SIZE     = 4096,
+  WS_EVENTS_SIZE      = 32,
+  DAC_FIFO_SIZE       = 16384,
   DAC_SAMPLES_COUNT   = 500,
+  DAC_WS_RATIO        = 5,
+  WS_SAMPLES_COUNT    = DAC_SAMPLES_COUNT / DAC_WS_RATIO,
 
   // system
   SYSTICK_PERIOD = 1000,  // us
@@ -133,8 +137,8 @@ enum
   DAC_PUSHUP_DEF = 4,     // DAC push up
 
   // WS parameters
-  WS_CH_MAX = 64,         // Max number of WS channels
-  WS_CH_DEF = 32,         // Default number of WS channels
+  WS_CHAN_MAX = 32,       // Max number of WS channels
+  WS_SAMP_MAX = 256,      // Max number of WS samples
 
   // Flash
   CONF_ADDR     = 0x08004000, // Config address
@@ -143,7 +147,7 @@ enum
   MAIN_ADDR     = 0x08008000, // Main code address
   DEV_SIG       = 0xAA55,     // Device signature
   HW_VER        = 1,          // Hardware version
-  FW_VER        = 2,          // Firmware version
+  FW_VER        = 4,          // Firmware version
   FWHDR_VER     = 1,          // Firmware header version
   CF_VER        = 2,          // Config Pad version
 };

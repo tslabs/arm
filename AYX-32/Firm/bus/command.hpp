@@ -9,7 +9,21 @@
 /// Commands
 enum CMD
 {
+  // System
   C_BREAK     = 0x00,
+
+  // PSG
+  C_PSG_INIT  = 0x10,
+
+  // WS
+  C_WS_INIT   = 0x20,
+  C_WS_UPDATE = 0x21,
+
+  // DAC
+  C_DAC_CLR_FIFO = 0x40,
+
+  // Device
+  C_UNLOCK    = 0xE4,
   C_UPLD_FW   = 0xE8,
   C_FLASH_FW  = 0xE9,
   C_SAVE_CFG  = 0xEA,
@@ -54,19 +68,17 @@ typedef union
   u8 b;
 } STATUS;
 
-typedef void (*C_VEC)();
-
 /// Constants
 enum
 {
   MAGIC_FFW = 0x7841AA55, // 'Flash Firmware' parameter
   MAGIC_CFG = 0x37C855AA, // 'Save Config' parameter
+  MAGIC_LCK = 0xC0DEFACE, // 'Unlock' parameter
   MAGIC_RES = 0xDEADBEEF, // 'Reset' parameter
 };
 
 /// Functions
 void command(u8);
-extern const C_VEC command_vec[];
 
 // tasks
 #ifndef BOOT

@@ -16,7 +16,6 @@ void terminate(ERR err)
 }
 
 // Execute command
-// Note: split into 64 case parts to allow GCC implement TBB/TBH branching
 void command(u8 cmd)
 {
   if (cmd == C_BREAK)
@@ -32,17 +31,53 @@ void command(u8 cmd)
     error = E_NONE;
     rd_ptr.nul();
     wd_ptr.nul();
-
-#ifndef BOOT
-  command_vec[cmd]();
-#else
-  if ((cmd >= 0xE0) && (cmd <= 0xEF))
-    command_vec[cmd - 0xE0]();
-  else
-    error = E_CMDERR;
-#endif
+    command_vec[cmd]();
   }
 }
+
+// Note: command should be a short non-blocking function
+#ifndef BOOT
+void cm_psg_init()
+{
+  // +++
+}
+
+void cm_ws_init()
+{
+  // +++
+}
+
+void cm_ws_update()
+{
+  snd::put_ws_event();
+  snd::ws_ext_cmdlist.put_byte(snd::WSC_END_OF_LIST);
+}
+
+void cm_unlock()
+{
+  // unlock
+  if (*(u32*)param == MAGIC_LCK)
+  {
+  }
+  // lock
+  else
+  {
+  }
+
+  terminate(E_DONE);
+}
+
+void cm_save_cfg()
+{
+  if (*(u32*)param != MAGIC_CFG)
+    terminate(E_PARMERR);
+  else
+  {
+    status.busy = true;
+    set_bg_task(bg_save_cfg);
+  }
+}
+#endif
 
 #ifdef BOOT
 void cm_up_fw()
@@ -75,19 +110,6 @@ void cm_fl_fw()
 }
 #endif
 
-#ifndef BOOT
-void cm_save_cfg()
-{
-  if (*(u32*)param != MAGIC_CFG)
-    terminate(E_PARMERR);
-  else
-  {
-    status.busy = true;
-    set_bg_task(bg_save_cfg);
-  }
-}
-#endif
-
 void cm_reset()
 {
   if (*(u32*)param != MAGIC_RES)
@@ -97,11 +119,6 @@ void cm_reset()
     SCB::generateReset(scb::airc::SYSRESETREQ);
     while (1);
   }
-}
-
-void cm_()
-{
-  error = E_CMDERR;
 }
 
 // Main background tasks

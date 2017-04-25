@@ -36,8 +36,8 @@ namespace interrupts
 namespace bus
 {
 #include "bus/registers.hpp"
-#include "bus/bus.hpp"
 #include "bus/command.hpp"
+#include "bus/bus.hpp"
 }
 
 /// - Types ---
@@ -74,10 +74,8 @@ namespace bus
 {
 #include "bus/registers.cpp"
 #include "bus/command.cpp"
-#include "bus/vectors_wa.cpp"
-#include "bus/vectors_wr.cpp"
-#include "bus/vectors_rr.cpp"
-#include "bus/vectors_cm.cpp"
+#include "bus/vectors.cpp"
+#include "bus/bus.cpp"
 }
 
 namespace interrupts

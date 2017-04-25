@@ -6,30 +6,6 @@
 //
 // Tiktai tau galbūt šypseną sukels keliom sekundėm
 
-/// Variables
-u8 regnum;        // currently selected chip register
-STATUS status;    // status byte
-ERR error;        // error code
-
-TASK nx_task;               // next task in command
-
-u8 param[8];    // command parameters
-u8 resp[8];     // command response
-
-#ifndef BOOT
-u8 psg_readback[PSG_CHIPS_MAX][32]; // readback copy of PSG registers
-u8 psg_readback_sel;                // selected PSG chip for readback
-u8 readback[256];                   // readback copy of misc registers
-#endif
-
-PTR r_ptr;
-PTR w_ptr;
-PTR rd_ptr;
-PTR wd_ptr;
-
-u32 temp_32;
-u16 temp_16;
-
 /// Functions
 void initialize()
 {
@@ -44,6 +20,7 @@ void initialize()
   wd_ptr.nul();
   nx_task = no_task;
   clear_bg_task();
+  init_vectors();
   
 #ifndef BOOT
   readback[R_PSG_CCTRL] = snd::config.clkctr.b;
@@ -66,16 +43,8 @@ void initialize()
 void write_address(u8 addr)
 {
   regnum = addr;
-#ifndef BOOT
   write_addr_vec[addr]();
-#else
-  if ((addr >= R_DEV_SIG) && (addr <= R_CORE_FRQ))
-    write_addr_vec[addr - R_DEV_SIG]();
-#endif
 }
-
-// Empty
-void wa_(){}
 
 #ifndef BOOT
 // Select AY chip using bit0 (0 - chip1, 1 - chip0) - NedoPC Turbo-AY scheme
@@ -86,7 +55,7 @@ void wa_ts()
   if (t.psgmul == snd::PMM_TS)
   {
     psg_readback_sel = ~regnum & 1;
-    snd::put_event(R_PSG_SEL, ~regnum & 1);
+    snd::put_bus_evt(R_PSG_SEL, ~regnum & 1);
   }
 }
 
@@ -174,16 +143,8 @@ void wa_data()
 // Write AY Register
 void write_reg(u8 val)
 {
-#ifndef BOOT
   write_reg_vec[regnum](val);
-#else
-  if ((regnum >= R_DEV_SIG) && (regnum <= R_CORE_FRQ))
-    write_reg_vec[regnum - R_DEV_SIG](val);
-#endif
 }
-
-// Empty
-void wr_(u8 val){}
 
 #ifndef BOOT
 // readback copy
@@ -195,7 +156,7 @@ void wr_rb(u8 val)
 // readback copy + event
 void wr_rbe(u8 val)
 {
-  snd::put_event(regnum, val);
+  snd::put_bus_evt(regnum, val);
   readback[regnum] = val;
 }
 
@@ -208,21 +169,21 @@ void wr_psg8(u8 val)
 // 8 bit + event
 void wr_psg8e(u8 val)
 {
-  snd::put_event(regnum, val);
+  snd::put_bus_evt(regnum, val);
   psg_readback[psg_readback_sel][regnum] = val;
 }
 
 // 5 bit + event
 void wr_psg5e(u8 val)
 {
-  snd::put_event(regnum, val);
+  snd::put_bus_evt(regnum, val);
   psg_readback[psg_readback_sel][regnum] = val & 0x1F;
 }
 
 // 4 bit + event
 void wr_psg4e(u8 val)
 {
-  snd::put_event(regnum, val);
+  snd::put_bus_evt(regnum, val);
   psg_readback[psg_readback_sel][regnum] = val & 0x0F;
 }
 
@@ -282,6 +243,20 @@ void wr_psgsel(u8 val)
   wr_rbe(val);
   psg_readback_sel = val;
 }
+
+// WS command
+void wr_wsc(u8 val)
+{
+  snd::ws_ext_cmdlist.put_byte(regnum);
+  snd::ws_ext_cmdlist.put_byte(val);
+}
+
+// WS command + readback
+void wr_wscrb(u8 val)
+{
+  readback[regnum] = val;
+  wr_wsc(val);
+}
 #endif
 
 // Data
@@ -305,18 +280,8 @@ void wr_cmd(u8 val)
 // Read AY register
 u8 read_reg()
 {
-#ifndef BOOT
   return read_reg_vec[regnum]();
-#else
-  if ((regnum >= R_DEV_SIG) && (regnum <= R_CORE_FRQ))
-    return read_reg_vec[regnum - R_DEV_SIG]();
-  else
-    return 0xFF;
-#endif
 }
-
-// Empty
-u8 rr_() { return 0xFF; }
 
 #ifndef BOOT
 // AY/YM registers

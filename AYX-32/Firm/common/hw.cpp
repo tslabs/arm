@@ -185,8 +185,8 @@ void initializeAudioDMA()
     dma::stream::fcr::dmdis::DIRECT_MODE_DISABLED,
     dma::stream::fcr::feie::FIFO_ERROR_INTERRUPT_DISABLED);
   AU_DMA::setPeripheralAddress(&DAC_REGS->DHR12LD);   // dual left-aligned 12 bit
-  AU_DMA::setMemory0Address(dac_buf[0]);
-  AU_DMA::setMemory1Address(dac_buf[1]);
+  AU_DMA::setMemory0Address(snd::dac_buf[0]);
+  AU_DMA::setMemory1Address(snd::dac_buf[1]);
   AU_DMA::setNumberOfTransactions(DAC_SAMPLES_COUNT);
   AU_DMA::enablePeripheral();
 }

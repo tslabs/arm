@@ -44,15 +44,18 @@ namespace interrupts
 namespace bus
 {
 #include "bus/registers.hpp"
-#include "bus/bus.hpp"
 #include "bus/command.hpp"
+#include "bus/bus.hpp"
 }
 
 namespace snd
 {
-#include "sound/psg.hpp"
-#include "sound/ws.hpp"
 #include "sound/sound.hpp"
+}
+
+namespace console
+{
+#include "console/terminal.h"
 }
 
 __attribute__((used, section(".boot")))
@@ -65,8 +68,6 @@ FIFO console_uart_in;
 FIFO console_uart_out;
 
 volatile bool req_snd_buf;
-
-u32 dac_buf[2][DAC_SAMPLES_COUNT] __attribute__((section(".sram2")));
 
 extern char __StackTop;
 
@@ -85,23 +86,22 @@ namespace bus
 {
 #include "bus/registers.cpp"
 #include "bus/command.cpp"
-#include "bus/vectors_wa.cpp"
-#include "bus/vectors_wr.cpp"
-#include "bus/vectors_rr.cpp"
-#include "bus/vectors_cm.cpp"
+#include "bus/vectors.cpp"
+#include "bus/bus.cpp"
 }
 
 namespace snd
 {
 #include "sound/config.cpp"
+#include "sound/psg.cpp"
+#include "sound/ws.cpp"
 #include "sound/sound.cpp"
 #include "sound/events.cpp"
-#include "sound/vectors_ev.cpp"
+#include "sound/vectors.cpp"
 }
 
 namespace console
 {
-#include "console/terminal.h"
 #include "console/terminal.cpp"
 #include "console/interrupts.cpp"
 #include "console/console.cpp"
@@ -178,11 +178,11 @@ void resetHandler()
     }
 
     // CPU load measurement
-    TEST::setHigh();
+    // TEST::setHigh();
     u16 t = EVT_TIM::getCounter();
     asm ("wfi \n");
     t = EVT_TIM::getCounter() - t;
-    TEST::setLow();
+    // TEST::setLow();
     if (rq_cpu_load_cnt_res)
     {
       rq_cpu_load_cnt_res = false;

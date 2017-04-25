@@ -10,7 +10,7 @@
 enum REG
 {
 #ifndef BOOT
-  // AY generic
+  // PSG generic
   R_PSG_TP_AL   = 0x00,
   R_PSG_TP_AH   = 0x01,
   R_PSG_TP_BL   = 0x02,
@@ -28,7 +28,7 @@ enum REG
   R_PSG_IOA     = 0x0E,
   R_PSG_IOB     = 0x0F,
 
-  // AY extended
+  // PSG extended
   R_PSG_VOL_AL  = 0x10,
   R_PSG_VOL_AR  = 0x11,
   R_PSG_VOL_BL  = 0x12,
@@ -40,13 +40,21 @@ enum REG
   R_PSG_TDC_C   = 0x18,
 
   // DAC
-  R_DACCTRL     = 0x40,
-  R_DACVOLL     = 0x41,
-  R_DACVOLR     = 0x42,
-  R_DACSMPR     = 0x43,
-  R_DACFREE     = 0x44,
-  R_DACUSED     = 0x45,
-  R_DACDATA     = 0x46,
+  R_DAC_CTRL    = 0x40,
+  R_DAC_VOL_L   = 0x41,
+  R_DAC_VOL_R   = 0x42,
+  R_DAC_SMPR    = 0x43,
+  R_DAC_FREE    = 0x44,
+  R_DAC_USED    = 0x45,
+  R_DAC_DATA    = 0x46,
+
+  // WS
+  R_WS_CTRL     = 0x50,
+  R_WS_VOL_L    = 0x51,
+  R_WS_VOL_R    = 0x52,
+  R_WS_SAMP     = 0x53,
+  R_WS_NOTE     = 0x54,
+  R_WS_NOTE_S   = 0x55,
 
   // Device Control
   R_PSG_SEL     = 0xD0,
@@ -57,6 +65,8 @@ enum REG
   R_M_VOL_R     = 0xD5,
   R_PSG_AMP_TAB = 0xD6,
   R_PUSH_UP     = 0xD7,
+  R_WS_NUM      = 0xD8,
+  R_WS_SEL      = 0xD9,
 #endif
 
   // System
@@ -74,3 +84,4 @@ enum REG
   R_BLD_STR     = 0xEE,
   R_CORE_FRQ    = 0xEF,
 };
+

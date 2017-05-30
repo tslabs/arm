@@ -198,3 +198,35 @@ void wait_busy()
 {
   while (rd_reg8(R_STATUS) & S_BUSY);
 }
+
+void unlock_chip()
+{
+  wr_reg32(R_PARAM, MAGIC_LCK);
+  wr_reg8(R_CMD, C_LOCK);
+  wait_busy();
+}
+
+bool detect_chip()
+{
+  return rd_reg16(R_DEV_SIG) == M_DEVSIG;
+}
+
+void wait_online()
+{
+  while(1)
+  {
+    // boot mode
+    if (detect_chip()) break;
+
+    // work mode, yet locked
+    wr_reg8(0, 0x55);
+    if (rd_reg8(0) == 0x55) break;
+  }
+}
+
+void reset_chip()
+{
+  wr_reg32(R_PARAM, MAGIC_RES);
+  wr_reg8(R_CMD, C_RESET);
+  wait_online();
+}

@@ -130,6 +130,7 @@ enum REG
 enum CMD
 {
   C_BREAK     = 0x00,
+  C_LOCK      = 0xE4,
   C_UP_FW     = 0xE8,
   C_FLASH_FW  = 0xE9,
   C_SAVE_CFG  = 0xEA,
@@ -166,6 +167,7 @@ enum MAGIC
   MAGIC_FFW = 0x7841AA55, // 'Flash Firmware' parameter
   MAGIC_CFG = 0x37C855AA, // 'Save Config' parameter
   MAGIC_RES = 0xDEADBEEF, // 'Reset' parameter
+  MAGIC_LCK = 0xC0DEFACE, // 'Unlock' parameter
 };
 
 // keys

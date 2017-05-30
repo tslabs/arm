@@ -1,12 +1,15 @@
 
 void msg_main()
 {
+  unlock_chip();
+
   cls();
   xy(41,1); color(C_HEAD); printf("AYX-32 Configuration Utility");
   defx = 30; xy(defx, 5);
   color(C_BUTN); printf("1. "); color(C_NORM); printf("Device info\n\n");
   color(C_BUTN); printf("2. "); color(C_NORM); printf("Settings\n\n");
-  color(C_BUTN); printf("3. "); color(C_NORM); printf("Test DAC\n\n\n\n");
+  // color(C_BUTN); printf("3. "); color(C_NORM); printf("Test DAC\n\n\");
+  printf("\n\n");
   color(C_BUTN); printf("U. "); color(C_NORM); printf("Upload Firmware\n\n");
   color(C_BUTN); printf("R. "); color(C_NORM); printf("Restart device\n\n");
   color(C_BUTN); printf("B. "); color(C_NORM); printf("Restart device in Boot");
@@ -21,10 +24,8 @@ void msg_mode()
 
 void msg_res()
 {
-  wr_reg32(R_PARAM, MAGIC_RES);
-  wr_reg8(R_CMD, C_RESET);
-  wait(5000);
-
+  reset_chip();
+  unlock_chip();
   fade();
   frame (56, 8, 22, 5, C_FRAM);
   xy(80, 10); color(C_OK); printf("Device restarted");
@@ -37,13 +38,12 @@ void msg_boot()
   frame (32, 6, 30, 3, C_FRAM);
   xy(72, 8); color(C_QUST); printf("Short 'BOOT' jumper");
 
-  do
+  while (1)
   {
-    wr_reg32(R_PARAM, MAGIC_RES);
-    wr_reg8(R_CMD, C_RESET);
-    wait(5000);
+    reset_chip();
+    unlock_chip();
+    if (rd_reg8(R_STATUS) & S_BOOT) break;
   }
-  while (!(rd_reg8(R_STATUS) & S_BOOT));
 
   fade();
   frame (48, 12, 24, 1, C_FRAM);
@@ -101,14 +101,14 @@ void msg_fupd1()
   color(C_NORM);
   printf("Detect: ");
 
-  if (rd_reg16(R_DEV_SIG) != M_DEVSIG)
+  if (detect_chip())
   {
-    color(C_ERR); printf("not found\n");
-    return;
+    color(C_OK); printf("found\n");
   }
   else
   {
-    color(C_OK); printf("found\n");
+    color(C_ERR); printf("not found\n");
+    return;
   }
 
   // check for Boot mode
@@ -412,7 +412,7 @@ void msg_dac()
 {
 
   cls();
-  xy(96, 1); color(C_HEAD); printf("DAC test");
+  xy(104, 1); color(C_HEAD); printf("DAC test");
 
   task = msg_dac1;
 }

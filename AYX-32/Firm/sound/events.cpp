@@ -20,7 +20,7 @@ void put_bus_evt(u8 reg, u8 val)
 // Process event
 void process_bus_event()
 {
-  // console::print("Event %x %x\n", bus_evt.reg, bus_evt.val);
+  // console::print_debug("%d: %x<-%x\n", bus_evt.time, bus_evt.reg, bus_evt.val);
   is_bus_evt = false;
   event_vec[bus_evt.reg]();
 }
@@ -37,7 +37,7 @@ void ev_ay0()
 // PSG register 1 - channel A tone period MSB
 void ev_ay1()
 {
-  tone[selected_psg][0].periodh = bus_evt.val;
+  tone[selected_psg][0].periodh = bus_evt.val & 0x0F;
 }
 
 // PSG register 2 - channel B tone period LSB
@@ -49,7 +49,7 @@ void ev_ay2()
 // PSG register 3 - channel B tone period MSB
 void ev_ay3()
 {
-  tone[selected_psg][1].periodh = bus_evt.val;
+  tone[selected_psg][1].periodh = bus_evt.val & 0x0F;
 }
 
 // PSG register 4 - channel C tone period LSB
@@ -61,13 +61,13 @@ void ev_ay4()
 // PSG register 5 - channel C tone period MSB
 void ev_ay5()
 {
-  tone[selected_psg][2].periodh = bus_evt.val;
+  tone[selected_psg][2].periodh = bus_evt.val & 0x0F;
 }
 
 // PSG register 6 - noise period
 void ev_ay6()
 {
-  noise[selected_psg].period = bus_evt.val << 1;
+  noise[selected_psg].period = (bus_evt.val & 0x1F) << 1;
 }
 
 // PSG register 7 - channel mixer

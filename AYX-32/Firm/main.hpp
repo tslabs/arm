@@ -128,12 +128,12 @@ enum
 
   // PSG parameters
   PSG_CHIPS_MAX  = 4,     // Max number of virtual PSG chips
-  PSG_VOL_AL_DEF = 32,    // PSG channel default volumes
-  PSG_VOL_AR_DEF = 32,    //
+  PSG_VOL_AL_DEF = 48,    // PSG channel default volumes
+  PSG_VOL_AR_DEF = 16,    //
   PSG_VOL_BL_DEF = 32,    //
   PSG_VOL_BR_DEF = 32,    //
-  PSG_VOL_CL_DEF = 32,    //
-  PSG_VOL_CR_DEF = 32,    //
+  PSG_VOL_CL_DEF = 16,    //
+  PSG_VOL_CR_DEF = 48,    //
   DAC_PUSHUP_DEF = 4,     // DAC push up
 
   // WS parameters
@@ -147,7 +147,7 @@ enum
   MAIN_ADDR     = 0x08008000, // Main code address
   DEV_SIG       = 0xAA55,     // Device signature
   HW_VER        = 1,          // Hardware version
-  FW_VER        = 5,          // Firmware version
+  FW_VER        = 6,          // Firmware version
   FWHDR_VER     = 1,          // Firmware header version
   CF_VER        = 2,          // Config Pad version
 };

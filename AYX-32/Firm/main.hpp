@@ -147,7 +147,7 @@ enum
   MAIN_ADDR     = 0x08008000, // Main code address
   DEV_SIG       = 0xAA55,     // Device signature
   HW_VER        = 1,          // Hardware version
-  FW_VER        = 4,          // Firmware version
+  FW_VER        = 5,          // Firmware version
   FWHDR_VER     = 1,          // Firmware header version
   CF_VER        = 2,          // Config Pad version
 };

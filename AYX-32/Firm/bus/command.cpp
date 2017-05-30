@@ -53,18 +53,14 @@ void cm_ws_update()
   snd::ws_ext_cmdlist.put_byte(snd::WSC_END_OF_LIST);
 }
 
-void cm_unlock()
+void cm_lock()
 {
-  // unlock
-  if (*(u32*)param == MAGIC_LCK)
-  {
-  }
-  // lock
-  else
-  {
-  }
+  status.busy = true;
 
-  terminate(E_DONE);
+  if (*(u32*)param == MAGIC_LCK)
+    set_bg_task(bg_unlock);
+  else
+    set_bg_task(bg_lock);
 }
 
 void cm_save_cfg()
@@ -126,6 +122,22 @@ void cm_reset()
 void bg_save_cfg()
 {
   terminate(snd::save_cfg() ? E_DONE : E_EXECERR);
+}
+
+void bg_lock()
+{
+  interrupts::setIrqIdle();
+  init_vectors();
+  interrupts::setIrqWork();
+  terminate(E_DONE);
+}
+
+void bg_unlock()
+{
+  interrupts::setIrqIdle();
+  init_vectors_ext();
+  interrupts::setIrqWork();
+  terminate(E_DONE);
 }
 #endif
 

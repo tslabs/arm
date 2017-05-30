@@ -23,7 +23,7 @@ enum CMD
   C_DAC_CLR_FIFO = 0x40,
 
   // Device
-  C_UNLOCK    = 0xE4,
+  C_LOCK      = 0xE4,
   C_UPLD_FW   = 0xE8,
   C_FLASH_FW  = 0xE9,
   C_SAVE_CFG  = 0xEA,
@@ -83,6 +83,8 @@ void command(u8);
 // tasks
 #ifndef BOOT
 void bg_save_cfg();
+void bg_lock();
+void bg_unlock();
 #endif
 #ifdef BOOT
 void t_up_fw();

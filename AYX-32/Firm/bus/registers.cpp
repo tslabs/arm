@@ -20,7 +20,11 @@ void initialize()
   wd_ptr.nul();
   nx_task = no_task;
   clear_bg_task();
+#ifndef BOOT
   init_vectors();
+#else
+  init_vectors_ext();
+#endif
   
 #ifndef BOOT
   readback[R_PSG_CCTRL] = snd::config.clkctr.b;

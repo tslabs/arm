@@ -124,14 +124,15 @@ void render_tone(TONE_GEN &gen)
   {
     while (n >= 8)
     {
-      *ptr++ = b;
-      *ptr++ = !b;
-      *ptr++ = b;
-      *ptr++ = !b;
-      *ptr++ = b;
-      *ptr++ = !b;
-      *ptr++ = b;
-      *ptr++ = !b;
+      ptr[0] = b;
+      ptr[1] = !b;
+      ptr[2] = b;
+      ptr[3] = !b;
+      ptr[4] = b;
+      ptr[5] = !b;
+      ptr[6] = b;
+      ptr[7] = !b;
+      ptr += 8;
       n -= 8;
     }
 
@@ -155,14 +156,15 @@ void render_tone(TONE_GEN &gen)
 
       while (m >= 8)
       {
-        *ptr++ = b;
-        *ptr++ = b;
-        *ptr++ = b;
-        *ptr++ = b;
-        *ptr++ = b;
-        *ptr++ = b;
-        *ptr++ = b;
-        *ptr++ = b;
+        ptr[0] = b;
+        ptr[1] = b;
+        ptr[2] = b;
+        ptr[3] = b;
+        ptr[4] = b;
+        ptr[5] = b;
+        ptr[6] = b;
+        ptr[7] = b;
+        ptr += 8;
         m -= 8;
       }
 
@@ -223,10 +225,11 @@ void render_noise(NOISE_GEN &gen)
 
       while (m >= 4)
       {
-        *ptr++ = b;
-        *ptr++ = b;
-        *ptr++ = b;
-        *ptr++ = b;
+        ptr[0] = b;
+        ptr[1] = b;
+        ptr[2] = b;
+        ptr[3] = b;
+        ptr += 4;
         m -= 4;
       }
 
@@ -272,14 +275,15 @@ void render_envelope(ENV_GEN &gen)
 
           while (m >= 8)
           {
-            *ptr++ = a;
-            *ptr++ = a;
-            *ptr++ = a;
-            *ptr++ = a;
-            *ptr++ = a;
-            *ptr++ = a;
-            *ptr++ = a;
-            *ptr++ = a;
+            ptr[0] = a;
+            ptr[1] = a;
+            ptr[2] = a;
+            ptr[3] = a;
+            ptr[4] = a;
+            ptr[5] = a;
+            ptr[6] = a;
+            ptr[7] = a;
+            ptr += 8;
             m -= 8;
           }
 
@@ -340,14 +344,15 @@ void render_envelope(ENV_GEN &gen)
 
           while (m >= 8)
           {
-            *ptr++ = a;
-            *ptr++ = a;
-            *ptr++ = a;
-            *ptr++ = a;
-            *ptr++ = a;
-            *ptr++ = a;
-            *ptr++ = a;
-            *ptr++ = a;
+            ptr[0] = a;
+            ptr[1] = a;
+            ptr[2] = a;
+            ptr[3] = a;
+            ptr[4] = a;
+            ptr[5] = a;
+            ptr[6] = a;
+            ptr[7] = a;
+            ptr += 8;
             m -= 8;
           }
 
@@ -400,21 +405,22 @@ void render_envelope(ENV_GEN &gen)
       default:
         while (n >= 8)
         {
-          *ptr++ = a;
-          *ptr++ = a;
-          *ptr++ = a;
-          *ptr++ = a;
-          *ptr++ = a;
-          *ptr++ = a;
-          *ptr++ = a;
-          *ptr++ = a;
+          ptr[0] = a;
+          ptr[1] = a;
+          ptr[2] = a;
+          ptr[3] = a;
+          ptr[4] = a;
+          ptr[5] = a;
+          ptr[6] = a;
+          ptr[7] = a;
+          ptr += 8;
           n -= 8;
         }
 
         while (n)
         {
-          n--;
           *ptr++ = a;
+          n--;
         }
       break;
     }

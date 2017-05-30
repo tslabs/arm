@@ -124,8 +124,10 @@ void write_address(u8);
 void write_reg(u8);
 u8 read_reg();
 void init_vectors();
+void init_vectors_ext();
 
 void wa_empty() {}
 void wr_empty(u8 val) {}
-u8 rr_empty() { return 0xFF; }
+u8 rr_empty_ff() { return 0xFF; }
+u8 rr_empty_00() { return 0x00; }
 void cm_empty() { error = E_CMDERR; }

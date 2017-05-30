@@ -11,13 +11,6 @@
 const T_A_VEC t_write_addr_vec[] =
 {
 #ifndef BOOT
-  // DAC
-  R_DAC_FREE,    wa_dac_free,
-  R_DAC_USED,    wa_dac_used,
-
-  // Device Control
-  R_PSG_AMP_TAB, wa_amp_tab,
-
   // Turbo-Sound
   0xF0, wa_ts,
   0xF1, wa_ts,
@@ -37,8 +30,22 @@ const T_A_VEC t_write_addr_vec[] =
   0xFF, wa_ts,
 #endif
 
-  R_DEV_SIG,     wa_dev_sig,
+  // System
   R_PARAM,       wa_param,
+};
+
+const T_A_VEC t_write_addr_vec_ext[] =
+{
+#ifndef BOOT
+  // DAC
+  R_DAC_FREE,    wa_dac_free,
+  R_DAC_USED,    wa_dac_used,
+
+  // Device Control
+  R_PSG_AMP_TAB, wa_amp_tab,
+#endif
+
+  R_DEV_SIG,     wa_dev_sig,
   R_DATA,        wa_data,
   R_UPTIME,      wa_upt,
   R_VER,         wa_ver,
@@ -68,7 +75,16 @@ const T_W_VEC t_write_reg_vec[] =
   R_PSG_EC,      wr_psg4e,
   R_PSG_IOA,     wr_psg8,
   R_PSG_IOB,     wr_psg8,
+#endif
 
+  // System
+  R_CMD,         wr_cmd,  // used to unlock
+  R_PARAM,       wr_arr,
+};
+
+const T_W_VEC t_write_reg_vec_ext[] =
+{
+#ifndef BOOT
   // PSG extended
   R_PSG_VOL_AL,  wr_volal,
   R_PSG_VOL_AR,  wr_volar,
@@ -108,8 +124,6 @@ const T_W_VEC t_write_reg_vec[] =
 #endif
 
   // System
-  R_CMD,         wr_cmd,
-  R_PARAM,       wr_arr,
   R_DATA,        wr_arr_t,
 };
 
@@ -134,7 +148,12 @@ const T_R_VEC t_read_reg_vec[] =
   R_PSG_EC,      rr_psg,
   R_PSG_IOA,     rr_psg,
   R_PSG_IOB,     rr_psg,
+#endif
+};
 
+const T_R_VEC t_read_reg_vec_ext[] =
+{
+#ifndef BOOT
   // PSG extended
   R_PSG_VOL_AL,  rr_psg,
   R_PSG_VOL_AR,  rr_psg,
@@ -185,10 +204,16 @@ const T_R_VEC t_read_reg_vec[] =
 const T_C_VEC t_command_vec[] =
 {
 #ifndef BOOT
+  C_LOCK,      cm_lock,
+#endif
+};
+
+const T_C_VEC t_command_vec_ext[] =
+{
+#ifndef BOOT
   C_PSG_INIT,  cm_psg_init,
   C_WS_INIT,   cm_ws_init,
   C_WS_UPDATE, cm_ws_update,
-  C_UNLOCK,    cm_unlock,
   C_SAVE_CFG,  cm_save_cfg,
 #endif
 

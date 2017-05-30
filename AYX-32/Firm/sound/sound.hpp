@@ -201,8 +201,8 @@ typedef struct
   {
     struct
     {
-      u16 periodl :8;
-      u16 periodh :4;
+      u8 periodl :8;
+      u8 periodh :8;
     };
     u16 period;
   };

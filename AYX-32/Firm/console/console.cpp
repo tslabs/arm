@@ -44,11 +44,14 @@ void m_sysinf();
 void m_psgstat();
 void m_psgstat1();
 void m_config();
+void m_debug();
+void m_debug1();
 
 /// - Auxilliary menu functions ---
 void initialize()
 {
   uart_input_mode = UARTIM_NUL;
+  dbg_mode = DBG_OFF;
   console_uart_in.init(console_uart_inbuf, sizeof(console_uart_inbuf));
   console_uart_out.init(console_uart_outbuf, sizeof(console_uart_outbuf));
   is_sending = false;
@@ -64,10 +67,15 @@ void print_hdr(const char *str, u8 x)
 }
 
 // 'Press Enter'
+void print_enter()
+{
+  print(_WHT "'Enter' - return to main menu");
+}
+
 void print_enter(u8 y)
 {
   set_xy(10, y);
-  print(_WHT "'Enter' - return to main menu");
+  print_enter();
 }
 
 /// - Auxilliary menus ---
@@ -125,6 +133,8 @@ void m_main()
              "1. System info"
     _CR _TAB "2. PSG debug"
     _CR _TAB "3. Configuration"
+    _CR
+    _CR _TAB "D. Debug"
     );
 
   menu_st = 0;
@@ -142,6 +152,8 @@ void m_main1()
       case '1': menu = m_sysinf; break;
       case '2': menu = m_psgstat; break;
       case '3': menu = m_config; break;
+      case 'd':
+      case 'D': menu = m_debug; break;
     }
 
     kb_enable(-1);
@@ -347,4 +359,19 @@ void m_config()
   
   menu_next = m_main;
   menu = m_enter;
+}
+
+void m_debug()
+{
+  dbg_mode = DBG_ON;
+  print_header("Debug");
+  print_debug(_BWHT "\n'Enter' for main menu\n");
+  menu = m_enter;
+  menu_next = m_debug1;
+}
+
+void m_debug1()
+{
+  dbg_mode = DBG_OFF;
+  menu = m_main;
 }

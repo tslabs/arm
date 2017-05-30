@@ -40,4 +40,10 @@ arm-none-eabi-objdump -s obj/main.elf >obj/main.sct
 arm-none-eabi-objcopy -j .boot -j .text -j .data -j .txram -O binary obj/main.elf obj/main.bin
 arm-none-eabi-size obj/main.elf
 
+fw_tool obj/main.bin
+copy /b *.fw fw.bin
+xxd -i fw.bin >fw.h
+del fw.bin
+del *.fw
+
 :exit

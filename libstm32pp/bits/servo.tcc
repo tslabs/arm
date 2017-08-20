@@ -76,7 +76,7 @@ namespace servo {
 
     DutyCycleTimer::enableClock();
     DutyCycleTimer::unmaskInterrupts();
-    DutyCycleTimer::configureBasicCounter(
+    DutyCycleTimer::configureCounter(
         tim::cr1::cen::COUNTER_DISABLED,
         tim::cr1::udis::UPDATE_EVENT_ENABLED,
         tim::cr1::urs::UPDATE_REQUEST_SOURCE_OVERFLOW_UNDERFLOW,

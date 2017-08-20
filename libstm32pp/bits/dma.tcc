@@ -347,14 +347,7 @@ namespace dma {
     template<dma::common::Address D, Address C>
     void Functions<D, C>::clearGlobalFlag()
     {
-      enum {
-        Channel = (C - 8) / 20
-      };
-
-      // TODO DMA, replace the hard-coded numbers
-      *(u32 volatile*) (bitband::peripheral<
-          D + C + dma::common::ifcr::OFFSET,
-          4 * Channel>()) = 1;
+      *(u32 volatile*)(bitband::peripheral<D + dma::common::ifcr::OFFSET, 4 * ((C - 8) / 20)>()) = 1;
     }
 
     /**
@@ -363,14 +356,7 @@ namespace dma {
     template<dma::common::Address D, Address C>
     void Functions<D, C>::clearTransferCompleteFlag()
     {
-      enum {
-        Channel = (C - 8) / 20
-      };
-
-      // TODO DMA, replace the hard-coded numbers
-      *(u32 volatile*) (bitband::peripheral<
-          D + C + dma::common::ifcr::OFFSET,
-          4 * Channel + 1>()) = 1;
+      *(u32 volatile*)(bitband::peripheral<D + dma::common::ifcr::OFFSET, 4 * ((C - 8) / 20) + 1>()) = 1;
     }
 
     /**
@@ -379,14 +365,7 @@ namespace dma {
     template<dma::common::Address D, Address C>
     void Functions<D, C>::clearHalfTransferFlag()
     {
-      enum {
-        Channel = (C - 8) / 20
-      };
-
-      // TODO DMA, replace the hard-coded numbers
-      *(u32 volatile*) (bitband::peripheral<
-          D + C + dma::common::ifcr::OFFSET,
-          4 * Channel + 2>()) = 1;
+      *(u32 volatile*)(bitband::peripheral<D + dma::common::ifcr::OFFSET, 4 * ((C - 8) / 20) + 2>()) = 1;
     }
 
     /**
@@ -395,14 +374,43 @@ namespace dma {
     template<dma::common::Address D, Address C>
     void Functions<D, C>::clearTransferErrorFlag()
     {
-      enum {
-        Channel = (C - 8) / 20
-      };
+      *(u32 volatile*)(bitband::peripheral<D + dma::common::ifcr::OFFSET, 4 * ((C - 8) / 20) + 3>()) = 1;
+    }
 
-      // TODO DMA, replace the hard-coded numbers
-      *(u32 volatile*) (bitband::peripheral<
-          D + C + dma::common::ifcr::OFFSET,
-          4 * Channel + 3>()) = 1;
+    /**
+     * @brief Tests all the interrupt flags.
+     */
+    template<dma::common::Address D, Address C>
+    bool Functions<D, C>::isGlobalFlag()
+    {
+      return *(u32 volatile*)(bitband::peripheral<D + dma::common::isr::OFFSET, 4 * ((C - 8) / 20)>());
+    }
+
+    /**
+     * @brief Tests the transfer complete interrupt flag.
+     */
+    template<dma::common::Address D, Address C>
+    bool Functions<D, C>::isTransferCompleteFlag()
+    {
+      return *(u32 volatile*)(bitband::peripheral<D + dma::common::isr::OFFSET, 4 * ((C - 8) / 20) + 1>());
+    }
+
+    /**
+     * @brief Tests the half transfer interrupt flag.
+     */
+    template<dma::common::Address D, Address C>
+    bool Functions<D, C>::isHalfTransferFlag()
+    {
+      return *(u32 volatile*)(bitband::peripheral<D + dma::common::isr::OFFSET, 4 * ((C - 8) / 20) + 2>());
+    }
+
+    /**
+     * @brief Tests the transfer error interrupt flag.
+     */
+    template<dma::common::Address D, Address C>
+    bool Functions<D, C>::isTransferErrorFlag()
+    {
+      return *(u32 volatile*)(bitband::peripheral<D + dma::common::isr::OFFSET, 4 * ((C - 8) / 20) + 3>());
     }
 
     /**

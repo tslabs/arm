@@ -694,7 +694,7 @@ namespace tim {
   void Functions<T>::disableInterrupts()
   {
     reinterpret_cast<Registers*>(T)->DIER &=
-      ~(dier::uie::ENABLED + 
+      ~(dier::uie::ENABLED +
         dier::cc1ie::ENABLED +
         dier::cc2ie::ENABLED +
         dier::cc3ie::ENABLED +
@@ -940,7 +940,7 @@ namespace tim {
   template<u32 Frequency>
   void Functions<T>::configurePeriodicInterrupt()
   {
-    configureBasicCounter(
+    configureCounter(
         cr1::cen::COUNTER_DISABLED,
         cr1::udis::UPDATE_EVENT_ENABLED,
         cr1::urs::UPDATE_REQUEST_SOURCE_OVERFLOW_UNDERFLOW,
@@ -989,10 +989,10 @@ namespace tim {
   }
 
   /**
-   * @brief Configures the timer as a basic counter.
+   * @brief Configures the timer as counter.
    */
   template<Address T>
-  void Functions<T>::configureBasicCounter(
+  void Functions<T>::configureCounter(
       cr1::cen::States CEN,
       cr1::udis::States UDIS,
       cr1::urs::States URS,
@@ -1002,4 +1002,17 @@ namespace tim {
     reinterpret_cast<Registers*>(T)->CR1 = CEN + UDIS + URS + OPM + ARPE;
   }
 
+  template<Address T>
+  void Functions<T>::configureCaptureCompare(
+      ccer::cc1e::States CC1E,
+      ccer::cc1p::States CC1P,
+      ccer::cc2e::States CC2E,
+      ccer::cc2p::States CC2P,
+      ccer::cc3e::States CC3E,
+      ccer::cc3p::States CC3P,
+      ccer::cc4e::States CC4E,
+      ccer::cc4p::States CC4P)
+  {
+    reinterpret_cast<Registers*>(T)->CCER = CC1E + CC1P + CC2E + CC2P + CC3E + CC3P + CC4E + CC4P;
+  }
 }  // namespace tim

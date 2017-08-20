@@ -59,7 +59,7 @@ namespace dma {
 
     namespace ifcr {
       enum {
-        OFFSET = 0x00
+        OFFSET = 0x04
       };
     }  // namespace ifcr
 #else // STM32F1XX

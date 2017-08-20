@@ -66,7 +66,7 @@ namespace gpio {
    * @brief Outputs the desired logic state through the pin.
    */
   template<Address P, u8 N>
-  void Pin<P, N>::setOutput(u32 const value)
+  void Pin<P, N>::setPin(u32 const value)
   {
     *(u32 volatile*) (OUT_ADDRESS) = value;
   }
@@ -245,13 +245,13 @@ namespace gpio {
    * @brief Outputs the desired logic state on the port.
    */
   template<Address P>
-  void Port<P>::setValue(u32 const value)
+  void Port<P>::setOutput(u32 const value)
   {
     reinterpret_cast<Registers *>(P)->ODR = value;
   }
 
   template<Address P>
-  void Port<P>::setValue(u8 const b, u8 const value)
+  void Port<P>::setOutput(u8 const b, u8 const value)
   {
     reinterpret_cast<Registers *>(P)->ODRB[b] = value;
   }
@@ -260,7 +260,7 @@ namespace gpio {
    * @brief Gets the logic state of the port.
    */
   template<Address P>
-  u32 Port<P>::getValue()
+  u32 Port<P>::getInput()
   {
     return reinterpret_cast<Registers *>(P)->IDR;
   }
@@ -320,7 +320,7 @@ namespace gpio {
    * @brief Outputs the logic state on the pin.
    */
   template<Address P, u8 N>
-  void Pin<P, N>::setOutput(u32 const value)
+  void Pin<P, N>::setPin(u32 const value)
   {
     *(u32 volatile*) (OUT_ADDRESS) = value;
   }

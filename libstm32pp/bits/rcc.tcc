@@ -342,8 +342,7 @@ namespace rcc {
    */
   void Functions::setSystemClockSource(cfgr::sw::States SW)
   {
-    RCC_REGS->CFGR &= ~cfgr::sw::MASK;
-    RCC_REGS->CFGR |= SW;
+    RCC_REGS->CFGR = (RCC_REGS->CFGR & ~cfgr::sw::MASK) | SW;
   }
 
   /**
@@ -452,9 +451,7 @@ namespace rcc {
 
   void Functions::configureClockOutput(cfgr::mco::States MCO)
   {
-    RCC_REGS->CFGR &= ~(cfgr::mco::MASK);
-
-    RCC_REGS->CFGR |= MCO;
+    RCC_REGS->CFGR = (RCC_REGS->CFGR & ~(cfgr::mco::MASK)) | MCO;
   }
 
 #ifdef CONNECTIVITY_LINE
@@ -640,25 +637,19 @@ namespace rcc {
    * @note  Overrides the old configuration.
    */
   template<
+  cfgr::sws::States SWS,
   cfgr::pllsrc::States PLLSRC,
-  u8 PLLXTPRE,
-  u8 PLLMUL
+  cfgr::pllxtpre::States PLLXTPRE,
+  cfgr::pllmul::States PLLMUL,
+  cfgr::hpre::States HPRE,
+  cfgr::ppre1::States PPRE1,
+  cfgr::ppre2::States PPRE2,
+  cfgr::usbpre::States USBPRE,
+  cfgr::adcpre::States ADCPRE
   >
   void Functions::configurePll()
   {
-    static_assert(PLLXTPRE < 2,
-        "PLLXTPRE can only take these values: 0 or 1");
-    static_assert(PLLMUL < 16,
-        "PLLMUL must be between 0 and 15. (inclusive)");
-
-    RCC_REGS->CFGR &=
-    ~(cfgr::pllsrc::MASK +
-        cfgr::pllxtpre::MASK +
-        cfgr::pllmul::MASK);
-    RCC_REGS->CFGR |=
-    PLLSRC +
-    (PLLXTPRE << cfgr::pllxtpre::POSITION) +
-    (PLLMUL << cfgr::pllmul::POSITION);
+    RCC_REGS->CFGR = PLLSRC + PLLXTPRE + PLLMUL + USBPRE + ADCPRE + PPRE1 + PPRE2 + HPRE + SWS;
   }
 #endif // CONNECTIVITY_LINE
 #endif // VALUE_LINE

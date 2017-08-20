@@ -60,34 +60,16 @@ namespace adc {
       static inline bool hasRegularConversionEnded();
       static inline bool hasInjectedConversionEnded();
       static inline u16 getConversionResult();
+      template<u32> static inline u16 getInjectedConversionResult();
       static inline void resetCalibration();
       static inline bool isCalibrationReset();
       static inline void startCalibration();
       static inline bool isCalibration();
-
-      template<u32>
-      static inline void setNumberOfRegularChannels();
-
-      template<u32>
-      static inline void setNumberOfInjectedChannels();
-
-      template<
-          u32 CHANNEL,
-          adc::smp::States
-      >
-      static inline void setConversionTime();
-
-      template<
-          u32 ORDER,
-          u32 CONVERSION
-      >
-      static inline void setRegularSequenceOrder();
-
-      template<
-          u32 ORDER,
-          u32 CONVERSION
-      >
-      static inline void setInjectedSequenceOrder();
+      template<u32> static inline void setNumberOfRegularChannels();
+      template<u32> static inline void setNumberOfInjectedChannels();
+      template<u32, adc::smp::States> static inline void setConversionTime();
+      template<u32, u32> static inline void setRegularSequenceOrder();
+      template<u32, u32> static inline void setInjectedSequenceOrder();
 
       static inline void configure(
           adc::cr1::awdch::States,

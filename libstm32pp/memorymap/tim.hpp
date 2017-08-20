@@ -708,7 +708,7 @@ namespace tim {
 
     namespace cc2s {
       enum {
-        POSITION = 0,
+        POSITION = 8,
         MASK = 0b11 << POSITION
       };
 
@@ -722,7 +722,7 @@ namespace tim {
 
     namespace oc2fe {
       enum {
-        POSITION = 2,
+        POSITION = 10,
         MASK = 0b1 << POSITION
       };
 
@@ -734,7 +734,7 @@ namespace tim {
 
     namespace oc2pe {
       enum {
-        POSITION = 3,
+        POSITION = 11,
         MASK = 0b1 << POSITION
       };
 
@@ -746,7 +746,7 @@ namespace tim {
 
     namespace oc2m {
       enum {
-        POSITION = 4,
+        POSITION = 12,
         MASK = 0b111 << POSITION
       };
 
@@ -764,7 +764,7 @@ namespace tim {
 
     namespace oc2ce {
       enum {
-        POSITION = 7,
+        POSITION = 15,
         MASK = 0b1 << POSITION
       };
 
@@ -776,7 +776,7 @@ namespace tim {
 
     namespace ic2psc {
       enum {
-        POSITION = 2,
+        POSITION = 10,
         MASK = 0b11 << POSITION
       };
 
@@ -790,7 +790,7 @@ namespace tim {
 
     namespace ic2f {
       enum {
-        POSITION = 4,
+        POSITION = 12,
         MASK = 0b1111 << POSITION
       };
 
@@ -930,7 +930,7 @@ namespace tim {
 
     namespace cc4s {
       enum {
-        POSITION = 0,
+        POSITION = 8,
         MASK = 0b11 << POSITION
       };
 
@@ -944,7 +944,7 @@ namespace tim {
 
     namespace oc4fe {
       enum {
-        POSITION = 2,
+        POSITION = 10,
         MASK = 0b1 << POSITION
       };
 
@@ -956,7 +956,7 @@ namespace tim {
 
     namespace oc4pe {
       enum {
-        POSITION = 3,
+        POSITION = 11,
         MASK = 0b1 << POSITION
       };
 
@@ -968,7 +968,7 @@ namespace tim {
 
     namespace oc4m {
       enum {
-        POSITION = 4,
+        POSITION = 12,
         MASK = 0b111 << POSITION
       };
 
@@ -986,7 +986,7 @@ namespace tim {
 
     namespace oc4ce {
       enum {
-        POSITION = 7,
+        POSITION = 15,
         MASK = 0b1 << POSITION
       };
 
@@ -998,7 +998,7 @@ namespace tim {
 
     namespace ic4psc {
       enum {
-        POSITION = 2,
+        POSITION = 10,
         MASK = 0b11 << POSITION
       };
 
@@ -1012,7 +1012,7 @@ namespace tim {
 
     namespace ic4f {
       enum {
-        POSITION = 4,
+        POSITION = 12,
         MASK = 0b1111 << POSITION
       };
 

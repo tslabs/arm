@@ -44,7 +44,7 @@ namespace adc{  enum Address  {#ifdef STM32F1XX
       __RW u32 LTR;      // 0x28: Watchdog lower threshold
       __RW u32 SQR[3];   // 0x2C: Regular sequence
       __RW u32 JSQR;     // 0x38: Injected sequence
-      __RW u32 JDR[4];   // 0x3C: Injected data 1
+      __RW u32 JDR[4];   // 0x3C: Injected data
       __RW u32 DR;       // 0x4C: Data
   };
 
@@ -482,7 +482,7 @@ namespace adc{  enum Address  {#ifdef STM32F1XX
         START_CONVERSION_ON_REGULAR_CHANNELS = 1 << POSITION,
       };
     }  // namespace swstart
-    
+
 #ifdef STM32F1XX
     namespace jexttrig
     {
@@ -498,7 +498,7 @@ namespace adc{  enum Address  {#ifdef STM32F1XX
         INJECTED_TRIGGER_ENABLED = 1 << POSITION
       };
     }  // namespace jexttrig
-    
+
     namespace exttrig
     {
       enum
@@ -513,7 +513,7 @@ namespace adc{  enum Address  {#ifdef STM32F1XX
         REGULAR_TRIGGER_ENABLED = 1 << POSITION
       };
     }  // namespace exttrig
-    
+
     namespace tsvrefe
     {
       enum

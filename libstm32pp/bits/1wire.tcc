@@ -5,7 +5,7 @@ namespace onewire
   void Functions<DATA_PORT, DATA_PIN, DELAY_TIMER_ADDRESS>::initializeTimer()
   {
     TIMER::enableClock();
-    TIMER::configureBasicCounter(
+    TIMER::configureCounter(
       tim::cr1::cen::COUNTER_DISABLED,
       tim::cr1::udis::UPDATE_EVENT_ENABLED,
       tim::cr1::urs::UPDATE_REQUEST_SOURCE_OVERFLOW_UNDERFLOW,

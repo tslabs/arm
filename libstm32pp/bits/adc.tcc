@@ -208,12 +208,24 @@ namespace adc {
   }
 
   /**
-   * @brief Returns the result of the conversion.
+   * @brief Returns the result of regular conversion.
    */
   template<Address A>
   u16 Functions<A>::getConversionResult()
   {
     return reinterpret_cast<Registers*>(A)->DR;
+  }
+
+  /**
+   * @brief Returns the result of injected conversion.
+   */
+  template<Address A>
+  template<u32 N>
+  u16 Functions<A>::getInjectedConversionResult()
+  {
+    static_assert((N >= 1) && (N <= 4), "Injected conversion data registers are 1..4.");
+
+    return reinterpret_cast<Registers*>(A)->JDR[N - 1];
   }
 
   /**
@@ -241,7 +253,7 @@ namespace adc {
     static_assert(N <= 4, "The maximum number of injected conversions is 4.");
 
     reinterpret_cast<Registers*>(A)->JSQR &= ~jsqr::jl::MASK;
-    reinterpret_cast<Registers*>(A)->JSQR |= N << jsqr::jl::POSITION;
+    reinterpret_cast<Registers*>(A)->JSQR |= (N - 1) << jsqr::jl::POSITION;
   }
 
   /**
@@ -268,11 +280,8 @@ namespace adc {
     static_assert((O >= 1) && (O <= 4), "Order range goes from 1 to 4");
     static_assert((C >= 0) && (C <= 18), "Conversion range goes from 0 to 18");
 
-    reinterpret_cast<Registers*>(A)->JSQR &=
-        ~jsq::MASK << jsq::POSITION * (O - 1);
-
-    reinterpret_cast<Registers*>(A)->JSQR |=
-        C << jsq::POSITION * (O - 1);
+    reinterpret_cast<Registers*>(A)->JSQR &= ~jsq::MASK << jsq::POSITION * (O - 1);
+    reinterpret_cast<Registers*>(A)->JSQR |= C << jsq::POSITION * (O - 1);
   }
 
   /**

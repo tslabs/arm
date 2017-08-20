@@ -112,16 +112,8 @@ namespace rcc {
       static inline void resetPeripherals();
 
 #ifdef STM32F1XX
-      template<
-      rcc::ahbenr::Bits ...
-      >
-      static inline void enableClocks();
-
-      template<
-      rcc::ahbenr::Bits ...
-      >
-      static inline void disableClocks();
-
+      template<rcc::ahbenr::Bits ...> static inline void enableClocks();
+      template<rcc::ahbenr::Bits ...> static inline void disableClocks();
       static inline void configureClockOutput(rcc::cfgr::mco::States);
 
 #ifdef CONNECTIVITY_LINE
@@ -148,8 +140,8 @@ namespace rcc {
       u8 USBPRE
       >
       static inline void configureBusPrescalers();
-
 #endif // VALUE_LINE
+
 #ifdef VALUE_LINE
       template<
       rcc::cfgr::pllsrc::States,
@@ -157,6 +149,7 @@ namespace rcc {
       u8 PREDIV1
       >
       static inline void configurePll();
+
 #else // VALUE_LINE
 #ifdef CONNECTIVITY_LINE
       template<
@@ -174,9 +167,15 @@ namespace rcc {
 
 #else // CONNECTIVITY_LINE
       template <
+      rcc::cfgr::sws::States,
       rcc::cfgr::pllsrc::States,
-      u8 PLLXTPRE,
-      u8 PLLMUL
+      rcc::cfgr::pllxtpre::States,
+      rcc::cfgr::pllmul::States,
+      rcc::cfgr::hpre::States,
+      rcc::cfgr::ppre1::States,
+      rcc::cfgr::ppre2::States,
+      rcc::cfgr::usbpre::States,
+      rcc::cfgr::adcpre::States
       >
       static inline void configurePll();
 

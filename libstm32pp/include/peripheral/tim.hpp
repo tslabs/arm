@@ -110,16 +110,21 @@ namespace tim {
       static inline bool hasCaptureCompare1EventOccurred();
       template<u32> static inline void configurePeriodicInterrupt();
       static inline void setMasterMode(tim::cr2::mms::States);
-      static inline void configureBasicCounter(
-          tim::cr1::cen::States,
-          tim::cr1::udis::States,
-          tim::cr1::urs::States,
-          tim::cr1::opm::States,
-          tim::cr1::arpe::States);
-
-      // TODO TIM capture functions
-      // TODO TIM compare functions
-      // TODO TIM pwm functions
+      static inline void configureCounter(
+        tim::cr1::cen::States,
+        tim::cr1::udis::States,
+        tim::cr1::urs::States,
+        tim::cr1::opm::States,
+        tim::cr1::arpe::States);
+      static inline void configureCaptureCompare(
+        tim::ccer::cc1e::States,
+        tim::ccer::cc1p::States,
+        tim::ccer::cc2e::States,
+        tim::ccer::cc2p::States,
+        tim::ccer::cc3e::States,
+        tim::ccer::cc3p::States,
+        tim::ccer::cc4e::States,
+        tim::ccer::cc4p::States);
 
     private:
       Functions();

@@ -66,7 +66,7 @@ namespace gpio {
     static inline void enableClock();
     static inline void setHigh();
     static inline void setLow();
-    static inline void setOutput(u32 const value);
+    static inline void setPin(u32 const value);
     static inline u32 getInput();
     static inline void pullUp();
     static inline void pullDown();
@@ -104,9 +104,9 @@ namespace gpio {
         gpio::cr::States,
         gpio::cr::States);
 
-    static inline void setValue(u32 const value);
-    static inline void setValue(u8 const b, u8 const value);
-    static inline u32 getValue();
+    static inline void setOutput(u32 const value);
+    static inline void setOutput(u8 const b, u8 const value);
+    static inline u32 getInput();
 
     private:
     Port();
@@ -130,7 +130,7 @@ namespace gpio {
       static inline void enableClock();
       static inline void setHigh();
       static inline void setLow();
-      static inline void setOutput(u32 const value);
+      static inline void setPin(u32 const value);
       static inline u32 getInput();
       static inline bool isHigh();
       static inline void setMode(gpio::moder::States);

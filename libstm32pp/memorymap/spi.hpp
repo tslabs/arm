@@ -23,8 +23,10 @@
 
 #include "common.hpp"
 
-namespace spi {
-  enum Address {
+namespace spi
+{
+  enum Address
+  {
 #ifdef STM32F1XX
     SPI1 = alias::APB2 + 0x3000,
     SPI2 = alias::APB1 + 0x3800,
@@ -32,29 +34,21 @@ namespace spi {
 #else
     SPI1 = alias::APB2 + 0x3000,
     SPI2 = alias::APB1 + 0x3800,
-    SPI3 = alias::APB1 + 0x3C00
+    SPI3 = alias::APB1 + 0x3C00,
 #endif
   };
 
-  struct Registers {
-      __RW
-      u32 CR1;  // 0x00: Control 1
-      __RW
-      u32 CR2;  // 0x04: Control 2
-      __RW
-      u32 SR;  // 0x08: Status
-      __RW
-      u32 DR;  // 0x0C: Data
-      __RW
-      u32 CRCPR;  // 0x10: CRC polynomial
-      __RW
-      u32 RXCRCR;  // 0x14: RX CRC
-      __RW
-      u32 TXCRCR;  // 0x18: TX CRC
-      __RW
-      u32 I2SCFGR;  // 0x1C: I2S configuration
-      __RW
-      u32 I2SPR;  // 0x20: I2S prescaler
+  struct Registers
+  {
+      __RW u32 CR1;     // 0x00: Control 1
+      __RW u32 CR2;     // 0x04: Control 2
+      __RW u32 SR;      // 0x08: Status
+      __RW u32 DR;      // 0x0C: Data
+      __RW u32 CRCPR;   // 0x10: CRC polynomial
+      __RW u32 RXCRCR;  // 0x14: RX CRC
+      __RW u32 TXCRCR;  // 0x18: TX CRC
+      __RW u32 I2SCFGR; // 0x1C: I2S configuration
+      __RW u32 I2SPR;   // 0x20: I2S prescaler
   };
 
   namespace cr1 {

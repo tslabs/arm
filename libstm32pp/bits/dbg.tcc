@@ -21,6 +21,7 @@
 
 #pragma once
 
-namespace dbg {
-// DBG function implementation
+namespace dbg
+{
+  // DBG function implementation
 }// namespace dbg

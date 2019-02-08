@@ -69,6 +69,9 @@ namespace usart {
       static inline void clearRXNE();
       static inline void clearTC();
       static inline void clearCTS();
+      static inline void enableTXEIE();
+      static inline void disableTXEIE();
+      static inline bool isTXEIE();
 
       /**
        * @brief Configures the USART for asynchronous operation.

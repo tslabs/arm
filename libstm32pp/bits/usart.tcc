@@ -93,10 +93,7 @@ namespace usart {
   template<Address A>
   void Asynchronous<A>::enable()
   {
-    *(u32 volatile*) (bitband::peripheral<
-        A + cr1::OFFSET,
-        cr1::ue::POSITION
-    >()) = 1;
+    *(u32 volatile*) (bitband::peripheral<A + cr1::OFFSET, cr1::ue::POSITION>()) = 1;
   }
 
   /**
@@ -105,9 +102,7 @@ namespace usart {
   template<Address A>
   void Asynchronous<A>::disable()
   {
-    *(u32 volatile*) (bitband::peripheral<
-        A + cr1::OFFSET,
-        cr1::ue::POSITION
+    *(u32 volatile*) (bitband::peripheral<A + cr1::OFFSET, cr1::ue::POSITION
     >()) = 0;
   }
 
@@ -135,9 +130,7 @@ namespace usart {
   template<Address A>
   bool Asynchronous<A>::canSendDataYet()
   {
-    return *(bool volatile*) (bitband::peripheral<
-        A + sr::OFFSET,
-        sr::txe::POSITION>());
+    return *(bool volatile*) (bitband::peripheral<A + sr::OFFSET, sr::txe::POSITION>());
   }
 
   /**
@@ -146,9 +139,7 @@ namespace usart {
   template<Address A>
   bool Asynchronous<A>::isThereDataAvailable()
   {
-    return *(bool volatile*) (bitband::peripheral<
-        A + sr::OFFSET,
-        sr::rxne::POSITION>());
+    return *(bool volatile*) (bitband::peripheral<A + sr::OFFSET, sr::rxne::POSITION>());
   }
 
   /**
@@ -157,10 +148,7 @@ namespace usart {
   template<Address A>
   void Asynchronous<A>::clearRXNE()
   {
-    *(u32 volatile*) (bitband::peripheral<
-        A + sr::OFFSET,
-        sr::rxne::POSITION
-    >()) = 0;
+    *(u32 volatile*) (bitband::peripheral<A + sr::OFFSET, sr::rxne::POSITION>()) = 0;
   }
 
   /**
@@ -169,10 +157,7 @@ namespace usart {
   template<Address A>
   void Asynchronous<A>::clearTC()
   {
-    *(u32 volatile*) (bitband::peripheral<
-        A + sr::OFFSET,
-        sr::tc::POSITION
-    >()) = 0;
+    *(u32 volatile*) (bitband::peripheral<A + sr::OFFSET, sr::tc::POSITION>()) = 0;
   }
 
   /**
@@ -181,12 +166,36 @@ namespace usart {
   template<Address A>
   void Asynchronous<A>::clearCTS()
   {
-    *(u32 volatile*) (bitband::peripheral<
-        A + sr::OFFSET,
-        sr::cts::POSITION
-    >()) = 0;
+    *(u32 volatile*) (bitband::peripheral<A + sr::OFFSET, sr::cts::POSITION>()) = 0;
   }
 
+  /**
+   * @brief Enables TXEIE.
+   */
+  template<Address A>
+  void Asynchronous<A>::enableTXEIE()
+  {
+    *(u32 volatile*) (bitband::peripheral<A + cr1::OFFSET, cr1::txeie::POSITION>()) = 1;
+  }
+
+  /**
+   * @brief Disables TXEIE.
+   */
+  template<Address A>
+  void Asynchronous<A>::disableTXEIE()
+  {
+    *(u32 volatile*) (bitband::peripheral<A + cr1::OFFSET, cr1::txeie::POSITION>()) = 0;
+  }
+
+  /**
+   * @brief Checks TXEIE.
+   */
+  template<Address A>
+  bool Asynchronous<A>::isTXEIE()
+  {
+    return *(bool volatile*) (bitband::peripheral<A + cr1::OFFSET, cr1::txeie::POSITION>());
+  }
+  
   /**
    * @brief Sets the baud rate.
    * @note  Only valid for OVERSAMPLING_BY_16 configuration
@@ -244,6 +253,5 @@ namespace usart {
     reinterpret_cast<Registers*>(A)->CR3 =
         EIE + HDSEL + DMAR + DMAT + RSTE + CTSE + CTSIE + ONEBIT;
   }
-
 }  // namespace usart
 

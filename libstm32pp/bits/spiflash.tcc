@@ -180,13 +180,9 @@ namespace spiflash
     sendByte((u8)addr);
 
     while (len--)
-    {
-      if (sendByte(0) != 0xFF)
-        goto exit;
-    }
-    rc = true;
+      if (sendByte(0) != 0xFF) break;
+    rc = len == -1;
 
-  exit:
     ssHigh();
     return rc;
   }

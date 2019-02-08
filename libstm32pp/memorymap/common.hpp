@@ -36,7 +36,6 @@ namespace alias
     APB1 = PERIPH,
     APB2 = PERIPH + 0x00010000,
 #ifdef STM32F1XX
-    USB = 0x50000000,
     AHB = PERIPH + 0x00020000,
 #elif defined (STM32F2XX)
     AHB1 = PERIPH + 0x00020000,

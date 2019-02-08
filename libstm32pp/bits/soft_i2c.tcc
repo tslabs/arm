@@ -1,11 +1,18 @@
 
-#pragma once
+/*******************************************************************************
+ *
+ * Copyright (C) 2019 TSL
+ *
+ * Licenced with GNU General Public License
+ * <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************/
 
 namespace soft_i2c
 {
   // init hardware: GPIO, timer
   template<gpio::Address SCL_PORT, u8 SCL_PIN, gpio::Address SDA_PORT, u8 SDA_PIN, tim::Address DELAY_TIMER_ADDRESS, u32 FREQUENCY>
-  void Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::initialize()
+  void Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::Initialize()
   {
 #ifndef SOFT_I2C_DUMMY
     TIMER::enableClock();
@@ -39,7 +46,7 @@ namespace soft_i2c
 
   // check if SCL line is free or the slave holds it
   template<gpio::Address SCL_PORT, u8 SCL_PIN, gpio::Address SDA_PORT, u8 SDA_PIN, tim::Address DELAY_TIMER_ADDRESS, u32 FREQUENCY>
-  void Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::waitSCL()
+  void Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::waitScl()
   {
 #ifndef SOFT_I2C_DUMMY
     u16 t;
@@ -50,12 +57,12 @@ namespace soft_i2c
 
   // send I2C START condition
   template<gpio::Address SCL_PORT, u8 SCL_PIN, gpio::Address SDA_PORT, u8 SDA_PIN, tim::Address DELAY_TIMER_ADDRESS, u32 FREQUENCY>
-  void Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::sendStart()
+  void Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::SendStart()
   {
 #ifndef SOFT_I2C_DUMMY
     SDA::setHigh();
     TIMER::delay(DELAY);
-    SCL::setHigh(); waitSCL();
+    SCL::setHigh(); waitScl();
     TIMER::delay(DELAY);
     SDA::setLow();
     TIMER::delay(DELAY);
@@ -65,12 +72,12 @@ namespace soft_i2c
 
   // send I2C STOP condition
   template<gpio::Address SCL_PORT, u8 SCL_PIN, gpio::Address SDA_PORT, u8 SDA_PIN, tim::Address DELAY_TIMER_ADDRESS, u32 FREQUENCY>
-  void Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::sendStop()
+  void Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::SendStop()
   {
 #ifndef SOFT_I2C_DUMMY
     SDA::setLow();
     TIMER::delay(DELAY);
-    SCL::setHigh(); waitSCL();
+    SCL::setHigh(); waitScl();
     TIMER::delay(DELAY);
     SDA::setHigh();
     TIMER::delay(DELAY);
@@ -80,7 +87,7 @@ namespace soft_i2c
   // send byte
   // returns ACK status: 0 - NACK, 1 - ACK
   template<gpio::Address SCL_PORT, u8 SCL_PIN, gpio::Address SDA_PORT, u8 SDA_PIN, tim::Address DELAY_TIMER_ADDRESS, u32 FREQUENCY>
-  bool Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::sendByte(u8 d)
+  bool Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::SendByte(u8 d)
   {
 #ifndef SOFT_I2C_DUMMY
     for (u8 i = 0; i < 8; i++)
@@ -88,14 +95,14 @@ namespace soft_i2c
       if (d & 0x80) SDA::setHigh(); else SDA::setLow();
       d <<= 1;
       TIMER::delay(DELAY);
-      SCL::setHigh(); waitSCL();
+      SCL::setHigh(); waitScl();
       TIMER::delay(DELAY);
       SCL::setLow();
     }
 
     SDA::setHigh();
     TIMER::delay(DELAY);
-    SCL::setHigh(); waitSCL();
+    SCL::setHigh(); waitScl();
     TIMER::delay(DELAY);
     bool rc = !SDA::getInput();
     SCL::setLow();
@@ -109,7 +116,7 @@ namespace soft_i2c
   // receive byte
   // input: return 0 - NACK, 1 - ACK
   template<gpio::Address SCL_PORT, u8 SCL_PIN, gpio::Address SDA_PORT, u8 SDA_PIN, tim::Address DELAY_TIMER_ADDRESS, u32 FREQUENCY>
-  u8 Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::recvByte(bool ack)
+  u8 Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::RecvByte(bool ack)
   {
 #ifndef SOFT_I2C_DUMMY
     u8 d = 0;
@@ -118,7 +125,7 @@ namespace soft_i2c
     for (u8 i = 0; i < 8; i++)
     {
       TIMER::delay(DELAY);
-      SCL::setHigh(); waitSCL();
+      SCL::setHigh(); waitScl();
       TIMER::delay(DELAY);
       d <<= 1; if (SDA::getInput()) d++;
       SCL::setLow();
@@ -127,7 +134,7 @@ namespace soft_i2c
     // send I2C ACK/NACK condition
     if (ack) SDA::setLow(); else SDA::setHigh();
     TIMER::delay(DELAY);
-    SCL::setHigh(); waitSCL();
+    SCL::setHigh(); waitScl();
     TIMER::delay(DELAY);
     SCL::setLow();
 

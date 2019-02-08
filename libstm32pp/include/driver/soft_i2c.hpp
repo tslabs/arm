@@ -1,3 +1,11 @@
+/*******************************************************************************
+ *
+ * Copyright (C) 2019 TSL
+ *
+ * Licenced with GNU General Public License
+ * <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************/
 
 #pragma once
 
@@ -22,15 +30,18 @@ namespace soft_i2c
     };
 
     public:
-      static inline void initialize();
-      static inline void sendStart();
-      static inline void sendStop();
-      static inline void waitSCL();
-      static bool sendByte(u8);
-      static u8 recvByte(bool);
+      static inline void Initialize();
+      static inline void SendStart();
+      static inline void SendStop();
+      static inline bool SendByte(u8);
+      static inline u8   RecvByte(bool);
+      static inline bool ReadReg(u8, u8, u8&);
+      static inline bool ReadReg(u8, u8, void*, u8);
+      static inline bool WriteReg(u8, u8, u8);
+      static inline bool WriteReg(u8, u8, void*, u8);
 
     private:
-      Functions();
+      static inline void waitScl();
   };
 };
 

@@ -1,4 +1,13 @@
 
+/*******************************************************************************
+ *
+ * Copyright (C) 2019 TSL
+ *
+ * Licenced with GNU General Public License
+ * <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************/
+
 #pragma once
 
 #include "soft_i2c.hpp"
@@ -10,7 +19,7 @@ namespace si7021
     DEVICE_ADDR = 0x40,
     SIZE_OF_SN  = 8
   };
-  
+
   // Si7021 commands
   enum
   {
@@ -31,31 +40,26 @@ namespace si7021
     CMD_RD_FWR_1  = 0x84,
     CMD_RD_FWR_2  = 0xB8
   };
-  
+
   // Si7021 registers
   enum
   {
     REG_UR1,
     REG_HCR
   };
- 
-  template<gpio::Address SCL_PORT, u8 SCL_PIN, gpio::Address SDA_PORT, u8 SDA_PIN, tim::Address DELAY_TIMER_ADDRESS, u32 FREQUENCY>
+
+  template<typename>
   class Functions
   {
-    typedef soft_i2c::Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY> DEVICE;
-
     public:
-    static inline void initialize();
-    static inline bool measure(u16&, u16&);
-    static inline bool readSn(u8*);
+      static bool Measure(u16&, u16&);
+      static bool ReadSn(u8*);
 
     private:
-    static inline void waitScl();
-    Functions();
   };
-  
-  u16 calculateHumidity(u16);
-  u16 calculateTemperature(u16);
+
+  u16 CalculateHumidity(u16);
+  u16 CalculateTemperature(u16);
 }
 
 #include "../../bits/si7021.tcc"

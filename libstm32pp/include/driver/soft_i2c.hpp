@@ -38,7 +38,7 @@ namespace soft_i2c
       static inline bool ReadReg(u8, u8, u8&);
       static inline bool ReadReg(u8, u8, void*, u8);
       static inline bool WriteReg(u8, u8, u8);
-      static inline bool WriteReg(u8, u8, void*, u8);
+      static inline bool WriteReg(u8, u8, const void*, u8);
 
     private:
       static inline void waitScl();

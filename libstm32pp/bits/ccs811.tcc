@@ -10,6 +10,14 @@
 
 namespace ccs811
 {
+# define SWAP_BYTES(a) \
+  { \
+    u8 *b = (u8*)&a; \
+    u8 c = b[1]; \
+    b[1] = b[0]; \
+    b[0] = c; \
+  }
+
   template<typename I2C>
   bool Functions<I2C>::Initialize()
   {
@@ -25,6 +33,7 @@ namespace ccs811
 
     return true;
   }
+
   template<typename I2C>
   bool Functions<I2C>::ReadVer(VERSION &ver)
   {
@@ -34,4 +43,53 @@ namespace ccs811
 
     return true;
   }
+
+  template<typename I2C>
+  bool Functions<I2C>::ReadStatus(STATUS &status)
+  {
+    return I2C::ReadReg(DEVICE_ADDR, REG_STATUS, status.byte);
+  }
+
+  template<typename I2C>
+  bool Functions<I2C>::ReadError(ERROR &error)
+  {
+    return I2C::ReadReg(DEVICE_ADDR, REG_ERROR_ID, error.byte);
+  }
+
+  template<typename I2C>
+  bool Functions<I2C>::ReadData(RES_DATA &data)
+  {
+    bool rc = I2C::ReadReg(DEVICE_ADDR, REG_ALG_RESULT_DATA, data.bytes, sizeof(data.bytes));
+    SWAP_BYTES(data.eco2);
+    SWAP_BYTES(data.tvoc);
+    return rc;
+  }
+
+  template<typename I2C>
+  bool Functions<I2C>::RunApplication()
+  {
+    return I2C::WriteReg(DEVICE_ADDR, REG_APP_START, 0, 0);
+  }
+
+  template<typename I2C>
+  bool Functions<I2C>::SoftwareReset()
+  {
+    return I2C::WriteReg(DEVICE_ADDR, REG_SW_RESET, RESET_SEQ, sizeof(RESET_SEQ));
+  }
+
+  template<typename I2C>
+  bool Functions<I2C>::SetMeasurementMode(MEAS_MODE &mode)
+  {
+    return I2C::WriteReg(DEVICE_ADDR, REG_MEAS_MODE, mode.byte);
+  }
+
+  template<typename I2C>
+  bool Functions<I2C>::SetEnvironment(s16_16 &humidity, s16_16 &temperature)
+  {
+    u8 env[4];
+    // +++
+    return I2C::WriteReg(DEVICE_ADDR, REG_ENV_DATA, env, sizeof(env));
+  }
+
+#undef SWAP_BYTES
 }

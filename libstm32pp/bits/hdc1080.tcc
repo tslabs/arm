@@ -12,7 +12,7 @@ namespace hdc1080
 {
 # define SWAP_BYTES(a) \
   { \
-    u8 *b = &a; \
+    u8 *b = (u8*)&a; \
     u8 c = b[1]; \
     b[1] = b[0]; \
     b[0] = c; \

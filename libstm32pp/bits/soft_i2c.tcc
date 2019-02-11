@@ -183,7 +183,7 @@ namespace soft_i2c
 
   // write register to device: <S><SLAW><reg><data><P>
   template<gpio::Address SCL_PORT, u8 SCL_PIN, gpio::Address SDA_PORT, u8 SDA_PIN, tim::Address DELAY_TIMER_ADDRESS, u32 FREQUENCY>
-  bool Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::WriteReg(u8 addr, u8 reg, void *data, u8 len)
+  bool Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::WriteReg(u8 addr, u8 reg, const void *data, u8 len)
   {
     u8 *_data = (u8*)data;
     

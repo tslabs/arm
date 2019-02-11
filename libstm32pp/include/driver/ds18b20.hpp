@@ -26,7 +26,6 @@ namespace ds18b20
     typedef onewire::Functions<DATA_PORT, DATA_PIN, DELAY_TIMER_ADDRESS> DEVICE;
 
     public:
-      static inline void initializeTimer();
       static inline void initialize();
       static inline bool runTemperatureConversion();
       static inline bool readTemperature(u16&);

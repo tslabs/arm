@@ -10,9 +10,7 @@
 
 #pragma once
 
-#include "defs.hpp"
-#include "gpio.hpp"
-#include "softi2c.hpp"
+#include "soft_i2c.hpp"
 
 namespace ccs811
 {

@@ -71,9 +71,11 @@ namespace bmp180
     REG_ID_VAL = 0x55
   };
 
-  template<typename>
+  template<typename, tim::Address DELAY_TIMER_ADDRESS>
   class Functions
   {
+    typedef tim::Functions<DELAY_TIMER_ADDRESS> TIMER;
+
     public:
       static bool Initialize(CALIB&);
       static bool Measure(s32&, s32&);

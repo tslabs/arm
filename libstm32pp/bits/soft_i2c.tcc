@@ -143,4 +143,62 @@ namespace soft_i2c
     return 0;
 #endif  // SOFT_I2C_DUMMY
   }
+
+  // read register from device: <S><SLAW><reg><R><SLAR><data><P>
+  template<gpio::Address SCL_PORT, u8 SCL_PIN, gpio::Address SDA_PORT, u8 SDA_PIN, tim::Address DELAY_TIMER_ADDRESS, u32 FREQUENCY>
+  bool Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::ReadReg(u8 addr, u8 reg, u8 &data)
+  {
+    return ReadReg(addr, reg, &data, 1);
+  }
+
+  // read register from device: <S><SLAW><reg><R><SLAR><data><P>
+  template<gpio::Address SCL_PORT, u8 SCL_PIN, gpio::Address SDA_PORT, u8 SDA_PIN, tim::Address DELAY_TIMER_ADDRESS, u32 FREQUENCY>
+  bool Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::ReadReg(u8 addr, u8 reg, void *data, u8 len)
+  {
+    u8 *_data = (u8*)data;
+
+    SendStart();
+    if (!SendByte(addr << 1)) goto err;
+    if (!SendByte(reg)) goto err;
+    SendStart();
+    if (!SendByte((addr << 1) | 1)) goto err;
+
+    while (len--)
+      *_data++ = RecvByte(len != 0);
+
+    SendStop();
+    return true;
+
+  err:
+    SendStop();
+    return false;
+  }
+
+  // write register to device: <S><SLAW><reg><data><P>
+  template<gpio::Address SCL_PORT, u8 SCL_PIN, gpio::Address SDA_PORT, u8 SDA_PIN, tim::Address DELAY_TIMER_ADDRESS, u32 FREQUENCY>
+  bool Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::WriteReg(u8 addr, u8 reg, u8 data)
+  {
+    return WriteReg(addr, reg, &data, 1);
+  }
+
+  // write register to device: <S><SLAW><reg><data><P>
+  template<gpio::Address SCL_PORT, u8 SCL_PIN, gpio::Address SDA_PORT, u8 SDA_PIN, tim::Address DELAY_TIMER_ADDRESS, u32 FREQUENCY>
+  bool Functions<SCL_PORT, SCL_PIN, SDA_PORT, SDA_PIN, DELAY_TIMER_ADDRESS, FREQUENCY>::WriteReg(u8 addr, u8 reg, void *data, u8 len)
+  {
+    u8 *_data = (u8*)data;
+    
+    SendStart();
+    if (!SendByte(addr << 1)) goto err;
+    if (!SendByte(reg)) goto err;
+
+    while (len--)
+      if (!SendByte(*_data++)) goto err;
+
+    SendStop();
+    return true;
+
+  err:
+    SendStop();
+    return false;
+  }
 }

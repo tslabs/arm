@@ -2,19 +2,6 @@
 namespace onewire
 {
   template<gpio::Address DATA_PORT, u8 DATA_PIN, tim::Address DELAY_TIMER_ADDRESS>
-  void Functions<DATA_PORT, DATA_PIN, DELAY_TIMER_ADDRESS>::initializeTimer()
-  {
-    TIMER::enableClock();
-    TIMER::configureCounter(
-      tim::cr1::cen::COUNTER_DISABLED,
-      tim::cr1::udis::UPDATE_EVENT_ENABLED,
-      tim::cr1::urs::UPDATE_REQUEST_SOURCE_OVERFLOW_UNDERFLOW,
-      tim::cr1::opm::DONT_STOP_COUNTER_AT_NEXT_UPDATE_EVENT,
-      tim::cr1::arpe::AUTO_RELOAD_UNBUFFERED);
-    TIMER::setMicroSecondResolution();
-  }
-
-  template<gpio::Address DATA_PORT, u8 DATA_PIN, tim::Address DELAY_TIMER_ADDRESS>
   void Functions<DATA_PORT, DATA_PIN, DELAY_TIMER_ADDRESS>::initialize()
   {
     DATA::enableClock();

@@ -5,12 +5,6 @@ namespace ds18b20
   bool Functions<DATA_PORT, DATA_PIN, DELAY_TIMER_ADDRESS>::is_valid;
 
   template<gpio::Address DATA_PORT, u8 DATA_PIN, tim::Address DELAY_TIMER_ADDRESS>
-  void Functions<DATA_PORT, DATA_PIN, DELAY_TIMER_ADDRESS>::initializeTimer()
-  {
-    DEVICE::initializeTimer();
-  }
-
-  template<gpio::Address DATA_PORT, u8 DATA_PIN, tim::Address DELAY_TIMER_ADDRESS>
   void Functions<DATA_PORT, DATA_PIN, DELAY_TIMER_ADDRESS>::initialize()
   {
     DEVICE::initialize();

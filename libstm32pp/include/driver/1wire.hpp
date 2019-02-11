@@ -25,7 +25,6 @@ namespace onewire
     typedef tim::Functions<DELAY_TIMER_ADDRESS> TIMER;
     
     public:
-      static inline void initializeTimer();
       static inline void initialize();
       static inline bool reset();
       static inline u8 readByte();

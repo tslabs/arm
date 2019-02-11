@@ -10,8 +10,8 @@
 
 namespace bmp180
 {
-  template<typename I2C>
-  bool Functions<I2C>::Initialize(CALIB& calib)
+  template<typename I2C, tim::Address DELAY_TIMER_ADDRESS>
+  bool Functions<I2C, DELAY_TIMER_ADDRESS>::Initialize(CALIB& calib)
   {
     u8 *c = (u8*)&calib;
     u8 reg;
@@ -27,14 +27,14 @@ namespace bmp180
     return true;
   }
 
-  template<typename I2C>
-  bool Functions<I2C>::Measure(s32 &ut, s32 &up)
+  template<typename I2C, tim::Address DELAY_TIMER_ADDRESS>
+  bool Functions<I2C, DELAY_TIMER_ADDRESS>::Measure(s32 &ut, s32 &up)
   {
     u8 reg;
 
     // read raw temperature
     if (!I2C::WriteReg(DEVICE_ADDR, REG_CTRL_MEAS, MEAS_TEMPER)) return false;
-    delay_ms(5);
+    TIMER::delay(5000);
     if (!I2C::ReadReg(DEVICE_ADDR, REG_OUT_LSB, reg)) return false;
     ut = reg;
     if (!I2C::ReadReg(DEVICE_ADDR, REG_OUT_MSB, reg)) return false;
@@ -42,7 +42,7 @@ namespace bmp180
 
     // read raw pressure
     if (!I2C::WriteReg(DEVICE_ADDR, REG_CTRL_MEAS, MEAS_PRES_8X)) return false;
-    delay_ms(26);
+    TIMER::delay(26000);
     if (!I2C::ReadReg(DEVICE_ADDR, REG_OUT_XLSB, reg)) return false;
     up = reg;
     if (!I2C::ReadReg(DEVICE_ADDR, REG_OUT_LSB, reg)) return false;
@@ -56,6 +56,9 @@ namespace bmp180
 
   void CalculatePressure(s32 ut, s32 up, s32 &t, s32 &p, CALIB &calib)
   {
+    // Pressure is in format: aaa.aa (e.g. 98135 is 98.135hPa)
+    // Temperature is in format: aa.a (e.g. 281 is 28.1'C)
+    
     #define _pow2(a) ((s32)((u32)1 << (a)))
 
     s32 x1, x2, x3, b3, b5, b6;

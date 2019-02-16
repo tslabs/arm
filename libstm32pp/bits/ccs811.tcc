@@ -27,9 +27,19 @@ namespace ccs811
     if (!I2C::ReadReg(DEVICE_ADDR, REG_HW_ID, reg)) return false;
     if (reg != REG_HW_ID_VAL) return false;
 
-    // read calibration
-    // for (u8 i = 0; i <= (REG_CALIB_21 - REG_CALIB_00); i++)
-      // if (!I2C::ReadReg(DEVICE_ADDR, REG_CALIB_00 + i, c[i ^ 1])) return false;
+    STATUS stat;
+    MEAS_MODE mode;
+
+    if (!ReadStatus(stat)) return false;
+    if (!stat.fw_mode)
+    {
+      if (!RunApplication()) return false;
+      if (!ReadStatus(stat)) return false;
+      if (!stat.fw_mode) return false;
+      
+      mode.byte = 0; mode.drive_mode = MODE_1;
+      if (!SetMeasurementMode(mode)) return false;
+    }
 
     return true;
   }
@@ -59,6 +69,10 @@ namespace ccs811
   template<typename I2C>
   bool Functions<I2C>::ReadData(RES_DATA &data)
   {
+    STATUS stat;
+    if (!ReadStatus(stat)) return false;
+    if (!stat.data_ready) return false;
+
     bool rc = I2C::ReadReg(DEVICE_ADDR, REG_ALG_RESULT_DATA, data.bytes, sizeof(data.bytes));
     SWAP_BYTES(data.eco2);
     SWAP_BYTES(data.tvoc);

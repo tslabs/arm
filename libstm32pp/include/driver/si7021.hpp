@@ -52,6 +52,7 @@ namespace si7021
   class Functions
   {
     public:
+      static bool Initialize();
       static bool Measure(u16&, u16&);
       static bool ReadSn(u8*);
 

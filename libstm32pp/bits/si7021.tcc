@@ -10,6 +10,11 @@
 
 namespace si7021
 {
+  template<typename I2C>
+  bool Functions<I2C>::Initialize()
+  {
+  }
+  
   // measure humidity and temperature
   template<typename I2C>
   bool Functions<I2C>::Measure(u16 &hum, u16 &tem)

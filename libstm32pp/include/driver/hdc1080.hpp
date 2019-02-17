@@ -40,14 +40,37 @@ namespace hdc1080
     REG_DEV_ID_VAL = 0x5010
   };
 
-  template<typename>
+  typedef union
+  {
+    struct
+    {
+      u16 _pad0:8;  // bits 0..7
+      u16 hres:2;   // bits 8..9
+      u16 tres:1;   // bit 10
+      u16 btst:1;   // bit 11
+      u16 mode:1;   // bit 12
+      u16 heat:1;   // bit 13
+      u16 _pad1:1;  // bit 14
+      u16 rst:1;    // bit 15
+    };
+    u16 word;
+  } CONFIG;
+
+  template<typename, tim::Address DELAY_TIMER_ADDRESS>
   class Functions
   {
+    typedef tim::Functions<DELAY_TIMER_ADDRESS> TIMER;
+
     public:
       static bool Initialize();
+      static bool Configure(CONFIG);
       static bool ReadId(void*);
+      static u8 Measure(u16&, u16&);
     private:
   };
+
+  u16 CalculateHumidity(u16);
+  u16 CalculateTemperature(u16);
 }
 
 #include "../../bits/hdc1080.tcc"

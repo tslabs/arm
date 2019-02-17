@@ -28,7 +28,7 @@ namespace ccs811
     if (reg != REG_HW_ID_VAL) return false;
 
     STATUS stat;
-    MEAS_MODE mode;
+    MEAS_MODE mode = {};
 
     if (!ReadStatus(stat)) return false;
     if (!stat.fw_mode)
@@ -37,7 +37,7 @@ namespace ccs811
       if (!ReadStatus(stat)) return false;
       if (!stat.fw_mode) return false;
       
-      mode.byte = 0; mode.drive_mode = MODE_1;
+      mode.drive_mode = MODE_1;
       if (!SetMeasurementMode(mode)) return false;
     }
 

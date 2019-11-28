@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fw_tool", "fw_tool\fw_tool.vcxproj", "{4CB8E3E7-FA2F-4407-A79E-BD12F6C85860}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fw_tool", "win32\fw_tool.vcxproj", "{4CB8E3E7-FA2F-4407-A79E-BD12F6C85860}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

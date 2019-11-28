@@ -11,7 +11,7 @@ hex2bin obj/out.hex >nul
 ren obj\out.bin code.C
 
 trdtool # ayx32_fw.trd >nul
-trdtool + ayx32_fw.trd res/boot.$b >nul
+trdtool + ayx32_fw.trd res/boot.$B >nul
 trdtool + ayx32_fw.trd obj/code.C >nul
 
 unreal ayx32_fw.trd

@@ -1,8 +1,6 @@
 
 void msg_main()
 {
-  unlock_chip();
-
   cls();
   xy(41,1); color(C_HEAD); printf("AYX-32 Configuration Utility");
   defx = 30; xy(defx, 5);
@@ -201,7 +199,9 @@ void msg_info()
   xy(0, 4); color(C_NORM); printf("Device signature: ");
   color(C_DATA); printf("%P\n\n", f1);
 
-  if (f1 != M_DEVSIG)
+  if (f1 == M_DEVSIG)
+    unlock_chip();
+  else
   {
     color(C_ERR); printf("ERROR: chip not found!");
     return;

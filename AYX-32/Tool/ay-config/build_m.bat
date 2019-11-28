@@ -14,4 +14,4 @@ trdtool # ayx32_fw.trd >nul
 trdtool + ayx32_fw.trd res/boot.$b >nul
 trdtool + ayx32_fw.trd obj/code.C >nul
 
-res\rs232mnt.exe -a ayx32_fw.trd -com com6 -baud 115200 -slowpoke
+res\rs232mnt.exe -a ayx32_fw.trd -com com8 -baud 115200 -slowpoke

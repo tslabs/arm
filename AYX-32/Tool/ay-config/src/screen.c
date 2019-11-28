@@ -195,9 +195,10 @@ void putc(u8 c)
   xy(cx + 6, cy);
 }
 
-void putchar(u8 c)
+int putchar(int c)
 {
   putc(c);
+  return 0;
 }
 
 void frame(u8 xx, u8 yy, u8 sx, u8 sy, u8 cf)

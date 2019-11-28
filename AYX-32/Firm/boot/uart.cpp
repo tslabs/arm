@@ -25,7 +25,6 @@ enum UART_ERR
 volatile UART_STATE st;
 u32 st_cnt;
 u8 *st_addr;
-volatile bool is_sending;        // indicates that UART output is in progress
 
 struct
 {
@@ -37,7 +36,6 @@ void initialize()
 {
   uart_in.init(uart_inbuf, sizeof(uart_inbuf));
   uart_out.init(uart_outbuf, sizeof(uart_outbuf));
-  is_sending = false;
   st = ST_IDLE;
 }
 
@@ -49,14 +47,10 @@ void processRecv()
 
 void processSend()
 {
-  UART_CONSOLE::clearTC();
   if (uart_out.used())
-  {
-    is_sending = true;
     UART_CONSOLE_REGS->DR = uart_out.get_byte_nocheck();
-  }
   else
-    is_sending = false;
+    UART_CONSOLE::disableTXEIE();
 }
 
 void processUART()
@@ -66,7 +60,7 @@ void processUART()
   if (sr & usart::sr::rxne::DATA_RECEIVED)
     processRecv();
 
-  if (sr & usart::sr::tc::TRANSMISSION_COMPLETED)
+  if (sr & usart::sr::txe::DATA_TRANSFERED_TO_THE_SHIFT_REGISTER)
     processSend();
 }
 
@@ -77,8 +71,7 @@ void output_err(u32 err)
   uart_out.put_byte(0xAA);
   uart_out.put_byte(0x78);
 
-  if (!is_sending)
-    processSend();
+  UART_CONSOLE::enableTXEIE();
 }
 
 void bg_fw()

@@ -54,6 +54,8 @@ bool load_config()
       config.psgvol[i][2][1] = PSG_VOL_CR_DEF;
     }
   }
+
+  return is_valid;
 }
 
 bool save_cfg()

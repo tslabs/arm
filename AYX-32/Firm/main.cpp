@@ -156,8 +156,8 @@ void resetHandler()
       console::uart_input(console_uart_in.get_byte());
 
     // Console UART output
-    if (!console::is_sending && console_uart_out.used())
-      console::processSend();
+    if (console_uart_out.used())
+      UART_CONSOLE::enableTXEIE();
 
     // Console menus
     if (!console_uart_out.used())

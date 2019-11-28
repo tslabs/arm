@@ -10,6 +10,7 @@ set incl=-I ../../libstm32pp/include -I common
 set opts=-Os -std=c++11 -nostartfiles -nostdlib -nodefaultlibs -fno-exceptions -flto -fpermissive
 
 set srcs=-x c++ boot.cpp
+REM set defs=-save-temps
 set defs=
 set link=-T boot.ld -Wl,--gc-sections
 set outp=-o obj/boot.elf
@@ -26,6 +27,7 @@ arm-none-eabi-size obj/boot.elf
 xxd -i obj/boot.bin obj/boot.h
 
 set srcs=-x c++ main.cpp
+REM set defs=-save-temps
 set defs=
 set link=-T main.ld -Wl,--gc-sections
 set outp=-o obj/main.elf

@@ -28,7 +28,7 @@ bool is_fw_valid;
 bool flash_fw() __attribute__ ((noinline, section(".ram_text")));
 void wait_busy() __attribute__ ((noinline, section(".ram_text")));
 
-bool initialize()
+void initialize()
 {
   is_fw_valid = false;
 }

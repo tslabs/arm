@@ -147,7 +147,7 @@ enum
   MAIN_ADDR     = 0x08008000, // Main code address
   DEV_SIG       = 0xAA55,     // Device signature
   HW_VER        = 1,          // Hardware version
-  FW_VER        = 6,          // Firmware version
+  FW_VER        = 7,          // Firmware version
   FWHDR_VER     = 1,          // Firmware header version
   CF_VER        = 2,          // Config Pad version
 };
@@ -160,8 +160,12 @@ enum
 };
 #endif
 
+#define STR_HELPER(x) #x
+#define STR(x) STR_HELPER(x)
+
 #define CPR_STRING "AYX-32, (c)TSL"
-#define BLD_STRING __DATE__ ", " __TIME__
+#define BLD_STRING __DATE__ " " __TIME__ " GCC " STR(__GNUC__) "." STR(__GNUC_MINOR__) "." STR(__GNUC_PATCHLEVEL__)
+
 
 /// - Variables ---
 volatile u32 time_ms;

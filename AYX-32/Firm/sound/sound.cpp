@@ -29,7 +29,7 @@ void render_snd_buffer()
 
   // +++ use DMA instead
   memset(sndbuf, bus::readback[bus::R_PUSH_UP], sizeof(dac_buf[0]));
-  // memset(sndbuf, 0, sizeof(dac_buf[0]));
+  // memset(sndbuf, 16, sizeof(dac_buf[0]));
 
   render_psg();
   // render_ws();

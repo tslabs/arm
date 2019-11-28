@@ -123,7 +123,8 @@ void BC1()
   // Databus deasserted within 70ns, which is half of Z80 T-state at 7MHz
   asm
   (
-    "    ldr  r0, =0x40020400 \n"  // GPIOB perifery address
+    "    movw r0, #0x0400 \n"      // 0x40020400 - GPIOB periphery address
+    "    movt r0, #0x4002 \n"
     "    movw r1, #0x5555 \n"      // ODR[15:8] as outputs
     "    strh r1, [r0, #2] \n"
     "    movs r1, #0 \n"           // ODR[15:8] as inputs
@@ -144,7 +145,8 @@ void BC1_ram()
   // Databus deasserted within 70ns, which is half of Z80 T-state at 7MHz
   asm
   (
-    "    ldr  r0, =0x40020400 \n"  // GPIOB perifery address
+    "    movw r0, #0x0400 \n"      // 0x40020400 - GPIOB periphery address
+    "    movt r0, #0x4002 \n"
     "    movw r1, #0x5555 \n"      // ODR[15:8] as outputs
     "    strh r1, [r0, #2] \n"
     "    movs r1, #0 \n"           // ODR[15:8] as inputs

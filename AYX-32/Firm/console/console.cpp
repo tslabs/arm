@@ -54,7 +54,6 @@ void initialize()
   dbg_mode = DBG_OFF;
   console_uart_in.init(console_uart_inbuf, sizeof(console_uart_inbuf));
   console_uart_out.init(console_uart_outbuf, sizeof(console_uart_outbuf));
-  is_sending = false;
   menu = m_main;
 }
 

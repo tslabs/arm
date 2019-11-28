@@ -6,8 +6,6 @@
 //
 // 당신 정말 좋아 나 몰라
 
-volatile bool is_sending;        // indicates that UART output is in progress
-
 void processRecv()
 {
   UART_CONSOLE::clearRXNE();
@@ -16,14 +14,10 @@ void processRecv()
 
 void processSend()
 {
-  UART_CONSOLE::clearTC();
   if (console_uart_out.used())
-  {
-    is_sending = true;
     UART_CONSOLE_REGS->DR = console_uart_out.get_byte_nocheck();
-  }
   else
-    is_sending = false;
+    UART_CONSOLE::disableTXEIE();
 }
 
 void processUART()
@@ -33,6 +27,6 @@ void processUART()
   if (sr & usart::sr::rxne::DATA_RECEIVED)
     processRecv();
 
-  if (sr & usart::sr::tc::TRANSMISSION_COMPLETED)
+  if (sr & usart::sr::txe::DATA_TRANSFERED_TO_THE_SHIFT_REGISTER)
     processSend();
 }

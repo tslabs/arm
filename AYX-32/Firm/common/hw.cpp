@@ -126,7 +126,7 @@ void initializeUART()
     usart::cr1::te::TRANSMITTER_ENABLED,
     usart::cr1::idleie::IDLE_INTERRUPT_DISABLED,
     usart::cr1::rxneie::RXNE_ORE_INTERRUPT_ENABLED,
-    usart::cr1::tcie::TC_INTERRUPT_ENABLED,
+    usart::cr1::tcie::TC_INTERRUPT_DISABLED,
     usart::cr1::txeie::TXEIE_INTERRUPT_DISABLED,
     usart::cr1::peie::PEIE_INTERRUPT_DISABLED,
     usart::cr1::ps::EVEN_PARITY,
@@ -201,7 +201,7 @@ void initializeAYCLK()
   AU_TIM::enableUpdateDma();
 
   EVT_TIM::enableClock();
-  EVT_TIM::configureBasicCounter(
+  EVT_TIM::configureCounter(
     tim::cr1::cen::COUNTER_DISABLED,
     tim::cr1::udis::UPDATE_EVENT_ENABLED,
     tim::cr1::urs::UPDATE_REQUEST_SOURCE_OVERFLOW_UNDERFLOW,

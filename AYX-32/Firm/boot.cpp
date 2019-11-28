@@ -152,7 +152,7 @@ void resetHandler()
       uart::input_byte(uart_in.get_byte());
 
     // UART output
-    if (!uart::is_sending && uart_out.used())
-      uart::processSend();
+    if (uart_out.used())
+      UART_CONSOLE::enableTXEIE();
   }
 }

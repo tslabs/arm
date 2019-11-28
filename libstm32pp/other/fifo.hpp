@@ -98,7 +98,10 @@ public:
     if (used())
       return get_byte_nocheck();
     else
+    {
       underflow = true;
+      return 0;
+    }
   }
 
 // Read first byte of FIFO without pushing it out

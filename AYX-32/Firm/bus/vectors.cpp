@@ -30,7 +30,8 @@ const T_A_VEC t_write_addr_vec[] =
   0xFF, wa_ts,
 #endif
 
-  R_DEV_SIG,     wa_dev_sig,
+  // System
+  R_DEV_SIG,     wa_dev_sig,  // must be accessible in PSG mode
   R_PARAM,       wa_param,
 };
 
@@ -45,6 +46,7 @@ const T_A_VEC t_write_addr_vec_ext[] =
   R_PSG_AMP_TAB, wa_amp_tab,
 #endif
 
+  R_DEV_SIG,     wa_dev_sig,
   R_DATA,        wa_data,
   R_UPTIME,      wa_upt,
   R_VER,         wa_ver,
@@ -150,7 +152,7 @@ const T_R_VEC t_read_reg_vec[] =
 #endif
 
   // System
-  R_DEV_SIG,     rr_arr,
+  R_DEV_SIG,     rr_arr,  // must be accessible in PSG mode
 };
 
 const T_R_VEC t_read_reg_vec_ext[] =
@@ -189,6 +191,7 @@ const T_R_VEC t_read_reg_vec_ext[] =
 #endif
 
   // System
+  R_DEV_SIG,     rr_arr,
   R_STATUS,      rr_status,
   R_ERROR,       rr_error,
   R_RESP,        rr_arr,

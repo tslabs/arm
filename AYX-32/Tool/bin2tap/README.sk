@@ -1,0 +1,146 @@
+bin2tap v1.2 (PSION edition) - binary to tape convertor (C) 2005
+
+Konvertor binárnych súborov na súbor pre emulátor ZX Spectra
+
+Michal Jurica
+
+
+OBSAH
+*****
+
+1. Odvolanie
+2. Inątalácia
+3. Pouľívanie
+4. Formát .tap súboru
+5. Chyby
+6. Kontakt
+
+
+1. Odvolanie
+------------
+
+Neberiem na seba zodpovednos» za ľiadne ąkody spôsobené pouľívaním tohoto
+programu.
+
+
+2. Inątalácia
+-------------
+
+Program je distribuovaný vo forme zdrojového kódu. Pre nainątalovanie
+potrebujete prekladač jazyka C. Ak pouľívate prekladač gcc, program preloľíte
+príkazom
+  $ gcc bin2tap.c -o bin2tap
+Tým vytvoríte spustiteµný súbor. Ak pouľívate iný prekladač, pozrite sa do jeho
+dokumentácie.
+
+Spustiteµný súbor potom skopírujte do adresára, kde operačný systém hµadá
+spustiteµné súbory. Napríklad:
+  $ cp bin2tap /usr/bin/
+
+
+3. Pouľívanie
+-------------
+
+Program skonvertuje vstupný súbor na CODE blok v .tap súbore. Program tieľ
+dokáľe vytvori» jednoduchý BASICovský zavádzač. Syntax programu je nasledovná:
+
+  bin2tap [voµby] vstupný_súbor
+
+Vąetky voµby sú nepovinné, okrem vstupného súboru. Ak je niektorá voµba poľado-
+vaná a nie je zadaná, pouľije sa východzia hodnota. Jednotlivé voµby sú:
+
+  -a adresa            počiatočná adresa CODE bloku, východia hodnota je 32768
+  -o výstupný_súbor    určí výstupný .tap súbor. Ak sa tento prepínač nezadá,
+                       program sa snaľí nahradi» príponu vstupného súboru
+                       (prípona sa hµadá iba v posledných 4 písmenách) príponou
+                       .tap. Ak sa mu to nepodarí, pripojí príponu za názov
+                       vstupného súboru.
+
+  -b                   pouľitím prepínača sa k výstupnému súboru pripojí
+                       BASICový zavádzač
+  -c clear_adresa      nastaví adresu v príkaze CLEAR v zavádzači, východzia
+                       hodnota je 24575
+  -r spúą»acia_adresa  nastaví v zavádzači spúą»aciu adresu (RANDOMIZE USR),
+                       východzia hodnota je 32768
+  -cb hodnota          nastaví v zavádzači farbu BORDER, východzia hodnota je 0
+  -cp hodnota          nastaví v zavádzači farbu PAPER, východzia hodnota je 0
+  -ci hodnota          nastaví v zavádzači farbu INK, východzia hodnota je 7
+  -d80                 vytvorí D80 loader, meno BASICového zavádzača sa nastaví
+                       na "run"
+  -hp | --header-poke  vloľí riadok s POKE 23739,111 na zamedzenie výpisu hlavičky
+                       pri nahrávaní z pásky
+
+  -h  | --help         vypíąe informácie o pouľívaní programu
+  -v  | --version      vypíąe verziu programu
+
+BASICový zavádzač vyzerá nasledovne:
+10 REM loader by bin2tap1.2
+20 BORDER VAL "0": PAPER VAL "0": INK VAL "7"
+30 CLEAR VAL "24575"
+40 POKE VAL "23739", CODE "o"
+50 LOAD  "meno_súboru" CODE
+60 RANDOMIZE USR VAL "32768"
+
+
+4. Formát .tap súboru
+-----------------------
+
+Súbory .tap obsahujú bloky dát tak, ako sa ukladajú na pásku. Vąetky bloky
+začínajú dvoma bajtami, ktoré určujú koµko bajtov bude nasledova» (nezapočítajú
+sa k tejto dĺľke). Potom nasledujú dáta, včítane stavového bajtu (flag)
+a kontrolného súčtu. Kontrolný súčet sa vypočíta ako XOR vąetkých bajtov,
+vrátane stavového bajtu. Napríklad, ak uloľíte riadok SAVE "ROM" CODE 0,2
+výsledok bude:
+
+ |------ Spectrom-generované dáta ------|                |------|
+ 13 00 00 03 52 4f 4d 7x20 02 00 00 00 00 80 f1 04 00 ff f3 af a3
+
+ ^^^^^...... prvý blok je 19 bajtov (17 bajtov+flag+checksum)
+       ^^... flag bajt (A reg, 00 pre hlavičky, ff pre dátové bloky)
+          ^^ prvý bajt hlavičky, určuje code blok
+
+názov súboru.^^^^^^^^^^^^^
+informácie v hlavičke......^^^^^^^^^^^^^^^^^
+kontrolný súčet hlavičky.....................^^
+dĺľka druhého bloku ............................^^^^^
+flag bajt ............................................^^
+prvé dva bajty z ROM ....................................^^^^^
+kontrolný súčet ...............................................^^
+
+Vąimnite si, ľe je moľné spája» .tap súbory jednoduchým zre»azením spolu.
+Napríklad COPY /B FILE1.TAP + FILE2.TAP ALL.TAP
+
+©truktúra hlavičky sa vľdy skladá zo 17 bajtov a je nasledovná:
+
+Bajt    Dĺľka   Popis      
+--------------------------------------------
+0       1       Typ (0,1,2 alebo 3)
+1       10      Názov súboru (zarovnaný medzerami)
+11      2       Dĺľka bloku dát
+13      2       Parameter 1
+15      2       Parameter 2
+
+Typ je 0,1,2 alebo 3 a značí PROGRAM, číselné pole (Number array), znakové pole
+(Character array) alebo súbor CODE. Ak je súbor typu PROGRAM, parameter 1 určuje
+číslo riadku autoątartu (alebo číslo >=32768, ak nie je zadaný ľiadny LINE
+parameter) a parameter 2 určuje začiatok oblasti premenných relatívne k začiatku
+programu. Ak je súbor typu CODE, parameter 1 určuje počiatočnú adresu a parame-
+ter 2 obsahuje číslo 32768. A nakoniec pre dátové súbory, bajt na pozícii 14
+obsahuje meno premennej.
+
+
+5. Chyby
+--------
+
+Ak nájdete chybu v programe, kontaktujte ma na adrese mike at zeroteam.sk.
+Taktieľ môľete posiela» nápady na vylepąenie programu.
+
+
+6. Kontakt
+----------
+
+Domovská stránka programu je:
+  http://zeroteam.sk/bin2tap.html
+
+Autorov email:
+  Michal Jurica  -  mike at zeroteam.sk

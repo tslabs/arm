@@ -1,0 +1,24 @@
+11. april 2005
+==============
+
+ - line with POKE VAL "23739", CODE "o" is now optional through -hp switch
+ - corrected errors in documentation
+
+10. april 2005
+==============
+
+ - engine rewriten with fopen/fread/fclose function for better portability
+ - convert only first 49152 bytes from longer files
+ - new basic loader
+
+5. december 2004
+================
+
+ - added -d80 switch for generating D80 style loader (usefull with tap2d80
+   utility)
+
+
+17. august 2004
+===============
+
+ - second release, more user friendly

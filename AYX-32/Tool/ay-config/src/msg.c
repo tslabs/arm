@@ -195,13 +195,13 @@ void msg_info()
   cls();
   xy(90,1); color(C_HEAD); printf("Device Info");
 
+  unlock_chip();
+  
   f1 = rd_reg16(R_DEV_SIG);
   xy(0, 4); color(C_NORM); printf("Device signature: ");
   color(C_DATA); printf("%P\n\n", f1);
 
-  if (f1 == M_DEVSIG)
-    unlock_chip();
-  else
+  if (f1 != M_DEVSIG)
   {
     color(C_ERR); printf("ERROR: chip not found!");
     return;

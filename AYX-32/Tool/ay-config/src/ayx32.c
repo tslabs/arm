@@ -203,7 +203,9 @@ void unlock_chip()
 {
   wr_reg32(R_PARAM, MAGIC_LCK);
   wr_reg8(R_CMD, C_LOCK);
-  wait_busy();
+  // wait_busy();
+
+  for (volatile int i = 0; i < 1000; i++);
 }
 
 bool detect_chip()
